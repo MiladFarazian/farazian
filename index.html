@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5"
+    />
+    <meta name="theme-color" content="#04060a" />
+    <title>Milad Farazian — Software Engineer</title>
+    <meta
+      name="description"
+      content="Milad Farazian — software engineer building fast, beautiful, slightly impossible things on the web."
+    />
+    <meta property="og:title" content="Milad Farazian — Software Engineer" />
+    <meta
+      property="og:description"
+      content="Software engineer building fast, beautiful, slightly impossible things on the web."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Boot / preloader -->
+    <div class="boot" id="boot" aria-hidden="true">
+      <div class="boot__inner">
+        <div class="boot__label" id="boot-label">initializing renderer</div>
+        <div class="boot__bar"><span id="boot-fill"></span></div>
+        <div class="boot__pct" id="boot-pct">00</div>
+      </div>
+    </div>
+
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor__dot"></div>
+      <div class="cursor__ring"></div>
+    </div>
+
+    <!-- WebGL hero canvas -->
+    <canvas class="gl" id="gl" aria-hidden="true"></canvas>
+
+    <!-- Scanline / grain overlay -->
+    <div class="fx-overlay" aria-hidden="true"></div>
+
+    <!-- FPS / perf meter -->
+    <div class="hud" id="hud" aria-hidden="true">
+      <span id="hud-fps">60</span> fps
+      <span class="hud__sep">/</span>
+      <span id="hud-tier">—</span>
+    </div>
+
+    <!-- Top nav -->
+    <header class="nav" id="nav">
+      <a class="nav__brand" href="#top" data-magnetic>
+        <span class="nav__brand-mark">MF</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#work" data-scramble data-magnetic>work</a>
+        <a href="#about" data-scramble data-magnetic>about</a>
+        <a href="#stack" data-scramble data-magnetic>stack</a>
+        <a href="#contact" data-scramble data-magnetic>contact</a>
+      </nav>
+      <button class="nav__cmd" id="open-palette" data-magnetic aria-label="Open command palette">
+        <kbd>⌘</kbd><kbd>K</kbd>
+      </button>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero" id="hero">
+        <div class="hero__top">
+          <p class="hero__eyebrow" data-reveal>software engineer · full-stack · graphics</p>
+        </div>
+
+        <!-- The name is rendered as a live particle field. This heading stays for
+             accessibility + SEO, and becomes visible if WebGL is unavailable. -->
+        <h1 class="hero__name" data-reveal>Milad Farazian</h1>
+
+        <div class="hero__bottom">
+          <p class="hero__sub" data-reveal>
+            I build fast, beautiful, slightly impossible things on the web —
+            from <em>GPU shaders</em> to <em>production systems</em>.
+          </p>
+          <div class="hero__cta" data-reveal>
+            <a class="btn btn--primary" href="#work" data-magnetic data-scramble>see the work</a>
+            <a class="btn btn--ghost" href="#contact" data-magnetic data-scramble>get in touch</a>
+          </div>
+          <div class="hero__hint" data-reveal>
+            <span class="hero__hint-text">drag · scroll · tilt</span>
+            <span class="hero__hint-arrow">↓</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="section about" id="about">
+        <div class="section__index">01 — about</div>
+        <div class="about__grid">
+          <h2 class="about__lead" data-split>
+            I turn hard problems into interfaces that feel effortless.
+          </h2>
+          <div class="about__body">
+            <p data-reveal>
+              I'm a software engineer who lives where <strong>performance</strong> meets
+              <strong>craft</strong>. I've shipped full products end-to-end — data models,
+              APIs, real-time systems, and the pixel-perfect, GPU-accelerated front-ends
+              that sit on top.
+            </p>
+            <p data-reveal>
+              Lately I've been building <strong>Parkzy</strong>, a marketplace that turns
+              empty driveways into bookable parking — payments, maps, search, hosts,
+              and a mobile app, all in production.
+            </p>
+            <ul class="about__stats">
+              <li data-reveal><span data-count="6">0</span><small>yrs shipping</small></li>
+              <li data-reveal><span data-count="40">0</span><small>k+ lines in prod</small></li>
+              <li data-reveal><span data-count="100">0</span><small>% caffeine</small></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORK -->
+      <section class="section work" id="work">
+        <div class="section__index">02 — selected work</div>
+        <div class="work__list" id="work-list"><!-- injected --></div>
+      </section>
+
+      <!-- STACK -->
+      <section class="section stack" id="stack">
+        <div class="section__index">03 — stack</div>
+        <h2 class="stack__lead" data-split>The tools I reach for.</h2>
+        <div class="stack__cloud" id="stack-cloud"><!-- injected --></div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="section contact" id="contact">
+        <div class="section__index">04 — contact</div>
+        <h2 class="contact__lead" data-split>Let's build something impossible.</h2>
+        <a class="contact__email" href="mailto:miladfarazian@gmail.com" data-magnetic data-scramble>
+          miladfarazian@gmail.com
+        </a>
+        <div class="contact__links" id="contact-links"><!-- injected --></div>
+        <footer class="footer">
+          <span>© <span id="year">2026</span> Milad Farazian</span>
+          <span class="footer__hint">type <code>help</code> anywhere · press <kbd>⌘K</kbd></span>
+        </footer>
+      </section>
+    </main>
+
+    <!-- Hidden live terminal (easter egg) -->
+    <div class="term" id="term" aria-hidden="true">
+      <div class="term__bar">
+        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+        <span class="term__title">farazian — zsh</span>
+        <button class="term__close" id="term-close" aria-label="Close terminal">×</button>
+      </div>
+      <div class="term__output" id="term-output"></div>
+      <div class="term__input-line">
+        <span class="term__prompt">farazian:~$</span>
+        <input class="term__input" id="term-input" autocomplete="off" spellcheck="false" />
+      </div>
+    </div>
+
+    <!-- Command palette -->
+    <div class="palette" id="palette" aria-hidden="true">
+      <div class="palette__panel" role="dialog" aria-modal="true" aria-label="Command palette">
+        <input
+          class="palette__input"
+          id="palette-input"
+          placeholder="jump to…  (try: work, contact, source, terminal, theme)"
+          autocomplete="off"
+        />
+        <ul class="palette__list" id="palette-list"></ul>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
