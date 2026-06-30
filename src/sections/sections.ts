@@ -1,22 +1,47 @@
 // Inject data-driven content + wire scroll-reveal animations.
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS, STACK, LINKS } from "../content";
+import { PROJECTS, STACK, LINKS, CATEGORIES } from "../content";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function buildContent() {
+  // ---- Work filters ----
+  const filters = document.getElementById("work-filters")!;
+  const countFor = (cat: string) =>
+    cat === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === cat).length;
+  filters.innerHTML = CATEGORIES.map(
+    (c, i) =>
+      `<button class="filter-chip${i === 0 ? " is-active" : ""}" data-filter="${c}">${c} <span class="filter-chip__n">${countFor(c)}</span></button>`
+  ).join("");
+
   // ---- Work list ----
   const workList = document.getElementById("work-list")!;
-  workList.innerHTML = PROJECTS.map(
-    (p) => `
-    <a class="work-item" href="${p.href}" ${p.href !== "#" ? 'target="_blank" rel="noopener"' : ""} data-magnetic>
+  workList.innerHTML = PROJECTS.map((p) => {
+    const linked = p.href && p.href !== "#";
+    const tag = linked ? "a" : "div";
+    const attrs = linked ? `href="${p.href}" target="_blank" rel="noopener" data-magnetic` : "";
+    const arrow = linked ? ` <span class="arrow">↗</span>` : "";
+    return `<${tag} class="work-item" data-category="${p.category}" ${attrs}>
       <span class="work-item__no">${p.no}</span>
-      <span class="work-item__title">${p.title} <span class="arrow">↗</span></span>
+      <span class="work-item__title">${p.title}${arrow}</span>
       <span class="work-item__desc">${p.desc}</span>
       <span class="work-item__tags">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</span>
-    </a>`
-  ).join("");
+    </${tag}>`;
+  }).join("");
+
+  // ---- Filter behavior ----
+  filters.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>(".filter-chip");
+    if (!btn) return;
+    const f = btn.dataset.filter!;
+    filters.querySelectorAll(".filter-chip").forEach((c) => c.classList.toggle("is-active", c === btn));
+    workList.querySelectorAll<HTMLElement>(".work-item").forEach((it) => {
+      const show = f === "All" || it.dataset.category === f;
+      it.classList.toggle("is-hidden", !show);
+    });
+    ScrollTrigger.refresh();
+  });
 
   // ---- Stack chips ----
   const cloud = document.getElementById("stack-cloud")!;
