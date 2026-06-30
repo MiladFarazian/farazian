@@ -1,0 +1,15 @@
+{
+  // Cloudflare Workers — static assets deployment.
+  // `npm run build` outputs to ./dist, which is served directly as static
+  // assets (no Worker script needed). `npx wrangler deploy` uploads it.
+  //
+  // NOTE: "name" must match your Worker's name in the Cloudflare dashboard.
+  // If your Worker is named something other than "farazian", change it here.
+  "name": "farazian",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist",
+    // Single-page site: serve index.html and hashed assets directly.
+    "not_found_handling": "single-page-application"
+  }
+}
