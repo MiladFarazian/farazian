@@ -3,6 +3,7 @@ precision highp float;
 uniform float uTime;
 uniform float uFade;   // 1 at hero, →0 as you scroll past
 uniform float uReveal; // 0→1 intro fade-in as the name assembles
+uniform float uGlow;   // per-particle contribution (lower without bloom)
 
 varying float vSeed;
 varying vec3 vPos;
@@ -27,6 +28,6 @@ void main() {
   // Subtle twinkle.
   float tw = 0.85 + 0.15 * sin(uTime * 3.0 + vSeed * 30.0);
 
-  // Low per-particle contribution so additive blending glows without saturating.
-  gl_FragColor = vec4(col * tw, alpha * uFade * uReveal * 0.5);
+  // Low per-particle contribution — additive blending + bloom do the glow.
+  gl_FragColor = vec4(col * tw, alpha * uFade * uReveal * uGlow);
 }

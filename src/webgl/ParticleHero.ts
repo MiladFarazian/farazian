@@ -1,5 +1,9 @@
 import * as THREE from "three";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { gsap } from "gsap";
 
 import type { DeviceProfile } from "../core/device";
@@ -11,6 +15,43 @@ import particleFrag from "./shaders/particle.frag";
 import bgVert from "./shaders/background.vert";
 import bgFrag from "./shaders/background.frag";
 
+// Cinematic final pass: subtle chromatic aberration toward the edges, film
+// grain, and a vignette. Runs after bloom.
+const FINAL_SHADER = {
+  uniforms: {
+    tDiffuse: { value: null as THREE.Texture | null },
+    uTime: { value: 0 },
+    uResolution: { value: new THREE.Vector2(1, 1) },
+  },
+  vertexShader: /* glsl */ `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }`,
+  fragmentShader: /* glsl */ `
+    precision highp float;
+    uniform sampler2D tDiffuse;
+    uniform float uTime;
+    uniform vec2 uResolution;
+    varying vec2 vUv;
+    float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+    void main() {
+      vec2 uv = vUv;
+      vec2 c = uv - 0.5;
+      float r2 = dot(c, c);
+      vec2 dir = c * (0.0016 + r2 * 0.0045);     // chromatic aberration
+      float rC = texture2D(tDiffuse, uv - dir).r;
+      float gC = texture2D(tDiffuse, uv).g;
+      float bC = texture2D(tDiffuse, uv + dir).b;
+      vec3 col = vec3(rC, gC, bC);
+      float grain = hash(uv * uResolution + fract(uTime)) - 0.5;  // film grain
+      col += grain * 0.04;
+      col *= smoothstep(1.15, 0.32, length(c));   // vignette
+      gl_FragColor = vec4(col, 1.0);
+    }`,
+};
+
 export class ParticleHero {
   private canvas: HTMLCanvasElement;
   private profile: DeviceProfile;
@@ -18,9 +59,13 @@ export class ParticleHero {
   private camera!: THREE.PerspectiveCamera;
 
   private scene = new THREE.Scene();
-  private bgScene = new THREE.Scene();
-  private bgCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   private bgMaterial!: THREE.ShaderMaterial;
+  private bgMesh!: THREE.Mesh;
+
+  private composer?: EffectComposer;
+  private bloomPass?: UnrealBloomPass;
+  private finalPass?: ShaderPass;
+  private usePost = false;
 
   private gpu!: GPUComputationRenderer;
   private posVar!: ReturnType<GPUComputationRenderer["addVariable"]>;
@@ -43,8 +88,7 @@ export class ParticleHero {
   private worldWidth = 5;
 
   // Debug: ?formed=1 seeds particles directly at the name (skips the assemble
-  // intro) so the formed state can be verified in software renderers. Inert
-  // in normal use.
+  // intro) so the formed state can be verified in software renderers.
   private debugFormed =
     typeof location !== "undefined" &&
     new URLSearchParams(location.search).has("formed");
@@ -54,12 +98,15 @@ export class ParticleHero {
     this.canvas = canvas;
     this.profile = profile;
     this.size = profile.simSize;
+    // Post-processing (bloom + grain) on capable, non-mobile GPUs only.
+    this.usePost = !profile.isMobile && profile.tier !== "low";
 
     try {
       this.initRenderer();
       this.initBackground();
       this.initGPU();
       this.initParticles();
+      this.initPost();
       this.bindEvents();
     } catch (err) {
       console.warn("[ParticleHero] WebGL init failed, falling back:", err);
@@ -81,7 +128,6 @@ export class ParticleHero {
     this.renderer.setClearColor(0x04060a, 1);
     this.renderer.setPixelRatio(this.profile.dpr);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.autoClear = false;
 
     this.camera = new THREE.PerspectiveCamera(
       50,
@@ -99,6 +145,8 @@ export class ParticleHero {
     this.worldWidth = Math.min(visW * 0.86, 6.2);
   }
 
+  /** A full-frustum backdrop plane behind the particles, in the same scene so a
+   *  single RenderPass (and thus bloom) covers everything. */
   private initBackground() {
     this.bgMaterial = new THREE.ShaderMaterial({
       vertexShader: bgVert,
@@ -107,15 +155,46 @@ export class ParticleHero {
       depthTest: false,
       uniforms: {
         uTime: { value: 0 },
-        uResolution: {
-          value: new THREE.Vector2(window.innerWidth, window.innerHeight),
-        },
+        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
         uMouse: { value: this.mouseNorm },
         uFade: { value: 1 },
       },
     });
-    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.bgMaterial);
-    this.bgScene.add(quad);
+    this.bgMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.bgMaterial);
+    this.bgMesh.position.z = -6;
+    this.bgMesh.renderOrder = -1;
+    this.scene.add(this.bgMesh);
+    this.updateBackdrop();
+  }
+
+  private updateBackdrop() {
+    const dist = this.camera.position.z - this.bgMesh.position.z;
+    const visH = 2 * Math.tan((this.camera.fov * Math.PI) / 360) * dist;
+    const visW = visH * this.camera.aspect;
+    this.bgMesh.scale.set(visW * 1.1, visH * 1.1, 1);
+  }
+
+  private initPost() {
+    if (!this.usePost) return;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.setPixelRatio(this.profile.dpr);
+    this.composer.setSize(w, h);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+
+    const strong = this.profile.tier === "high";
+    this.bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(w, h),
+      strong ? 0.55 : 0.42, // strength
+      0.4, // radius
+      strong ? 0.34 : 0.42 // threshold — only the bright particle cores bloom
+    );
+    this.composer.addPass(this.bloomPass);
+
+    this.finalPass = new ShaderPass(FINAL_SHADER);
+    this.finalPass.uniforms.uResolution.value.set(w * this.profile.dpr, h * this.profile.dpr);
+    this.composer.addPass(this.finalPass);
   }
 
   private initGPU() {
@@ -132,7 +211,7 @@ export class ParticleHero {
 
     const targetTex = new THREE.DataTexture(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      targets as any, // three's typings vs TS 5.7 typed-array generics
+      targets as any,
       this.size,
       this.size,
       THREE.RGBAFormat,
@@ -158,7 +237,6 @@ export class ParticleHero {
     const data = tex.image.data as unknown as Float32Array;
     for (let i = 0; i < data.length; i += 4) {
       if (this.debugFormed && this.lastTargets) {
-        // Seed directly at the name (verification shortcut).
         const j = (i / 4) * 3;
         data[i] = this.lastTargets[j] + (Math.random() - 0.5) * 0.02;
         data[i + 1] = this.lastTargets[j + 1] + (Math.random() - 0.5) * 0.02;
@@ -185,10 +263,7 @@ export class ParticleHero {
       worldWidth: this.worldWidth,
       twoLines,
     });
-    // On mobile the name stacks on two lines and is lifted into the upper zone
-    // so it never collides with the subtitle + CTAs lower in the hero.
     const yOffset = twoLines ? 0.95 : 0;
-    // Pack into RGBA (xyz + keep seed slot, seed actually lives in position tex .w)
     const rgba = new Float32Array(count * 4);
     for (let i = 0; i < count; i++) {
       rgba[i * 4] = positions[i * 3];
@@ -203,7 +278,6 @@ export class ParticleHero {
     const count = this.size * this.size;
     const geometry = new THREE.BufferGeometry();
 
-    // A dummy position attribute (real positions come from the sim texture).
     const positions = new Float32Array(count * 3);
     const references = new Float32Array(count * 2);
     for (let i = 0; i < count; i++) {
@@ -229,12 +303,22 @@ export class ParticleHero {
         uTime: { value: 0 },
         uFade: { value: 1 },
         uReveal: { value: this.debugFormed ? 1 : 0 },
+        uGlow: { value: 0.42 },
       },
     });
 
     this.points = new THREE.Points(geometry, this.particleMat);
     this.points.frustumCulled = false;
     this.scene.add(this.points);
+    this.updateGlow();
+  }
+
+  /** Per-particle brightness. Lower when there's no bloom (mobile/low), and
+   *  lower again for the denser two-line layout so strokes don't clip to white. */
+  private updateGlow() {
+    const twoLines = window.innerWidth < 760;
+    const v = this.usePost ? (twoLines ? 0.24 : 0.42) : twoLines ? 0.18 : 0.3;
+    this.particleMat.uniforms.uGlow.value = v;
   }
 
   /** Kick off the "assemble the name" intro. */
@@ -251,7 +335,6 @@ export class ParticleHero {
       delay,
       ease: "power2.inOut",
     });
-    // Fade the particles in as they assemble so we never flash the dense cloud.
     gsap.fromTo(
       this.particleMat.uniforms.uReveal,
       { value: 0 },
@@ -286,7 +369,6 @@ export class ParticleHero {
     window.addEventListener(
       "pointerdown",
       (e) => {
-        // Only burst on the hero area (top viewport), not on UI taps below.
         if (e.clientY < window.innerHeight * 0.92 && window.scrollY < window.innerHeight * 0.6) {
           this.burstImpulse();
         }
@@ -294,14 +376,13 @@ export class ParticleHero {
       { passive: true }
     );
 
-    // Mobile gyroscope → virtual pointer that nudges the field.
     if (this.profile.isTouch && typeof DeviceOrientationEvent !== "undefined") {
       window.addEventListener(
         "deviceorientation",
         (e) => {
           if (e.gamma == null || e.beta == null) return;
-          const gx = THREE.MathUtils.clamp(e.gamma / 35, -1, 1); // left/right
-          const gy = THREE.MathUtils.clamp((e.beta - 45) / 35, -1, 1); // tilt
+          const gx = THREE.MathUtils.clamp(e.gamma / 35, -1, 1);
+          const gy = THREE.MathUtils.clamp((e.beta - 45) / 35, -1, 1);
           this.mouseTarget.set(gx * this.worldWidth * 0.4, -gy * this.worldWidth * 0.25);
           this.mouseNorm.set(0.5 + gx * 0.4, 0.5 - gy * 0.3);
           this.mouseActive = 0.7;
@@ -318,6 +399,7 @@ export class ParticleHero {
     const targets = this.buildTargets();
     (targetTex.image.data as unknown as Float32Array).set(targets);
     targetTex.needsUpdate = true;
+    this.updateGlow();
   }
 
   setFade(v: number) {
@@ -326,23 +408,23 @@ export class ParticleHero {
 
   setRunning(v: boolean) {
     this.running = v && !this.failed;
-    if (this.running) this.clock.getDelta(); // reset delta to avoid jump
+    if (this.running) this.clock.getDelta();
   }
 
   resize() {
     if (this.failed) return;
-    this.camera.aspect = window.innerWidth / window.innerHeight;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.updateWorldWidth();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.bgMaterial.uniforms.uResolution.value.set(
-      window.innerWidth,
-      window.innerHeight
-    );
-    // NOTE: the name formation is intentionally NOT rebuilt here. On mobile,
-    // Safari shows/hides its toolbar on scroll, which fires resize with only a
-    // height change — rebuilding would make the name re-assemble constantly.
-    // The caller rebuilds the formation only when the width actually changes.
+    this.updateBackdrop();
+    this.renderer.setSize(w, h);
+    this.bgMaterial.uniforms.uResolution.value.set(w, h);
+    this.composer?.setSize(w, h);
+    this.bloomPass?.setSize(w, h);
+    this.finalPass?.uniforms.uResolution.value.set(w * this.profile.dpr, h * this.profile.dpr);
+    // The name formation is intentionally NOT rebuilt here (see main.ts resize).
   }
 
   update() {
@@ -350,21 +432,17 @@ export class ParticleHero {
     const dt = Math.min(this.clock.getDelta(), 0.05);
     const elapsed = this.clock.elapsedTime;
 
-    // Smooth the pointer for buttery force-field motion.
     this.mouseWorld.lerp(this.mouseTarget, 0.12);
     if (this.mouseActive > 0 && !this.profile.isTouch) {
       this.mouseActive = Math.max(0, this.mouseActive - dt * 0.4);
     }
 
-    // Update sim uniforms.
     const u = this.posVar.material.uniforms;
     u.uTime.value = elapsed;
     u.uMouseActive.value = this.mouseActive;
     u.uBurst.value = this.burst;
-
     this.gpu.compute();
 
-    // Feed computed positions into the render material.
     this.particleMat.uniforms.uPosition.value =
       this.gpu.getCurrentRenderTarget(this.posVar).texture;
     this.particleMat.uniforms.uTime.value = elapsed;
@@ -373,14 +451,17 @@ export class ParticleHero {
     this.bgMaterial.uniforms.uTime.value = elapsed;
     this.bgMaterial.uniforms.uFade.value = 0.55 + this.fade * 0.45;
 
-    // Draw: background first, particles on top (additive).
-    this.renderer.clear();
-    this.renderer.render(this.bgScene, this.bgCamera);
-    this.renderer.render(this.scene, this.camera);
+    if (this.composer) {
+      if (this.finalPass) this.finalPass.uniforms.uTime.value = elapsed;
+      this.composer.render();
+    } else {
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 
   dispose() {
     this.running = false;
+    this.composer?.dispose();
     this.renderer?.dispose();
   }
 }
