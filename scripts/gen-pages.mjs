@@ -26,6 +26,10 @@ const renderBlock = (b) => {
       return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}${b.html ? `<div data-reveal>${b.html}</div>` : ""}${figure(b)}</section>`;
     case "gallery":
       return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}<div class="proj-gallery">${b.items.map(figure).join("")}</div></section>`;
+    case "shots":
+      return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}<div class="proj-shots" data-reveal>${b.items
+        .map((s) => `<figure><img src="${s.src}" alt="${s.title || ""}" loading="lazy" />${s.title ? `<figcaption>${s.title}</figcaption>` : ""}</figure>`)
+        .join("")}</div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
     case "features":
       return `<section class="proj__section" data-reveal><h2>${b.h}</h2><div class="proj-features">${b.items
         .map((f) => `<div class="proj-feature"><h3>${f.title}</h3><p>${f.desc}</p></div>`)
@@ -52,6 +56,7 @@ const linkBtn = (l) =>
 
 const page = (p) => {
   const hero = `<section class="proj__hero">
+      ${p.icon ? `<img class="proj-appicon" src="${p.icon}" alt="${p.title} icon" data-reveal />` : ""}
       <p class="proj__eyebrow" data-reveal>${p.category} · ${p.year}</p>
       <h1 class="proj__title" data-reveal>${p.title}</h1>
       <p class="proj__sub" data-reveal>${p.sub}</p>
@@ -281,6 +286,193 @@ const PAGES = [
     links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/Bound" }],
     blocks: [
       { t: "text", h: "About", html: "<p>Bound started as a teaching exercise and grew into a full platformer — handwritten physics, collision, and level logic on top of the Processing (PApplet) drawing loop. It's where I first learned how to architect a game from an empty <code>setup()</code> and <code>draw()</code>.</p><p>It runs as a desktop Java application; the full source — including the packaged <code>.jar</code> — lives on GitHub.</p>" },
+    ],
+  },
+
+  {
+    slug: "parkzy",
+    title: "Parkzy",
+    category: "Software",
+    year: "2025",
+    sub: "Find parking. Anywhere. Anytime. A peer-to-peer marketplace that connects drivers who need a spot with property owners who have space to spare — turning empty driveways into revenue and helping drivers skip the circling.",
+    tags: ["React Native", "Supabase", "Stripe", "Maps", "i18n"],
+    links: [{ label: "Visit useparkzy.com", href: "https://useparkzy.com" }],
+    blocks: [
+      {
+        t: "features",
+        h: "For spot hosts",
+        items: [
+          { title: "List in seconds", desc: "Put an unused driveway, lot, or private space online in under a minute." },
+          { title: "Earn automatically", desc: "Get paid every time a driver parks — scheduling, pricing, and availability all in your control." },
+          { title: "Parkzy signage", desc: "Optional physical signage so passing drivers know your spot is available." },
+        ],
+      },
+      {
+        t: "features",
+        h: "For drivers",
+        items: [
+          { title: "Guaranteed parking", desc: "Find a spot when you actually need it — book last-minute or reserve ahead." },
+          { title: "Filter what matters", desc: "Search by location, price, and availability to land the right spot." },
+          { title: "Skip the circling", desc: "No more laps around the block hunting for street parking." },
+        ],
+      },
+      { t: "text", h: "Status", html: "<p>Live in production — payments, maps, search, host tools, a mobile app, and English/Spanish localization, all running at <a href=\"https://useparkzy.com\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--cyan)\">useparkzy.com ↗</a>.</p>" },
+    ],
+  },
+
+  {
+    slug: "gosan",
+    title: "Gosan",
+    category: "Software",
+    year: "2025",
+    icon: "gosan-icon.png",
+    sub: "A native macOS DAW (GarageBand-class) with a taste engine. Named for the gōsān — the minstrel poet-musicians of Parthian and Persian folklore who carried songs by ear and made them their own. Suno generates ideas, Moises dissects and finishes audio, and you stay the producer.",
+    tags: ["Swift", "macOS", "AVAudioEngine", "AI"],
+    links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/daw" }],
+    blocks: [
+      {
+        t: "features",
+        h: "What it does",
+        items: [
+          { title: "DAW bones", desc: "Multitrack timeline with waveforms and a bars/beats grid, recording + overdub, clip editing (trim, split, quantize, time-stretch), a full mixer (EQ, compressor, reverb, delay), and offline WAV export." },
+          { title: "Moises integration", desc: "Right-click any clip to split into stems, analyze key / BPM / chords, de-reverb, master, or run the one-step Vocal Rescue recipe." },
+          { title: "Suno generation", desc: "Describe a vibe in the transport bar, audition candidates in a variant tray, and drop the keepers straight onto the timeline." },
+          { title: "Taste engine", desc: "Keeping or discarding candidates trains a local taste profile that quietly nudges future prompts toward your strongest descriptors — and shows you exactly what it changed." },
+        ],
+      },
+      { t: "text", h: "Portable projects", html: "<p>New / Open / Save persist the arrangement to a portable <code>.gosan</code> package — a self-contained folder with the project plus copies of every clip, so sessions move cleanly between machines.</p>" },
+    ],
+  },
+
+  {
+    slug: "mehdi",
+    title: "Mehdi",
+    category: "AI / ML",
+    year: "2025",
+    sub: "A personal financial-intelligence assistant. It securely links your bank and credit-card accounts (read-only), builds a deep model of your spending, and surfaces proactive advice — in plain language.",
+    tags: ["Next.js", "Supabase", "Plaid", "Claude"],
+    links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/mehdi" }],
+    blocks: [
+      {
+        t: "features",
+        h: "What it surfaces",
+        items: [
+          { title: "Runaway subscriptions", desc: "Price creep, free trials converted to paid, duplicate services, and annual renewals before they hit." },
+          { title: "Cut-back recommendations", desc: "Categories and merchants where you're overspending vs. your own baseline, shown annualized." },
+          { title: "Patterns to rein in", desc: "Lifestyle creep, spending spikes, and the small recurring leaks." },
+          { title: "Advisor", desc: "Ask anything about your spending — answers are grounded in your real transactions, never guessed." },
+        ],
+      },
+      { t: "text", h: "Privacy by design", html: "<p>Plaid sits between the app and your bank, providing <strong>read-only</strong> transaction and balance data through a revocable token. The app never sees your bank credentials, requests no payment or transfer scopes, and stores the token server-side only.</p>" },
+      { t: "text", h: "Under the hood", html: "<p>Next.js + Supabase + Plaid + Claude. The analysis engine detects recurring charges by cadence and amount stability, and builds per-category median baselines to flag overspend. The advisor runs on the local Claude CLI — grounded in your data, with no separate API bill.</p>" },
+    ],
+  },
+
+  {
+    slug: "wax",
+    title: "Wax",
+    category: "Software",
+    year: "2025",
+    sub: "Silence the noise. Keep the connection. A calm, fast Instagram experience without the Reels rabbit hole — named for the beeswax Odysseus' crew used to drown out the Sirens' song. Keep the feed, stories, and DMs you love; lose the algorithmic pull.",
+    tags: ["React Native", "Expo", "TypeScript"],
+    links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/wax" }],
+    blocks: [
+      {
+        t: "features",
+        h: "Why Wax",
+        items: [
+          { title: "Speed", desc: "Virtualized feeds, on-device caching, image prefetch, and optimistic UI for 60fps scrolling." },
+          { title: "Fairness", desc: "Every “use Instagram normally” feature is free, forever — no paywalls on the basics." },
+          { title: "Craft", desc: "Instagram-1:1 inside, wrapped in a calm honey-and-wax brand at the edges." },
+        ],
+      },
+      {
+        t: "shots",
+        h: "Phase 0",
+        items: [
+          { src: "home.png", title: "Home" },
+          { src: "profile.png", title: "Profile" },
+          { src: "inbox.png", title: "Inbox" },
+          { src: "search.png", title: "Search" },
+        ],
+        note: "Running on the web target with mock data — note the four-tab bar with no Reels tab, the core of the Wax thesis.",
+      },
+      { t: "text", h: "Architecture", html: "<p>The UI talks only to a single <code>SocialProvider</code> interface, and the active backend is chosen in one file — so Wax can swap data sources (mock → IG private API → Graph API → a Wax-native network) <strong>without rewriting the app</strong>. Built on Expo Router, Shopify FlashList, TanStack Query, and expo-image; session tokens stay on-device via expo-secure-store.</p>" },
+    ],
+  },
+
+  {
+    slug: "emotion-translation",
+    title: "Emotion Translation with Transformers",
+    category: "AI / ML",
+    year: "2024",
+    sub: "A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.",
+    meta: "Milad Farazian · Charlie Floeder · Rizq Khateeb · Harshit Shah · Yash Sharma",
+    tags: ["Python", "Transformers", "NLP"],
+    blocks: [
+      { t: "text", h: "Overview", html: "<p>We developed a model that can change the emotion of a particular statement without changing the context of the sentence — taking a neutral piece of text and re-rendering it as joyful, angry, or melancholic while keeping its factual meaning intact. The project explores controllable text generation and the boundary between sentiment and semantics.</p>" },
+    ],
+  },
+
+  {
+    slug: "studybuddy",
+    title: "StudyBuddy",
+    category: "Web",
+    year: "2025",
+    sub: "A USC-based tutoring and mentoring app that matches students to the help they need.",
+    tags: ["React", "Next.js", "Tailwind", "Prisma"],
+    blocks: [
+      { t: "text", h: "Overview", html: "<p>StudyBuddy pairs students with tutors and mentors based on their specific needs — the courses they're taking, the topics they're stuck on, and how they like to learn. A matching layer connects the right people, so finding help on campus stops being a group-chat scavenger hunt.</p>" },
+    ],
+  },
+
+  {
+    slug: "innsaei",
+    title: "Innsæi",
+    category: "Web",
+    year: "2024",
+    sub: "A Twitter-esque social app reclaiming the original mission — give everyone the power to create and share ideas instantly, without barriers. Innsæi is Icelandic for “the sea within.”",
+    tags: ["React", "JavaScript"],
+    links: [{ label: "Live demo", href: "https://innsaei.lovable.app" }],
+    blocks: [
+      { t: "text", h: "Overview", html: "<p>Innsæi is a social web app built around broadcasting the thoughts that matter — a lightweight, fast feed for sharing ideas and information instantly. It takes its name from the Icelandic word for intuition, literally “the sea within.”</p>" },
+    ],
+  },
+
+  {
+    slug: "canvas-year-in-review",
+    title: "Canvas Year in Review",
+    category: "Web",
+    year: "2024",
+    sub: "A Spotify-Wrapped for school — a Chrome extension that scrapes your Canvas account and turns your semester into a stats recap.",
+    tags: ["JavaScript", "Chrome Extension"],
+    links: [{ label: "View on Devpost", href: "https://devpost.com/software/canvas-year-in-review" }],
+    blocks: [
+      { t: "text", h: "Overview", html: "<p>Canvas Year in Review pulls the data Canvas already has on you — grades, submissions, deadlines met (and missed) — and presents it as a fun, shareable end-of-semester recap. A quick gauge of how the term actually went, in the spirit of Spotify Wrapped.</p>" },
+    ],
+  },
+
+  {
+    slug: "snake",
+    title: "Snake",
+    category: "Games",
+    year: "2024",
+    sub: "The arcade classic, rebuilt. Eat, grow, and don't bite yourself.",
+    tags: ["Python"],
+    blocks: [
+      { t: "text", h: "Overview", html: "<p>An implementation of the arcade classic — grid movement, a growing tail, self-collision, and the one rule everyone knows. Not really much else to say. Sometimes you build a thing just because it's satisfying to build.</p>" },
+    ],
+  },
+
+  {
+    slug: "how-machines-learn",
+    title: "How Machines Learn to Discriminate",
+    category: "Writing",
+    year: "2024",
+    sub: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
+    tags: ["Ethics", "ML"],
+    blocks: [
+      { t: "text", h: "Abstract", html: "<p>Inspired by Professor Lise Getoor's <em>Ethics &amp; Algorithms</em> course and Ruha Benjamin's <em>The New Jim Code</em>, this presentation shows how — even without malicious intent — algorithms trained on past real-life data tend to automate and amplify existing discrimination on the basis of race and sex. Bias doesn't have to be designed in; it's often inherited from the data we feed the machine.</p>" },
     ],
   },
 ];

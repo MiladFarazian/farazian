@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#162C50"/><stop offset="1" stop-color="#0D4E56"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.30" cy="0.22" r="0.75">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.12"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="340" rx="44" fill="url(#bg)"/>
+  <rect width="1200" height="340" rx="44" fill="url(#glow)"/>
+  <g transform="translate(34,30) scale(0.55)">
+    <path d="M365.5 189.3 L365.5 99.2 L358.0 99.2 Q355.8 104.5 353.2 106.5 Q350.5 108.5 344.3 108.5 Q338.6 108.5 330.2 105.9 Q321.8 103.2 311.2 100.3 Q300.6 97.5 288.2 94.8 Q275.9 92.2 262.6 92.2 Q234.4 92.2 205.0 103.9 Q175.6 115.6 151.8 137.2 Q127.9 158.8 112.7 189.3 Q97.5 219.8 97.5 257.3 Q97.5 291.8 111.1 321.4 Q124.8 350.9 147.6 372.8 Q170.3 394.7 200.4 407.3 Q230.4 419.8 262.6 419.8 Q282.9 419.8 297.3 415.6 Q311.6 411.4 322.7 406.6 Q333.7 401.7 343.2 397.5 Q352.7 393.3 363.3 393.3 Q368.6 393.3 372.8 395.8 Q377.0 398.2 377.9 403.5 L385.8 403.5 L385.8 302.4 L414.5 302.4 L414.5 296.2 L278.1 296.2 L278.1 302.4 L323.6 302.4 L323.6 319.2 Q323.6 339.5 321.8 356.7 Q320.0 373.9 313.6 386.5 Q307.2 399.1 295.3 406.4 Q283.4 413.7 263.1 413.7 Q238.3 413.7 220.4 406.4 Q202.6 399.1 191.3 382.3 Q180.0 365.5 174.7 338.1 Q169.4 310.8 169.4 270.6 L169.4 232.2 Q169.4 207.4 172.5 183.4 Q175.6 159.3 185.6 140.5 Q195.5 121.7 214.0 110.0 Q232.6 98.3 263.1 98.3 Q301.5 97.9 324.5 122.0 Q347.4 146.0 358.9 189.3 Z " fill="#E9B452"/>
+    <g fill="none" stroke-linecap="round">
+      <line x1="192.1" y1="265.6" x2="192.1" y2="193.9" stroke="#46CDB8" stroke-width="14.3"/>
+      <line x1="217.7" y1="291.2" x2="217.7" y2="168.3" stroke="#46CDB8" stroke-width="14.3"/>
+      <line x1="243.3" y1="311.7" x2="243.3" y2="147.9" stroke="#E9B452" stroke-width="14.3"/>
+      <line x1="268.9" y1="286.1" x2="268.9" y2="173.5" stroke="#46CDB8" stroke-width="14.3"/>
+      <line x1="294.5" y1="260.5" x2="294.5" y2="199.1" stroke="#46CDB8" stroke-width="14.3"/>
+    </g>
+  </g>
+  <text x="316" y="178" font-family="Georgia, 'Times New Roman', serif" font-size="132" font-weight="600" fill="#F3E7CF" letter-spacing="2">Gosan</text>
+  <text x="320" y="238" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="30" fill="#E9B452" letter-spacing="3">SONGCRAFT WITH A HUMAN TOUCH</text>
+</svg>

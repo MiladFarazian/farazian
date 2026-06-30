@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Mehdi — Milad Farazian</title>
+    <meta name="description" content="A personal financial-intelligence assistant. It securely links your bank and credit-card accounts (read-only), builds a deep model of your spending, and surfaces proactive advice — in plain language." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2025</p>
+      <h1 class="proj__title" data-reveal>Mehdi</h1>
+      <p class="proj__sub" data-reveal>A personal financial-intelligence assistant. It securely links your bank and credit-card accounts (read-only), builds a deep model of your spending, and surfaces proactive advice — in plain language.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">Next.js</span><span class="tag">Supabase</span><span class="tag">Plaid</span><span class="tag">Claude</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://github.com/MiladFarazian/mehdi" target="_blank" rel="noopener" data-magnetic data-scramble>Source on GitHub ↗</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>What it surfaces</h2><div class="proj-features"><div class="proj-feature"><h3>Runaway subscriptions</h3><p>Price creep, free trials converted to paid, duplicate services, and annual renewals before they hit.</p></div><div class="proj-feature"><h3>Cut-back recommendations</h3><p>Categories and merchants where you're overspending vs. your own baseline, shown annualized.</p></div><div class="proj-feature"><h3>Patterns to rein in</h3><p>Lifestyle creep, spending spikes, and the small recurring leaks.</p></div><div class="proj-feature"><h3>Advisor</h3><p>Ask anything about your spending — answers are grounded in your real transactions, never guessed.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>Privacy by design</h2><p>Plaid sits between the app and your bank, providing <strong>read-only</strong> transaction and balance data through a revocable token. The app never sees your bank credentials, requests no payment or transfer scopes, and stores the token server-side only.</p></section>
+      <section class="proj__section" data-reveal><h2>Under the hood</h2><p>Next.js + Supabase + Plaid + Claude. The analysis engine detects recurring charges by cadence and amount stability, and builds per-category median baselines to flag overspend. The advisor runs on the local Claude CLI — grounded in your data, with no separate API bill.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

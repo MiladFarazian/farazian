@@ -20,7 +20,7 @@ export const PROJECTS: Project[] = [
     title: "Parkzy",
     desc: "Airbnb for parking — a marketplace turning empty driveways into bookable spots. Payments, maps, hosts, and a mobile app, all in production.",
     tags: ["React Native", "Supabase", "Stripe", "Maps"],
-    href: "https://useparkzy.com",
+    href: "/work/parkzy/",
     category: "Software",
   },
   {
@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
     title: "Gosan",
     desc: "A native macOS DAW with an AI taste engine — Suno generates musical ideas, Moises dissects and finishes audio, and you stay the producer.",
     tags: ["Swift", "macOS", "CoreAudio", "AI"],
-    href: "https://github.com/MiladFarazian/daw",
+    href: "/work/gosan/",
     category: "Software",
   },
   {
@@ -36,7 +36,7 @@ export const PROJECTS: Project[] = [
     title: "Mehdi",
     desc: "A personal financial-intelligence assistant that links your accounts, models your spending, and flags runaway subscriptions and lifestyle creep in plain language.",
     tags: ["TypeScript", "Plaid", "LLM"],
-    href: "#",
+    href: "/work/mehdi/",
     category: "AI / ML",
   },
   {
@@ -44,7 +44,7 @@ export const PROJECTS: Project[] = [
     title: "Wax",
     desc: "Instagram without the Reels rabbit hole — a calm, fast client that keeps the feed, stories, and DMs you love while silencing the algorithmic pull.",
     tags: ["TypeScript", "Mobile", "API"],
-    href: "https://github.com/MiladFarazian/wax",
+    href: "/work/wax/",
     category: "Software",
   },
   {
@@ -76,7 +76,7 @@ export const PROJECTS: Project[] = [
     title: "Emotion Translation with Transformers",
     desc: "A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.",
     tags: ["Python", "Transformers", "NLP"],
-    href: "#",
+    href: "/work/emotion-translation/",
     category: "AI / ML",
   },
   {
@@ -84,7 +84,7 @@ export const PROJECTS: Project[] = [
     title: "StudyBuddy",
     desc: "A USC-based tutoring and mentoring app that matches students to the help they need.",
     tags: ["React", "Next.js", "Tailwind", "Prisma"],
-    href: "#",
+    href: "/work/studybuddy/",
     category: "Web",
   },
   {
@@ -92,7 +92,7 @@ export const PROJECTS: Project[] = [
     title: "Innsæi",
     desc: "A Twitter-esque social app reclaiming the original mission — share ideas instantly, without barriers. Innsæi is Icelandic for the sea within.",
     tags: ["React", "JavaScript"],
-    href: "https://innsaei.lovable.app",
+    href: "/work/innsaei/",
     category: "Web",
   },
   {
@@ -100,7 +100,7 @@ export const PROJECTS: Project[] = [
     title: "Canvas Year in Review",
     desc: "A Spotify-Wrapped for school — a Chrome extension that scrapes your Canvas account into a semester stats recap.",
     tags: ["JavaScript", "Chrome Extension"],
-    href: "https://devpost.com/software/canvas-year-in-review",
+    href: "/work/canvas-year-in-review/",
     category: "Web",
   },
   {
@@ -132,7 +132,7 @@ export const PROJECTS: Project[] = [
     title: "Snake",
     desc: "The arcade classic, rebuilt. Not really much else to say.",
     tags: ["Python"],
-    href: "#",
+    href: "/work/snake/",
     category: "Games",
   },
   {
@@ -140,7 +140,7 @@ export const PROJECTS: Project[] = [
     title: "How Machines Learn to Discriminate",
     desc: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
     tags: ["Ethics", "ML"],
-    href: "#",
+    href: "/work/how-machines-learn/",
     category: "Writing",
   },
 ];

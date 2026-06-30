@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Wax — Milad Farazian</title>
+    <meta name="description" content="Silence the noise. Keep the connection. A calm, fast Instagram experience without the Reels rabbit hole — named for the beeswax Odysseus' crew used to drown out the Sirens' song. Keep the feed, stories, and DMs you love; lose the algorithmic pull." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>Software · 2025</p>
+      <h1 class="proj__title" data-reveal>Wax</h1>
+      <p class="proj__sub" data-reveal>Silence the noise. Keep the connection. A calm, fast Instagram experience without the Reels rabbit hole — named for the beeswax Odysseus' crew used to drown out the Sirens' song. Keep the feed, stories, and DMs you love; lose the algorithmic pull.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">TypeScript</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://github.com/MiladFarazian/wax" target="_blank" rel="noopener" data-magnetic data-scramble>Source on GitHub ↗</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>Why Wax</h2><div class="proj-features"><div class="proj-feature"><h3>Speed</h3><p>Virtualized feeds, on-device caching, image prefetch, and optimistic UI for 60fps scrolling.</p></div><div class="proj-feature"><h3>Fairness</h3><p>Every “use Instagram normally” feature is free, forever — no paywalls on the basics.</p></div><div class="proj-feature"><h3>Craft</h3><p>Instagram-1:1 inside, wrapped in a calm honey-and-wax brand at the edges.</p></div></div></section>
+      <section class="proj__section"><h2 data-reveal>Phase 0</h2><div class="proj-shots" data-reveal><figure><img src="home.png" alt="Home" loading="lazy" /><figcaption>Home</figcaption></figure><figure><img src="profile.png" alt="Profile" loading="lazy" /><figcaption>Profile</figcaption></figure><figure><img src="inbox.png" alt="Inbox" loading="lazy" /><figcaption>Inbox</figcaption></figure><figure><img src="search.png" alt="Search" loading="lazy" /><figcaption>Search</figcaption></figure></div><p class="proj-note">Running on the web target with mock data — note the four-tab bar with no Reels tab, the core of the Wax thesis.</p></section>
+      <section class="proj__section" data-reveal><h2>Architecture</h2><p>The UI talks only to a single <code>SocialProvider</code> interface, and the active backend is chosen in one file — so Wax can swap data sources (mock → IG private API → Graph API → a Wax-native network) <strong>without rewriting the app</strong>. Built on Expo Router, Shopify FlashList, TanStack Query, and expo-image; session tokens stay on-device via expo-secure-store.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>
