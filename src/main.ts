@@ -140,10 +140,19 @@ if (hero) {
 }
 
 // ----- Resize -----
+// Rebuild the particle formation only when the WIDTH changes (orientation /
+// real resize) — not on iOS toolbar show/hide, which only changes height.
 let resizeRAF = 0;
+let lastWidth = window.innerWidth;
 window.addEventListener("resize", () => {
   cancelAnimationFrame(resizeRAF);
-  resizeRAF = requestAnimationFrame(() => hero?.resize());
+  resizeRAF = requestAnimationFrame(() => {
+    hero?.resize();
+    if (window.innerWidth !== lastWidth) {
+      lastWidth = window.innerWidth;
+      hero?.refreshFormation();
+    }
+  });
 });
 
 // ----- Main render loop -----

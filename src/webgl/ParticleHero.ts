@@ -185,11 +185,14 @@ export class ParticleHero {
       worldWidth: this.worldWidth,
       twoLines,
     });
+    // On mobile the name stacks on two lines and is lifted into the upper zone
+    // so it never collides with the subtitle + CTAs lower in the hero.
+    const yOffset = twoLines ? 0.95 : 0;
     // Pack into RGBA (xyz + keep seed slot, seed actually lives in position tex .w)
     const rgba = new Float32Array(count * 4);
     for (let i = 0; i < count; i++) {
       rgba[i * 4] = positions[i * 3];
-      rgba[i * 4 + 1] = positions[i * 3 + 1];
+      rgba[i * 4 + 1] = positions[i * 3 + 1] + yOffset;
       rgba[i * 4 + 2] = positions[i * 3 + 2];
       rgba[i * 4 + 3] = 1;
     }
@@ -336,11 +339,10 @@ export class ParticleHero {
       window.innerWidth,
       window.innerHeight
     );
-    // Rebuild the name formation for the new aspect.
-    const targetTex = this.posVar.material.uniforms.uTarget.value as THREE.DataTexture;
-    const targets = this.buildTargets();
-    (targetTex.image.data as unknown as Float32Array).set(targets);
-    targetTex.needsUpdate = true;
+    // NOTE: the name formation is intentionally NOT rebuilt here. On mobile,
+    // Safari shows/hides its toolbar on scroll, which fires resize with only a
+    // height change — rebuilding would make the name re-assemble constantly.
+    // The caller rebuilds the formation only when the width actually changes.
   }
 
   update() {
