@@ -122,7 +122,7 @@ export const PROJECTS: Project[] = [
   {
     no: "14",
     title: "Bound",
-    desc: "The first game I built solo — a Java/Processing (PApplet) platformer.",
+    desc: "The first game I built solo — a Java/Processing platformer, with a playable p5.js web port.",
     tags: ["Java", "Processing"],
     href: "/work/bound/",
     category: "Games",
@@ -130,8 +130,8 @@ export const PROJECTS: Project[] = [
   {
     no: "15",
     title: "Snake",
-    desc: "The arcade classic, rebuilt. Not really much else to say.",
-    tags: ["Python"],
+    desc: "The arcade classic, rebuilt and playable right in the browser.",
+    tags: ["JavaScript", "Canvas"],
     href: "/work/snake/",
     category: "Games",
   },

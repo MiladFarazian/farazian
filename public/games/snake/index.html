@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        background: #05070c;
+        color: #e8f0ff;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        overflow: hidden;
+      }
+      h1 { font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #2af5ff; }
+      .hud { display: flex; gap: 28px; font-size: 0.78rem; color: #8aa0c0; }
+      .hud b { color: #e8f0ff; font-weight: 500; }
+      #gameCanvas {
+        background: #000;
+        border: 1px solid rgba(110, 150, 220, 0.2);
+        border-radius: 10px;
+        height: min(560px, 70vmin);
+        width: auto;
+        aspect-ratio: 1;
+      }
+      .controls { display: flex; gap: 8px; }
+      button {
+        font-family: inherit;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #04060a;
+        background: linear-gradient(100deg, #2af5ff, #b06bff);
+        border: none;
+        border-radius: 999px;
+        padding: 0.55em 1.1em;
+        cursor: pointer;
+      }
+      #pauseButton, #restartButton { color: #2af5ff; background: none; border: 1px solid rgba(42, 245, 255, 0.4); }
+    </style>
+  </head>
+  <body>
+    <h1>Snake</h1>
+    <div class="hud"><span>Score <b id="score">0</b></span><span>High <b id="highScore">0</b></span></div>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div class="controls">
+      <button id="startButton">Start</button>
+      <button id="pauseButton">Pause</button>
+      <button id="restartButton">Restart</button>
+    </div>
+    <script src="snake.js"></script>
+  </body>
+</html>

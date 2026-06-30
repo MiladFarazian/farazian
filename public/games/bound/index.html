@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bound</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        background: #05070c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        cursor: crosshair;
+      }
+      /* p5 sets inline 500x500; force a square, responsive scale. */
+      canvas {
+        border: 1px solid rgba(110, 150, 220, 0.2);
+        border-radius: 10px;
+        box-shadow: 0 0 60px rgba(42, 245, 255, 0.08);
+        width: min(500px, 84vmin) !important;
+        height: min(500px, 84vmin) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>

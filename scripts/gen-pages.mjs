@@ -39,7 +39,7 @@ const renderBlock = (b) => {
     case "embed":
       return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}<div class="proj-embed" data-reveal>${b.html}</div></section>`;
     case "game":
-      return `<section class="proj__section" data-reveal><div class="proj-game"><iframe src="${b.src}" title="${b.title || ""}" loading="lazy" allow="autoplay; fullscreen"></iframe></div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
+      return `<section class="proj__section" data-reveal><div class="proj-game"${b.ratio ? ` style="aspect-ratio:${b.ratio}"` : ""}><iframe src="${b.src}" title="${b.title || ""}" loading="lazy" allow="autoplay; fullscreen"></iframe></div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
     case "controls":
       return `<section class="proj__section" data-reveal><h2>Controls</h2><div class="proj-controls">${b.items
         .map((c) => `<div class="proj-control"><kbd>${c.key}</kbd><span>${c.label}</span></div>`)
@@ -285,7 +285,8 @@ const PAGES = [
     tags: ["Java", "Processing", "PApplet"],
     links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/Bound" }],
     blocks: [
-      { t: "text", h: "About", html: "<p>Bound started as a teaching exercise and grew into a full platformer — handwritten physics, collision, and level logic on top of the Processing (PApplet) drawing loop. It's where I first learned how to architect a game from an empty <code>setup()</code> and <code>draw()</code>.</p><p>It runs as a desktop Java application; the full source — including the packaged <code>.jar</code> — lives on GitHub.</p>" },
+      { t: "game", src: "/games/bound/index.html", title: "Bound", ratio: "3 / 2", note: "▶ Move your mouse to steer, click Start to play. A p5.js web port of the original Java game." },
+      { t: "text", h: "About", html: "<p>Bound started as a teaching exercise and grew into a full platformer — handwritten physics, collision, and level logic on top of the Processing (PApplet) drawing loop. It's where I first learned how to architect a game from an empty <code>setup()</code> and <code>draw()</code>.</p><p>The original is a desktop Java application; the version above is the p5.js web port, and the full source lives on GitHub.</p>" },
     ],
   },
 
@@ -457,9 +458,10 @@ const PAGES = [
     title: "Snake",
     category: "Games",
     year: "2024",
-    sub: "The arcade classic, rebuilt. Eat, grow, and don't bite yourself.",
-    tags: ["Python"],
+    sub: "The arcade classic, rebuilt — and playable right here. Eat, grow, and don't bite yourself.",
+    tags: ["JavaScript", "Canvas"],
     blocks: [
+      { t: "game", src: "/games/snake/index.html", title: "Snake", ratio: "3 / 2", note: "▶ Click the board, then steer with the arrow keys. Start / Pause / Restart below." },
       { t: "text", h: "Overview", html: "<p>An implementation of the arcade classic — grid movement, a growing tail, self-collision, and the one rule everyone knows. Not really much else to say. Sometimes you build a thing just because it's satisfying to build.</p>" },
     ],
   },
