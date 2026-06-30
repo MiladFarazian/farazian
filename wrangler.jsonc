@@ -7,8 +7,13 @@
   // If your Worker is named something other than "farazian", change it here.
   "name": "farazian",
   "compatibility_date": "2026-06-01",
+  // Worker runs first (to enforce the canonical host), then falls through to
+  // the static assets via the ASSETS binding.
+  "main": "worker.js",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
     // Single-page site: serve index.html and hashed assets directly.
     "not_found_handling": "single-page-application"
   }
