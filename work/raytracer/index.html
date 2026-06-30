@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>C++ Ray Tracer — Milad Farazian</title>
+    <meta name="description" content="A from-scratch ray tracer built in pure C++17 with no external libraries — recursive ray tracing, Blinn-Phong shading, shadow casting, mirror reflections, and 4× anti-aliasing." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj">
+      <section class="proj__hero">
+      <p class="proj__eyebrow" data-reveal>Software · 2024</p>
+      <h1 class="proj__title" data-reveal>C++ Ray Tracer</h1>
+      <p class="proj__sub" data-reveal>A from-scratch ray tracer built in pure C++17 with no external libraries — recursive ray tracing, Blinn-Phong shading, shadow casting, mirror reflections, and 4× anti-aliasing.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">C++17</span><span class="tag">3D Rendering</span><span class="tag">Zero Dependencies</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://github.com/MiladFarazian/MiladFarazian2025/tree/main/raytracer" target="_blank" rel="noopener" data-magnetic data-scramble>Source ↗</a></div>
+    </section>
+      <section class="proj__section"><h2 data-reveal>Rendered Output</h2><div class="proj-gallery"><figure class="proj-figure" data-reveal><img src="scene_main.png" alt="Showcase Scene" loading="lazy" /><figcaption><b>Showcase Scene</b><span>Reflections, Phong shading, shadows, checkerboard</span></figcaption></figure><figure class="proj-figure" data-reveal><img src="scene_reflections.png" alt="Mirror Reflections" loading="lazy" /><figcaption><b>Mirror Reflections</b><span>Recursive ray tracing up to 5 bounces</span></figcaption></figure><figure class="proj-figure" data-reveal><img src="scene_shadows.png" alt="Shadow Casting" loading="lazy" /><figcaption><b>Shadow Casting</b><span>Shadow rays with a single directional light</span></figcaption></figure></div></section>
+      <section class="proj__section" data-reveal>
+        <h2>Interactive Demo</h2>
+        <p>Drag to orbit the camera. This real-time ray tracer runs entirely in your browser, implementing the same algorithms as the C++ version above.</p>
+        <div class="rt-demo">
+          <div class="rt-stage"><canvas id="rt-canvas" width="480" height="270"></canvas></div>
+          <div class="rt-controls">
+            <button id="btn-add" class="demo-btn">Add Sphere</button>
+            <button id="btn-remove" class="demo-btn">Remove</button>
+            <button id="btn-reset" class="demo-btn">Reset</button>
+            <div class="rt-swatches">
+              <button class="swatch" data-color="0.85,0.15,0.1" style="background:#d92619" title="Red"></button>
+              <button class="swatch" data-color="0.1,0.3,0.85" style="background:#1a4dd9" title="Blue"></button>
+              <button class="swatch" data-color="0.15,0.7,0.2" style="background:#26b333" title="Green"></button>
+              <button class="swatch" data-color="0.85,0.65,0.1" style="background:#d9a619" title="Gold"></button>
+              <button class="swatch active" data-color="0.7,0.2,0.8" style="background:#b333cc" title="Purple"></button>
+            </div>
+          </div>
+          <p class="proj-note">Renders at 480×270 with progressive refinement. Reflections limited to 3 bounces for real-time performance.</p>
+        </div>
+      </section>
+      <section class="proj__section" data-reveal><h2>Features</h2><div class="proj-features"><div class="proj-feature"><h3>Blinn-Phong Lighting</h3><p>Ambient, diffuse, and specular components with configurable materials.</p></div><div class="proj-feature"><h3>Shadow Casting</h3><p>Shadow rays to each light source with bias to prevent surface acne.</p></div><div class="proj-feature"><h3>Recursive Reflections</h3><p>Recursive ray tracing with configurable depth and per-material reflectivity.</p></div><div class="proj-feature"><h3>Primitives</h3><p>Spheres and infinite planes, with checkerboard patterns.</p></div><div class="proj-feature"><h3>Anti-Aliasing</h3><p>4× supersampling for smooth, clean edges.</p></div><div class="proj-feature"><h3>Configurable Camera</h3><p>FOV, position, and look-at targeting with viewport projection.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>Architecture</h2><div class="proj-code"><div class="proj-code__bar"><i></i><i></i><i></i><span>renderer.h — core shading loop</span></div><pre>// For each pixel, cast a ray into the scene and shade what it hits.
+Vec3 trace(const Ray&amp; ray, int depth) {
+    if (depth &gt;= MAX_DEPTH) return background(ray);
+
+    HitRecord rec;
+    if (!scene.hit(ray, BIAS, 1e9, rec)) return background(ray);
+
+    Vec3 color = rec.material.color * ambient;
+
+    for (const auto&amp; light : lights) {
+        // Shadow ray — skip this light if the point is occluded.
+        Ray shadow(rec.point, light.dir);
+        if (scene.hit(shadow, BIAS, light.dist)) continue;
+
+        // Blinn-Phong: diffuse + specular contribution.
+        color += diffuse(rec, light) + specular(rec, light);
+    }
+
+    // Recursive mirror reflection.
+    if (rec.material.reflectivity &gt; 0.0f) {
+        Ray refl(rec.point, reflect(ray.dir, rec.normal));
+        color += trace(refl, depth + 1) * rec.material.reflectivity;
+    }
+    return color;
+}</pre></div></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

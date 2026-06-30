@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>LMBiS-Net — Milad Farazian</title>
+    <meta name="description" content="An implementation of Abbasi et al.'s “LMBiS-Net: A Lightweight Multipath Bidirectional Skip Connection based CNN for Retinal Blood Vessel Segmentation.”" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj">
+      <section class="proj__hero">
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2024</p>
+      <h1 class="proj__title" data-reveal>LMBiS-Net</h1>
+      <p class="proj__sub" data-reveal>An implementation of Abbasi et al.'s “LMBiS-Net: A Lightweight Multipath Bidirectional Skip Connection based CNN for Retinal Blood Vessel Segmentation.”</p>
+      <p class="proj__meta" data-reveal>Milad Farazian · Charlie Floeder · Rizq Khateeb · Harshit Shah · Yash Sharma</p>
+      <div class="proj__tags" data-reveal><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">CNN</span><span class="tag">Medical Imaging</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://arxiv.org/pdf/2309.04968" target="_blank" rel="noopener" data-magnetic data-scramble>Original Paper ↗</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>Project Goal</h2><p>To implement the LMBiS-Net model and confirm the findings presented in the original paper. Additionally, we aimed to apply our implementation to a different dataset that was not used in the paper.</p></section>
+      <section class="proj__section" data-reveal><h2>Why It Matters</h2><p>LMBiS-Net's primary benefit is an accurate retinal blood-vessel segmentation model that is computationally efficient compared to state-of-the-art models. This efficiency can assist ophthalmologists in the early detection and treatment of retinal diseases, reducing manual effort and potential human error.</p><p>Retinal diseases are a major cause of visual impairment and blindness — studies show that <strong>5%–20% of the global population aged 40+</strong> has retinal disorders. Examining retinal vessels provides critical insight into the underlying conditions that contribute to these diseases.</p></section>
+      <section class="proj__section"><h2 data-reveal>The Model</h2><div data-reveal><p>LMBiS-Net is a CNN consisting of three encoder blocks, a bottleneck layer, and three decoder blocks. It uses multipath feature-extraction blocks and bidirectional skip connections to enhance information flow between the encoders and decoders.</p></div><figure class="proj-figure" data-reveal><img src="LMBiS.png" alt="LMBiS-Net architecture" loading="lazy" /><figcaption><b>LMBiS-Net architecture</b></figcaption></figure></section>
+      <section class="proj__section"><h2 data-reveal>Multi-Path Feature Extraction</h2><div data-reveal><p>This component introduces feature diversity into the model, reducing overfitting and improving generalization. By using different-sized convolutions, the network captures both low-level and high-level features crucial for blood-vessel segmentation.</p></div><figure class="proj-figure" data-reveal><img src="multipath.png" alt="Multi-path feature extraction block" loading="lazy" /><figcaption><b>Multi-path feature extraction block</b></figcaption></figure></section>
+      <section class="proj__section" data-reveal><h2>Our Contribution</h2><p>We created the <strong>first publicly available implementation</strong> of LMBiS-Net and developed code to augment retinal images, increasing the size of training datasets. Our findings support the original paper's claims that LMBiS-Net is a computationally efficient and accurate state-of-the-art model for retinal blood-vessel segmentation.</p></section>
+      <section class="proj__section"><h2 data-reveal>Results</h2><div class="proj-gallery"><figure class="proj-figure" data-reveal><img src="results_comparison.png" alt="Metrics" loading="lazy" /><figcaption><b>Metrics</b><span>AUC, Sensitivity & Specificity vs. the original paper</span></figcaption></figure><figure class="proj-figure" data-reveal><img src="predictions.png" alt="Predictions" loading="lazy" /><figcaption><b>Predictions</b><span>Input, model prediction, and ground truth</span></figcaption></figure></div></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

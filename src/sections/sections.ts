@@ -19,8 +19,11 @@ export function buildContent() {
   const workList = document.getElementById("work-list")!;
   workList.innerHTML = PROJECTS.map((p) => {
     const linked = p.href && p.href !== "#";
+    const external = linked && /^https?:/.test(p.href);
     const tag = linked ? "a" : "div";
-    const attrs = linked ? `href="${p.href}" target="_blank" rel="noopener" data-magnetic` : "";
+    const attrs = linked
+      ? `href="${p.href}"${external ? ' target="_blank" rel="noopener"' : ""} data-magnetic`
+      : "";
     const arrow = linked ? ` <span class="arrow">↗</span>` : "";
     return `<${tag} class="work-item" data-category="${p.category}" ${attrs}>
       <span class="work-item__no">${p.no}</span>

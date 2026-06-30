@@ -5,7 +5,9 @@
   "type": "module",
   "description": "Milad Farazian — interactive WebGL portfolio",
   "scripts": {
-    "dev": "vite",
+    "gen": "node scripts/gen-pages.mjs",
+    "dev": "node scripts/gen-pages.mjs && vite",
+    "prebuild": "node scripts/gen-pages.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KATSUYA'S REVENGE</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+#container {
+  position: relative; width: 1600px; height: 800px;
+  transform-origin: center center;
+}
+canvas { display: block; cursor: crosshair; }
+.btn {
+  position: absolute; font: bold 22px 'Segoe UI', sans-serif; color: #fff;
+  background: rgba(40,40,60,0.85); border: 2px solid rgba(200,170,50,0.6);
+  cursor: pointer; text-align: center; padding: 0;
+}
+.btn:hover { background: rgba(60,60,90,0.95); border-color: rgba(200,170,50,0.9); }
+#nextBtn   { right: 80px; bottom: 75px; width: 320px; height: 75px; font-size: 28px; }
+#pauseBtn  { left: 30px; bottom: 50px; width: 36px; height: 36px; font-size: 18px; display: none; }
+#resumeBtn { left: 285px; bottom: 50px; width: 100px; height: 36px; display: none; }
+#restartBtn{ left: 285px; bottom: 95px; width: 100px; height: 36px; display: none; }
+#quitBtn   { left: 285px; bottom: 140px; width: 100px; height: 36px; display: none; }
+#loading   { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+             color: #c8aa32; font: 24px serif; }
+</style>
+</head>
+<body>
+<div id="container">
+  <canvas id="c" width="1600" height="800"></canvas>
+  <div id="loading">Loading assets...</div>
+  <button class="btn" id="nextBtn">Next</button>
+  <button class="btn" id="pauseBtn">||</button>
+  <button class="btn" id="resumeBtn">Resume</button>
+  <button class="btn" id="restartBtn">Restart</button>
+  <button class="btn" id="quitBtn" style="display:none">Quit</button>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
