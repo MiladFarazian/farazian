@@ -233,8 +233,18 @@ const PAGES = [
     tags: ["HTML", "CSS", "JavaScript"],
     links: [{ label: "Watch on Vimeo", href: "https://vimeo.com/1070369663" }],
     blocks: [
-      { t: "embed", h: "Trailer", html: '<iframe src="https://player.vimeo.com/video/1070369663?h=8ded26e100" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>' },
-      { t: "text", html: '<p class="proj-note">Private screener — if the player doesn\'t load, <a href="https://vimeo.com/1070369663" target="_blank" rel="noopener" style="color:var(--cyan)">watch it on Vimeo ↗</a></p>' },
+      {
+        t: "raw",
+        html: `<section class="proj__section" data-reveal>
+        <h2>Trailer</h2>
+        <a class="film-poster" href="https://vimeo.com/1070369663" target="_blank" rel="noopener" data-magnetic>
+          <span class="film-poster__play">▶</span>
+          <span class="film-poster__title">USURPER</span>
+          <span class="film-poster__cta">Watch the trailer on Vimeo ↗</span>
+        </a>
+        <p class="proj-note">The trailer is a private screener hosted on the filmmaker's Vimeo.</p>
+      </section>`,
+      },
       { t: "text", h: "Synopsis", html: "<p>Starring Matthew Frietze, <strong>USURPER</strong> stalks a withdrawn Abel, who becomes consumed by addiction and anxiety. He begins to struggle to face an unsettling truth when his friend Seth intervenes.</p>" },
       { t: "text", html: '<p class="proj-note">© 2025 Usurper Film. All rights reserved.</p>' },
     ],

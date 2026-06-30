@@ -209,6 +209,56 @@
 }
 .proj-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
+/* ---- Film trailer poster (links out when embed is domain-restricted) ---- */
+.film-poster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: radial-gradient(60% 80% at 50% 38%, rgba(176, 107, 255, 0.14), transparent),
+    linear-gradient(160deg, #0a0d14, #05070c);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  cursor: none;
+  text-align: center;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.film-poster:hover {
+  border-color: rgba(42, 245, 255, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 0 70px rgba(42, 245, 255, 0.08);
+}
+.film-poster__play {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(42, 245, 255, 0.5);
+  color: var(--cyan);
+  font-size: 1.3rem;
+  padding-left: 5px;
+  box-shadow: var(--glow-cyan);
+  transition: transform 0.4s var(--ease);
+}
+.film-poster:hover .film-poster__play { transform: scale(1.1); }
+.film-poster__title {
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+.film-poster__cta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
 /* ---- Playable game ---- */
 .proj-game {
   width: 100%;
