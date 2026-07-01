@@ -22,6 +22,7 @@ const FINAL_SHADER = {
     tDiffuse: { value: null as THREE.Texture | null },
     uTime: { value: 0 },
     uResolution: { value: new THREE.Vector2(1, 1) },
+    uGrain: { value: 0.04 },
   },
   vertexShader: /* glsl */ `
     varying vec2 vUv;
@@ -34,6 +35,7 @@ const FINAL_SHADER = {
     uniform sampler2D tDiffuse;
     uniform float uTime;
     uniform vec2 uResolution;
+    uniform float uGrain;
     varying vec2 vUv;
     float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
     void main() {
@@ -46,7 +48,7 @@ const FINAL_SHADER = {
       float bC = texture2D(tDiffuse, uv + dir).b;
       vec3 col = vec3(rC, gC, bC);
       float grain = hash(uv * uResolution + fract(uTime)) - 0.5;  // film grain
-      col += grain * 0.04;
+      col += grain * uGrain;
       col *= smoothstep(1.15, 0.32, length(c));   // vignette
       gl_FragColor = vec4(col, 1.0);
     }`,
@@ -100,8 +102,10 @@ export class ParticleHero {
     this.canvas = canvas;
     this.profile = profile;
     this.size = profile.simSize;
-    // Post-processing (bloom + grain) on capable, non-mobile GPUs only.
-    this.usePost = !profile.isMobile && profile.tier !== "low";
+    // Post-processing (bloom + grain). Enabled on any mid/high device — capable
+    // phones now get a lightweight, mobile-tuned bloom so the name actually
+    // glows; only "low" tier (weak/old hardware) skips it.
+    this.usePost = profile.tier !== "low";
 
     try {
       this.initRenderer();
@@ -186,16 +190,19 @@ export class ParticleHero {
     this.composer.addPass(new RenderPass(this.scene, this.camera));
 
     const strong = this.profile.tier === "high";
+    const mobile = this.profile.isMobile;
     this.bloomPass = new UnrealBloomPass(
       new THREE.Vector2(w, h),
-      strong ? 0.55 : 0.42, // strength
+      strong ? 0.55 : mobile ? 0.5 : 0.42, // strength
       0.4, // radius
-      strong ? 0.34 : 0.42 // threshold — only the bright particle cores bloom
+      strong ? 0.34 : mobile ? 0.3 : 0.42 // threshold — only bright cores bloom
     );
     this.composer.addPass(this.bloomPass);
 
     this.finalPass = new ShaderPass(FINAL_SHADER);
     this.finalPass.uniforms.uResolution.value.set(w * this.profile.dpr, h * this.profile.dpr);
+    // Lighter grain on mobile — high-DPR small screens make it read as noise.
+    this.finalPass.uniforms.uGrain.value = mobile ? 0.018 : 0.04;
     this.composer.addPass(this.finalPass);
   }
 
@@ -323,7 +330,16 @@ export class ParticleHero {
    *  lower again for the denser two-line layout so strokes don't clip to white. */
   private updateGlow() {
     const twoLines = window.innerWidth < 760;
-    const v = this.usePost ? (twoLines ? 0.24 : 0.42) : twoLines ? 0.18 : 0.3;
+    const mobile = this.profile.isMobile;
+    const v = this.usePost
+      ? twoLines
+        ? mobile
+          ? 0.28
+          : 0.24
+        : 0.42
+      : twoLines
+        ? 0.18
+        : 0.3;
     this.particleMat.uniforms.uGlow.value = v;
   }
 

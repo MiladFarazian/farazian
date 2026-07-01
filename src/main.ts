@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 
 import { detectDevice } from "./core/device";
 import { initSmoothScroll } from "./core/smoothScroll";
-import { buildContent, initReveals } from "./sections/sections";
+import { buildContent, initReveals, initWorkCards } from "./sections/sections";
 import { ParticleHero } from "./webgl/ParticleHero";
 import { initCursor } from "./ui/cursor";
 import { initScramble } from "./ui/scramble";
@@ -28,6 +28,7 @@ const scroller = initSmoothScroll(profile.reducedMotion);
 
 // ----- Reveals + interactions -----
 initReveals(profile.reducedMotion);
+initWorkCards(profile.reducedMotion);
 initCursor();
 initScramble();
 

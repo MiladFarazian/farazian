@@ -44,8 +44,10 @@ export function detectDevice(): DeviceProfile {
 
   let tier: Tier = "high";
   if (isMobile || cores <= 4) tier = "mid";
+  // Genuinely weak devices fall to the no-post path: low-RAM Android phones
+  // (deviceMemory) or very few cores. iOS doesn't report deviceMemory, so
+  // capable phones stay at "mid" and get the lightweight bloom.
   if ((mem && mem <= 4) || cores <= 2) tier = "low";
-  if (isMobile && cores <= 4) tier = "low";
 
   const supportsWebGL = detectWebGL();
 
