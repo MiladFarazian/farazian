@@ -124,8 +124,10 @@ let startHeroTracking = () => {};
 if (hero) {
   const heroEl = document.getElementById("hero")!;
   const onScroll = () => {
-    const f = gsap.utils.clamp(0, 1, 1 - window.scrollY / (window.innerHeight * 0.8));
-    hero!.setFade(f);
+    const y = window.scrollY;
+    // Dissolve the name into stardust first, then fade the whole field out.
+    hero!.setScatter(gsap.utils.clamp(0, 1, y / (window.innerHeight * 0.6)));
+    hero!.setFade(gsap.utils.clamp(0, 1, 1 - y / (window.innerHeight * 0.85)));
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();

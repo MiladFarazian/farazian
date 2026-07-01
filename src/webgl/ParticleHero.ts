@@ -80,6 +80,8 @@ export class ParticleHero {
   private mouseActive = 0;
   private burst = 0;
   private fade = 1;
+  private scatter = 0;
+  private shockCenter = new THREE.Vector2(0, 0);
   private running = false;
   private failed = false;
 
@@ -225,6 +227,10 @@ export class ParticleHero {
       uMouseActive: { value: 0 },
       uForming: { value: this.debugFormed ? 1 : 0 },
       uBurst: { value: 0 },
+      uScatter: { value: 0 },
+      uShockCenter: { value: this.shockCenter },
+      uShockRadius: { value: 0 },
+      uShockActive: { value: 0 },
       uTarget: { value: targetTex },
     });
 
@@ -348,6 +354,27 @@ export class ParticleHero {
     gsap.to(this, { burst: 0, duration: 1.1, ease: "power2.out" });
   }
 
+  /** Expanding shockwave ring from a screen-space point (a click/tap). */
+  private shockAt(clientX: number, clientY: number) {
+    if (this.failed) return;
+    const ndc = new THREE.Vector2(
+      (clientX / window.innerWidth) * 2 - 1,
+      -(clientY / window.innerHeight) * 2 + 1
+    );
+    this.raycaster.setFromCamera(ndc, this.camera);
+    const hit = new THREE.Vector3();
+    if (this.raycaster.ray.intersectPlane(this.plane, hit)) {
+      this.shockCenter.set(hit.x, hit.y);
+    }
+    const u = this.posVar.material.uniforms;
+    gsap.killTweensOf([u.uShockRadius, u.uShockActive]);
+    u.uShockRadius.value = 0;
+    u.uShockActive.value = 1;
+    gsap.to(u.uShockRadius, { value: 9, duration: 1.0, ease: "power2.out" });
+    gsap.to(u.uShockActive, { value: 0, duration: 1.15, ease: "power2.in" });
+    this.burstImpulse();
+  }
+
   private bindEvents() {
     const onMove = (clientX: number, clientY: number) => {
       this.mouseNorm.set(clientX / window.innerWidth, 1 - clientY / window.innerHeight);
@@ -370,7 +397,7 @@ export class ParticleHero {
       "pointerdown",
       (e) => {
         if (e.clientY < window.innerHeight * 0.92 && window.scrollY < window.innerHeight * 0.6) {
-          this.burstImpulse();
+          this.shockAt(e.clientX, e.clientY);
         }
       },
       { passive: true }
@@ -404,6 +431,11 @@ export class ParticleHero {
 
   setFade(v: number) {
     this.fade = THREE.MathUtils.clamp(v, 0, 1);
+  }
+
+  /** 0 = name held; →1 dissolves it into drifting stardust (driven by scroll). */
+  setScatter(v: number) {
+    this.scatter = THREE.MathUtils.clamp(v, 0, 1);
   }
 
   setRunning(v: boolean) {
@@ -441,6 +473,7 @@ export class ParticleHero {
     u.uTime.value = elapsed;
     u.uMouseActive.value = this.mouseActive;
     u.uBurst.value = this.burst;
+    u.uScatter.value = this.scatter;
     this.gpu.compute();
 
     this.particleMat.uniforms.uPosition.value =
