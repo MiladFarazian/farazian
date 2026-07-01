@@ -145,25 +145,25 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const STACK: string[] = [
-  "TypeScript",
-  "React",
-  "React Native",
-  "Next.js",
-  "Swift",
-  "Python",
-  "C++",
-  "Three.js",
-  "GLSL",
-  "WebGL / WebGPU",
-  "GSAP",
-  "Node.js",
-  "Postgres",
-  "Supabase",
-  "Stripe",
-  "PyTorch",
-  "Docker",
-  "AWS",
+export interface StackGroup {
+  label: string;
+  accent: string;
+  items: string[];
+}
+
+export const STACK_GROUPS: StackGroup[] = [
+  { label: "Languages", accent: "cyan", items: ["TypeScript", "Swift", "Python", "C++"] },
+  {
+    label: "Web & Frameworks",
+    accent: "violet",
+    items: ["React", "React Native", "Next.js", "Node.js"],
+  },
+  { label: "Graphics", accent: "lime", items: ["Three.js", "WebGL / WebGPU", "GLSL", "GSAP"] },
+  {
+    label: "Data & Infra",
+    accent: "blue",
+    items: ["Postgres", "Supabase", "Stripe", "PyTorch", "Docker", "AWS"],
+  },
 ];
 
 export interface Link {

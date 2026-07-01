@@ -1,7 +1,7 @@
 // Inject data-driven content + wire scroll-reveal animations.
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS, STACK, LINKS, CATEGORIES } from "../content";
+import { PROJECTS, STACK_GROUPS, LINKS, CATEGORIES } from "../content";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,9 +57,14 @@ export function buildContent() {
     ScrollTrigger.refresh();
   });
 
-  // ---- Stack chips ----
+  // ---- Stack (grouped chips) ----
   const cloud = document.getElementById("stack-cloud")!;
-  cloud.innerHTML = STACK.map((s) => `<span class="chip">${s}</span>`).join("");
+  cloud.innerHTML = STACK_GROUPS.map(
+    (g) => `<div class="stack__group" data-accent="${g.accent}">
+      <span class="stack__group-label">${g.label}</span>
+      <div class="stack__chips">${g.items.map((s) => `<span class="chip">${s}</span>`).join("")}</div>
+    </div>`
+  ).join("");
 
   // ---- Contact links ----
   const links = document.getElementById("contact-links")!;

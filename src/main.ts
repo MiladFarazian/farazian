@@ -197,6 +197,7 @@ function runBoot() {
       hero.refreshFormation(); // re-rasterize with the now-loaded webfont
       hero.setRunning(true);
       hero.form(0.1);
+      hero.playIntro(); // camera push-in synced with the assemble
       startHeroTracking();
     }
     // Reveal hero content with a staggered post-boot entrance.

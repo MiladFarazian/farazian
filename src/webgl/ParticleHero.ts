@@ -84,6 +84,7 @@ export class ParticleHero {
   private fade = 1;
   private scatter = 0;
   private scrollP = 0;
+  private introZ = 0;
   private parallax = new THREE.Vector2(0, 0);
   private baseCamZ = 6;
   private shockCenter = new THREE.Vector2(0, 0);
@@ -375,6 +376,14 @@ export class ParticleHero {
     gsap.to(this, { burst: 0, duration: 1.1, ease: "power2.out" });
   }
 
+  /** Cinematic camera push-in as the name assembles (called once, post-boot). */
+  playIntro() {
+    if (this.failed || this.debugFormed) return;
+    this.introZ = 6;
+    this.camera.position.z = this.baseCamZ + this.introZ;
+    gsap.to(this, { introZ: 0, duration: 2.8, ease: "power3.out" });
+  }
+
   /** Expanding shockwave ring from a screen-space point (a click/tap). */
   private shockAt(clientX: number, clientY: number) {
     if (this.failed) return;
@@ -512,8 +521,9 @@ export class ParticleHero {
     this.bgMaterial.uniforms.uFade.value = 0.55 + this.fade * 0.45;
 
     // Scroll dollies the camera back; the cursor (or gyro) adds a gentle
-    // parallax tilt so the field reads as real 3D depth.
-    const targetZ = this.baseCamZ + this.scrollP * 2.3;
+    // parallax tilt so the field reads as real 3D depth. introZ pushes the
+    // camera in from far as the name first assembles.
+    const targetZ = this.baseCamZ + this.introZ + this.scrollP * 2.3;
     this.camera.position.z += (targetZ - this.camera.position.z) * 0.08;
     this.parallax.x += ((this.mouseNorm.x - 0.5) * 0.5 - this.parallax.x) * 0.04;
     this.parallax.y += ((this.mouseNorm.y - 0.5) * 0.5 - this.parallax.y) * 0.04;

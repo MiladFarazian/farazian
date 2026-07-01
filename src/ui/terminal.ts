@@ -1,5 +1,5 @@
 // A small but real interactive terminal — the engineer's easter egg.
-import { PROJECTS, STACK, LINKS, NAME } from "../content";
+import { PROJECTS, STACK_GROUPS, LINKS, NAME } from "../content";
 
 export interface TerminalAPI {
   open: () => void;
@@ -77,7 +77,10 @@ export function initTerminal(onScrollTo: (sel: string) => void): TerminalAPI {
         print(`<span class="ok">${p.title}</span> — ${p.desc} ${p.href !== "#" ? `<a href="${p.href}" target="_blank" rel="noopener">↗</a>` : ""}`)
       );
     },
-    skills: () => print(STACK.join("&nbsp;·&nbsp;")),
+    skills: () =>
+      STACK_GROUPS.forEach((g) =>
+        print(`<span class="ok">${g.label}</span>: ${g.items.join("&nbsp;·&nbsp;")}`)
+      ),
     contact: () => {
       print("let's talk:");
       LINKS.forEach((l) => print(`  <span class="ok">${l.label}</span> → <a href="${l.href}" target="_blank" rel="noopener">${l.href}</a>`));
