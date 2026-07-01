@@ -87,6 +87,7 @@ export class ParticleHero {
   private introZ = 0;
   private parallax = new THREE.Vector2(0, 0);
   private baseCamZ = 6;
+  private baseGlow = 0.42;
   private shockCenter = new THREE.Vector2(0, 0);
   private running = false;
   private failed = false;
@@ -346,7 +347,20 @@ export class ParticleHero {
       : twoLines
         ? 0.18
         : 0.3;
-    this.particleMat.uniforms.uGlow.value = v;
+    this.baseGlow = v;
+    // Don't stomp an in-flight tap flare (pulseGlow tweens back to baseGlow).
+    if (!gsap.isTweening(this.particleMat.uniforms.uGlow)) {
+      this.particleMat.uniforms.uGlow.value = v;
+    }
+  }
+
+  /** A quick brightness flare when a tap's ripple fires — the name flashes with
+   *  energy, then settles back to its resting glow. */
+  private pulseGlow(scale: number) {
+    const u = this.particleMat.uniforms.uGlow;
+    gsap.killTweensOf(u);
+    u.value = this.baseGlow * scale;
+    gsap.to(u, { value: this.baseGlow, duration: 0.85, ease: "power2.out" });
   }
 
   /** Kick off the "assemble the name" intro. */
@@ -370,9 +384,9 @@ export class ParticleHero {
     );
   }
 
-  burstImpulse() {
+  burstImpulse(scale = 1) {
     if (this.failed) return;
-    this.burst = 1;
+    this.burst = scale;
     gsap.to(this, { burst: 0, duration: 1.1, ease: "power2.out" });
   }
 
@@ -402,7 +416,11 @@ export class ParticleHero {
     u.uShockActive.value = 1;
     gsap.to(u.uShockRadius, { value: 9, duration: 1.0, ease: "power2.out" });
     gsap.to(u.uShockActive, { value: 0, duration: 1.15, ease: "power2.in" });
-    this.burstImpulse();
+    // On touch the localized ring is the star — keep the whole-field pop gentle
+    // so the tap reads as a clean ripple, not an explosion. The glow flare adds
+    // the "energy" hit either way.
+    this.burstImpulse(this.profile.isTouch ? 0.4 : 1);
+    this.pulseGlow(this.profile.isMobile ? 1.9 : 1.6);
   }
 
   private bindEvents() {

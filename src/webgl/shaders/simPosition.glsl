@@ -50,12 +50,14 @@ void main() {
   vec3 outward = normalize(pos + 0.0001);
   acc += outward * uBurst * (0.09 + 0.05 * seed);
 
-  // Shockwave — an expanding ring of force emanating from the click point.
+  // Shockwave — an expanding ring of force emanating from the click point. The
+  // z kick lights up the "energy" term in the fragment shader, so a crisp band
+  // of white-hot light sweeps through the letters as the ring passes.
   vec2 sc = pos.xy - uShockCenter;
   float sd = length(sc);
-  float ring = exp(-pow(sd - uShockRadius, 2.0) * 3.0) * uShockActive;
+  float ring = exp(-pow(sd - uShockRadius, 2.0) * 3.6) * uShockActive;
   acc.xy += normalize(sc + 0.0001) * ring * 0.55;
-  acc.z += ring * 0.35 * (seed - 0.5);
+  acc.z += ring * 0.5 * (seed - 0.5);
 
   // Scroll dissolve — drift outward + turbulence as the hero scrolls away.
   vec3 turb = vec3(
