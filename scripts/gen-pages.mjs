@@ -73,6 +73,19 @@ const page = (p) => {
     <meta name="theme-color" content="#04060a" />
     <title>${p.title} — Milad Farazian</title>
     <meta name="description" content="${esc(p.sub)}" />
+    <link rel="canonical" href="https://farazian.com/work/${p.slug}/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="${esc(p.title)} — Milad Farazian" />
+    <meta property="og:description" content="${esc(p.sub)}" />
+    <meta property="og:url" content="https://farazian.com/work/${p.slug}/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${esc(p.title)} — Milad Farazian" />
+    <meta name="twitter:description" content="${esc(p.sub)}" />
+    <meta name="twitter:image" content="https://farazian.com/og.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -486,4 +499,22 @@ for (const p of PAGES) {
   writeFileSync(resolve(dir, "index.html"), page(p));
   console.log(`generated work/${p.slug}/index.html`);
 }
-console.log(`\n${PAGES.length} project pages generated.`);
+
+// ---- sitemap + robots (kept in sync with the generated pages) ----
+const BASE = "https://farazian.com";
+const urls = [`${BASE}/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
+const sitemap =
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  urls
+    .map((u) => `  <url><loc>${u}</loc><changefreq>monthly</changefreq></url>`)
+    .join("\n") +
+  `\n</urlset>\n`;
+mkdirSync(resolve(ROOT, "public"), { recursive: true });
+writeFileSync(resolve(ROOT, "public", "sitemap.xml"), sitemap);
+writeFileSync(
+  resolve(ROOT, "public", "robots.txt"),
+  `User-agent: *\nAllow: /\n\nSitemap: ${BASE}/sitemap.xml\n`
+);
+
+console.log(`\n${PAGES.length} project pages + sitemap.xml + robots.txt generated.`);
