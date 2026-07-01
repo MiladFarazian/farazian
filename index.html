@@ -33,14 +33,54 @@
     />
     <meta name="twitter:image" content="https://farazian.com/og.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://farazian.com/#person",
+            "name": "Milad Farazian",
+            "url": "https://farazian.com/",
+            "jobTitle": "Software Engineer",
+            "image": "https://farazian.com/og.png",
+            "sameAs": [
+              "https://github.com/MiladFarazian",
+              "https://miladfarazian.com",
+              "https://useparkzy.com"
+            ],
+            "knowsAbout": [
+              "Software Engineering",
+              "WebGL",
+              "Three.js",
+              "GPU Shaders",
+              "Full-Stack Development",
+              "Machine Learning"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://farazian.com/#website",
+            "url": "https://farazian.com/",
+            "name": "Milad Farazian",
+            "description": "Software engineer building fast, beautiful, slightly impossible things on the web.",
+            "author": { "@id": "https://farazian.com/#person" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
+    <a class="skip-link" href="#work">Skip to work</a>
+
     <!-- Boot / preloader -->
     <div class="boot" id="boot" aria-hidden="true">
       <div class="boot__inner">

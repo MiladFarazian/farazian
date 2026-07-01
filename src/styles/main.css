@@ -8,7 +8,7 @@
   --bg-2: #070b12;
   --ink: #e8f0ff;
   --ink-dim: #8aa0c0;
-  --ink-faint: #46566f;
+  --ink-faint: #72829a; /* meets WCAG AA (>=4.5:1) on the dark background */
   --cyan: #2af5ff;
   --violet: #b06bff;
   --magenta: #ff3ec9;
@@ -1030,6 +1030,38 @@ main {
 .split-char {
   display: inline-block;
   will-change: transform, opacity;
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+/* Keyboard focus ring (the custom cursor hides the pointer, so keyboard users
+   rely on this). Only shows for keyboard nav, not mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.term__input:focus-visible {
+  outline: none;
+}
+/* Skip link — first tab stop, jumps past the nav into content. */
+.skip-link {
+  position: fixed;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 200;
+  padding: 0.7em 1.1em;
+  background: var(--cyan);
+  color: #04060a;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border-radius: 8px;
+  transform: translateY(-160%);
+  transition: transform 0.25s var(--ease);
+}
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 /* ============================================================

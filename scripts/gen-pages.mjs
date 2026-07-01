@@ -10,6 +10,19 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const esc = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+// JSON-LD for a project page. JSON.stringify handles quote escaping; we only
+// need to neutralize any "</script>" sequence inside the data.
+const jsonLd = (p) =>
+  JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: p.title,
+    description: p.sub,
+    url: `https://farazian.com/work/${p.slug}/`,
+    image: "https://farazian.com/og.png",
+    author: { "@type": "Person", name: "Milad Farazian", url: "https://farazian.com/" },
+  }).replace(/</g, "\\u003c");
+
 // ---- block renderers ----
 const figure = ({ src, title, caption }) =>
   `<figure class="proj-figure" data-reveal><img src="${src}" alt="${title || ""}" loading="lazy" />` +
@@ -87,18 +100,22 @@ const page = (p) => {
     <meta name="twitter:description" content="${esc(p.sub)}" />
     <meta name="twitter:image" content="https://farazian.com/og.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">${jsonLd(p)}</script>
   </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
     <div class="fx-overlay" aria-hidden="true"></div>
     <header class="nav">
       <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
       <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
     </header>
-    <main class="proj">
+    <main class="proj" id="content" tabindex="-1">
       ${hero}
       ${p.blocks.map(renderBlock).join("\n      ")}
       <footer class="footer">
