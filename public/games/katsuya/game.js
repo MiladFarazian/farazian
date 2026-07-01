@@ -362,9 +362,42 @@ class Game {
 
   // -------------------- INPUT --------------------
   setupInput() {
-    window.addEventListener('keydown', e => { this.keys[e.code]=true; });
-    window.addEventListener('keyup', e => { this.keys[e.code]=false; });
+    // Arrow keys mirror A/D/W so either scheme works.
+    const ALIAS = { ArrowLeft: 'KeyA', ArrowRight: 'KeyD', ArrowUp: 'Space', KeyW: 'Space' };
+    const GAME_KEYS = new Set(['Space', 'KeyA', 'KeyD', 'KeyW', 'ArrowLeft', 'ArrowRight', 'ArrowUp']);
+    window.addEventListener('keydown', e => {
+      if (GAME_KEYS.has(e.code)) e.preventDefault(); // don't scroll the parent page (esp. Space)
+      this.keys[ALIAS[e.code] || e.code] = true;
+    });
+    window.addEventListener('keyup', e => {
+      this.keys[ALIAS[e.code] || e.code] = false;
+    });
+    // Clicking/tapping the game gives this iframe keyboard focus (keys go to
+    // the parent page otherwise).
+    window.addEventListener('pointerdown', () => window.focus());
     this.cv.addEventListener('mousedown', e => this.onShoot(e));
+    // Touch: tap the board to shoot toward the tap point.
+    this.cv.addEventListener('touchstart', e => {
+      if (!e.touches.length) return;
+      e.preventDefault();
+      this.onShoot({ clientX: e.touches[0].clientX });
+    }, { passive: false });
+    // On-screen move / jump pad (touch devices).
+    const hold = (id, code) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const on = ev => { ev.preventDefault(); this.keys[code] = true; };
+      const off = ev => { ev.preventDefault(); this.keys[code] = false; };
+      el.addEventListener('touchstart', on, { passive: false });
+      el.addEventListener('touchend', off);
+      el.addEventListener('touchcancel', off);
+      el.addEventListener('mousedown', on);
+      el.addEventListener('mouseup', off);
+      el.addEventListener('mouseleave', off);
+    };
+    hold('leftBtn', 'KeyA');
+    hold('rightBtn', 'KeyD');
+    hold('jumpBtn', 'Space');
   }
   onShoot(e) {
     if (this.pc.ammo < 1) return;

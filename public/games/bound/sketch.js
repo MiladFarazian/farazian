@@ -63,9 +63,14 @@ function setup() {
 }
 
 function draw() {
+    // Unify mouse + touch so the game plays the same on desktop and mobile.
+    const cx = (touches && touches.length) ? touches[0].x : mouseX;
+    const cy = (touches && touches.length) ? touches[0].y : mouseY;
+    const pressed = mouseIsPressed || (touches && touches.length > 0);
+
     if (MODE === "MENU") {
         background(255);
-        playerX = mouseX;
+        playerX = cx;
         if (playerX + 30 > 500) playerX = 470;
         
         demoBoxes.forEach(box => box.updateBox());
@@ -81,13 +86,13 @@ function draw() {
         textSize(150);
         text("BOUND", 250, 150);
 
-        if (mouseX > 200 && mouseX < 300 && mouseY > 355 && mouseY < 405) {
+        if (cx > 200 && cx < 300 && cy > 355 && cy < 405) {
             fill(255);
             rect(200, 355, 100, 50);
             fill(0);
             textSize(50);
             text("PLAY", 250, 400);
-            if (mouseIsPressed) {
+            if (pressed) {
                 MODE = "PLAYING";
                 setTimeout(() => {}, 500);
             }
@@ -98,7 +103,7 @@ function draw() {
         }
     } else if (MODE === "PLAYING") {
         background(255);
-        playerX = mouseX;
+        playerX = cx;
         if (playerX + 30 > 500) playerX = 470;
         
         boxes.forEach(box => box.updateBox());
@@ -133,7 +138,7 @@ function draw() {
         textSize(50);
         text("CLICK TO RESTART", 250, 350);
 
-        if (mouseIsPressed) {
+        if (pressed) {
             MODE = "MENU";
             score = 0;
             boxes = [];
@@ -143,3 +148,9 @@ function draw() {
         }
     }
 }
+
+// Touch = steer (p5 maps the first touch to mouseX/mouseY). Returning false
+// prevents the page from scrolling/zooming while you play on mobile.
+function touchStarted() { return false; }
+function touchMoved() { return false; }
+function touchEnded() { return false; }

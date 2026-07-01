@@ -24,6 +24,32 @@ canvas { display: block; cursor: crosshair; }
 #quitBtn   { left: 285px; bottom: 140px; width: 100px; height: 36px; display: none; }
 #loading   { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
              color: #c8aa32; font: 24px serif; }
+/* Desktop controls hint (hidden on touch, which gets the on-screen pad). */
+#ctrlHint {
+  position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+  font: 12px 'Segoe UI', sans-serif; letter-spacing: 0.04em; color: #7d8aa0;
+  white-space: nowrap; pointer-events: none; z-index: 20;
+}
+#ctrlHint b { color: #c8aa32; font-weight: 600; }
+/* On-screen movement pad for touch devices. */
+.touch-pad {
+  position: fixed; left: 0; right: 0; bottom: 12px; z-index: 20;
+  display: none; justify-content: space-between; align-items: flex-end;
+  padding: 0 14px; pointer-events: none;
+}
+.touch-pad > * { pointer-events: auto; }
+.touch-pad__move { display: flex; gap: 12px; }
+.touch-pad button {
+  font: bold 20px 'Segoe UI', sans-serif; color: #fff;
+  background: rgba(40,40,60,0.7); border: 2px solid rgba(200,170,50,0.6);
+  border-radius: 14px; padding: 16px 22px; min-width: 66px;
+  user-select: none; -webkit-user-select: none; touch-action: none;
+}
+.touch-pad button:active { background: rgba(200,170,50,0.35); }
+@media (hover: none) {
+  #ctrlHint { display: none; }
+  .touch-pad { display: flex; }
+}
 </style>
 </head>
 <body>
@@ -35,6 +61,14 @@ canvas { display: block; cursor: crosshair; }
   <button class="btn" id="resumeBtn">Resume</button>
   <button class="btn" id="restartBtn">Restart</button>
   <button class="btn" id="quitBtn" style="display:none">Quit</button>
+</div>
+<div id="ctrlHint"><b>A / D</b> or <b>← →</b> move · <b>Space</b> jump · <b>click</b> to shoot</div>
+<div class="touch-pad" aria-hidden="true">
+  <div class="touch-pad__move">
+    <button id="leftBtn" aria-label="Move left">◀</button>
+    <button id="rightBtn" aria-label="Move right">▶</button>
+  </div>
+  <button id="jumpBtn" aria-label="Jump">JUMP</button>
 </div>
 <script src="game.js"></script>
 </body>

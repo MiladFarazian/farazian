@@ -277,7 +277,7 @@ const PAGES = [
     meta: "Created by Kobe Shavolian, Milad Farazian, Brittany Dakoske, Keon Etebari, Shelby Cohen, Keegan Sly & Mr. Enfield in AP Computer Science. Restored & re-presented by Milad Farazian.",
     tags: ["Originally Java", "Web Port", "Canvas"],
     blocks: [
-      { t: "game", src: "/games/katsuya/index.html", title: "Katsuya's Revenge", note: "▶ Click the game to focus it, then play. For the best experience, play on desktop with sound on." },
+      { t: "game", src: "/games/katsuya/index.html", title: "Katsuya's Revenge", note: "▶ Click the game to focus it — A / D or ← → to move, Space to jump, click to shoot (on-screen pad on mobile). Best with sound on." },
       {
         t: "controls",
         items: [
@@ -298,7 +298,7 @@ const PAGES = [
     tags: ["Java", "Processing", "PApplet"],
     links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/Bound" }],
     blocks: [
-      { t: "game", src: "/games/bound/index.html", title: "Bound", ratio: "3 / 2", note: "▶ Move your mouse to steer, click Start to play. A p5.js web port of the original Java game." },
+      { t: "game", src: "/games/bound/index.html", title: "Bound", ratio: "3 / 2", note: "▶ Steer with your mouse (drag on mobile), click/tap Start to play. A p5.js web port of the original Java game." },
       { t: "text", h: "About", html: "<p>Bound started as a teaching exercise and grew into a full platformer — handwritten physics, collision, and level logic on top of the Processing (PApplet) drawing loop. It's where I first learned how to architect a game from an empty <code>setup()</code> and <code>draw()</code>.</p><p>The original is a desktop Java application; the version above is the p5.js web port, and the full source lives on GitHub.</p>" },
     ],
   },
