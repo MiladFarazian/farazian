@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { detectDevice } from "./core/device";
 import { initSmoothScroll } from "./core/smoothScroll";
 import { buildContent, initReveals, initWorkCards } from "./sections/sections";
-import { ParticleHero } from "./webgl/ParticleHero";
+import type { ParticleHero } from "./webgl/ParticleHero";
 import { initCursor } from "./ui/cursor";
 import { initScramble } from "./ui/scramble";
 import { initScrollFX } from "./ui/scrollfx";
@@ -34,20 +34,68 @@ initCursor();
 initScramble();
 initScrollFX(scroller.scrollTo);
 
-// ----- WebGL hero -----
+// ----- WebGL hero (loaded as a separate chunk so the initial JS stays small) -----
+// Three.js is ~130kB gzipped; splitting it out lets the page become interactive
+// before it arrives. The boot overlay masks the load, and every hero call site
+// is null-guarded so nothing breaks while the chunk is in flight.
 const canvas = document.getElementById("gl") as HTMLCanvasElement;
+const heroEl = document.getElementById("hero")!;
 let hero: ParticleHero | null = null;
+let booted = false;
 const useWebGL = !profile.reducedMotion && profile.supportsWebGL;
-if (useWebGL) {
-  hero = new ParticleHero(canvas, profile);
-  if (hero.didFail) {
-    hero = null;
-    html.classList.add("reduced-motion");
-  } else {
+
+// Scroll drives the dissolve + camera dolly (a no-op until the hero loads).
+const onHeroScroll = () => {
+  if (!hero) return;
+  const y = window.scrollY;
+  hero.setScatter(gsap.utils.clamp(0, 1, y / (window.innerHeight * 0.6)));
+  hero.setFade(gsap.utils.clamp(0, 1, 1 - y / (window.innerHeight * 0.85)));
+  hero.setScrollProgress(gsap.utils.clamp(0, 1, y / window.innerHeight));
+};
+window.addEventListener("scroll", onHeroScroll, { passive: true });
+
+// Pause the heavy GPGPU sim while the hero is offscreen.
+function startHeroTracking() {
+  if (!hero) return;
+  const h = hero;
+  const io = new IntersectionObserver(
+    (entries) => h.setRunning(entries[0].isIntersecting),
+    { rootMargin: "0px 0px 40% 0px" }
+  );
+  io.observe(heroEl);
+}
+
+// Post-boot kickoff: assemble the name, push the camera in, track visibility.
+// Runs from whichever finishes last — boot completion or the chunk arriving.
+function startHero() {
+  if (!hero) return;
+  hero.refreshFormation(); // re-rasterize with the now-loaded webfont
+  hero.setRunning(true);
+  hero.form(0.1);
+  hero.playIntro(); // camera push-in synced with the assemble
+  startHeroTracking();
+  onHeroScroll();
+}
+
+async function loadHero() {
+  if (!useWebGL) return;
+  try {
+    const { ParticleHero } = await import("./webgl/ParticleHero");
+    const h = new ParticleHero(canvas, profile);
+    if (h.didFail) {
+      html.classList.add("reduced-motion");
+      return;
+    }
+    hero = h;
     // Particles render the name; hide the DOM heading (kept for a11y/SEO).
     html.classList.add("webgl-active");
+    if (booted) startHero(); // boot already finished while the chunk loaded
+  } catch (err) {
+    console.warn("[hero] WebGL hero failed to load:", err);
+    html.classList.add("reduced-motion");
   }
 }
+loadHero();
 
 // ----- FPS meter + auto-throttle -----
 const fps = initFps(profile.tier);
@@ -120,32 +168,6 @@ if (profile.isTouch && typeof DOE.requestPermission === "function") {
   window.addEventListener("pointerdown", ask, { once: true });
 }
 
-// ----- Hero scroll fade + pause when offscreen -----
-// IMPORTANT: the heavy GPGPU sim must NOT run during the boot overlay, or a slow
-// GPU gets starved. We wire the visibility observer only AFTER boot completes.
-let startHeroTracking = () => {};
-if (hero) {
-  const heroEl = document.getElementById("hero")!;
-  const onScroll = () => {
-    const y = window.scrollY;
-    // Dissolve the name into stardust first, then fade the whole field out.
-    hero!.setScatter(gsap.utils.clamp(0, 1, y / (window.innerHeight * 0.6)));
-    hero!.setFade(gsap.utils.clamp(0, 1, 1 - y / (window.innerHeight * 0.85)));
-    // Dolly the camera back as the hero scrolls away (depth on handoff).
-    hero!.setScrollProgress(gsap.utils.clamp(0, 1, y / window.innerHeight));
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  startHeroTracking = () => {
-    const io = new IntersectionObserver(
-      (entries) => hero!.setRunning(entries[0].isIntersecting),
-      { rootMargin: "0px 0px 40% 0px" }
-    );
-    io.observe(heroEl);
-  };
-}
-
 // ----- Resize -----
 // Rebuild the particle formation only when the WIDTH changes (orientation /
 // real resize) — not on iOS toolbar show/hide, which only changes height.
@@ -187,19 +209,12 @@ function runBoot() {
     "ready",
   ];
 
-  let booted = false;
   const completeBoot = () => {
     if (booted) return;
     booted = true;
     boot.classList.add("is-done");
     canvas.classList.add("is-ready");
-    if (hero) {
-      hero.refreshFormation(); // re-rasterize with the now-loaded webfont
-      hero.setRunning(true);
-      hero.form(0.1);
-      hero.playIntro(); // camera push-in synced with the assemble
-      startHeroTracking();
-    }
+    startHero(); // no-op if the hero chunk is still loading; loadHero calls it then
     // Reveal hero content with a staggered post-boot entrance.
     gsap.to(".hero [data-reveal]", {
       opacity: 1,
