@@ -45,36 +45,36 @@ function advanceSnake() {
  }
 }
 
-function changeDirection(event) {
- const LEFT_KEY = 37;
- const RIGHT_KEY = 39;
- const UP_KEY = 38;
- const DOWN_KEY = 40;
- 
- if (changingDirection) return;
- changingDirection = true;
- 
- const keyPressed = event.keyCode;
- const goingUp = dy === -10;
- const goingDown = dy === 10;
- const goingRight = dx === 10;
- const goingLeft = dx === -10;
- 
- if (keyPressed === LEFT_KEY && !goingRight) {
-   dx = -10;
-   dy = 0;
+// Apply a direction change (from keyboard, swipe, or on-screen buttons) and
+// make sure the game is running so the first input also starts play.
+function setDirection(dir) {
+ if (!changingDirection) {
+   const goingUp = dy === -10;
+   const goingDown = dy === 10;
+   const goingRight = dx === 10;
+   const goingLeft = dx === -10;
+   if (dir === 'left' && !goingRight) { dx = -10; dy = 0; changingDirection = true; }
+   else if (dir === 'up' && !goingDown) { dx = 0; dy = -10; changingDirection = true; }
+   else if (dir === 'right' && !goingLeft) { dx = 10; dy = 0; changingDirection = true; }
+   else if (dir === 'down' && !goingUp) { dx = 0; dy = 10; changingDirection = true; }
  }
- if (keyPressed === UP_KEY && !goingDown) {
-   dx = 0;
-   dy = -10;
- }
- if (keyPressed === RIGHT_KEY && !goingLeft) {
-   dx = 10;
-   dy = 0;
- }
- if (keyPressed === DOWN_KEY && !goingUp) {
-   dx = 0;
-   dy = 10;
+ startGame();
+}
+
+const KEYMAP = {
+ ArrowLeft: 'left', ArrowUp: 'up', ArrowRight: 'right', ArrowDown: 'down',
+ a: 'left', w: 'up', d: 'right', s: 'down',
+ A: 'left', W: 'up', D: 'right', S: 'down',
+};
+
+function onKeyDown(event) {
+ const dir = KEYMAP[event.key];
+ if (dir) {
+   event.preventDefault(); // don't let arrow keys scroll the parent page
+   setDirection(dir);
+ } else if (event.key === ' ' || event.key === 'Spacebar') {
+   event.preventDefault();
+   togglePause();
  }
 }
 
@@ -97,18 +97,47 @@ function drawFood() {
  ctx.fillRect(foodX, foodY, 10, 10);
 }
 
-let timeout; // Define timeout variable globally
+let timeout;
+let running = false;
+
+function drawFrame() {
+ clearCanvas();
+ drawFood();
+ drawSnake();
+}
+
 function main() {
- if (didGameEnd()) return;
- 
+ if (didGameEnd()) {
+   running = false;
+   showGameOver();
+   return;
+ }
  changingDirection = false;
- timeout = setTimeout(function onTick() { // Assign the timeout to the global variable
+ timeout = setTimeout(function onTick() {
    clearCanvas();
    drawFood();
    advanceSnake();
    drawSnake();
    main();
  }, gameSpeed);
+}
+
+// Begin play (idempotent — safe to call from any first input or the button).
+function startGame() {
+ if (running || didGameEnd()) return;
+ running = true;
+ main();
+}
+
+function togglePause() {
+ if (didGameEnd()) return;
+ if (running) {
+   running = false;
+   clearTimeout(timeout);
+ } else {
+   running = true;
+   main();
+ }
 }
 
 function showGameOver() {
@@ -132,13 +161,40 @@ function didGameEnd() {
  return hitLeftWall || hitRightWall || hitToTopWall || hitToBottomWall
 }
 
-document.addEventListener("keydown", changeDirection);
-document.getElementById('startButton').addEventListener('click', main);
-document.getElementById('pauseButton').addEventListener('click', function() { clearTimeout(timeout); changingDirection = false; }); // Now using the defined timeout variable
-document.getElementById('restartButton').addEventListener('click', function() { location.reload(); });
+// ---- input wiring ----
+window.addEventListener('keydown', onKeyDown);
+// Clicking anywhere in the game gives this iframe keyboard focus (arrow keys
+// otherwise go to the parent page).
+window.addEventListener('pointerdown', function () { window.focus(); });
 
-createFood();
-main();
+document.getElementById('startButton').addEventListener('click', startGame);
+document.getElementById('pauseButton').addEventListener('click', togglePause);
+document.getElementById('restartButton').addEventListener('click', function () { location.reload(); });
 
+// On-screen d-pad (touch, and a fallback if keyboard focus is finicky).
+document.querySelectorAll('[data-dir]').forEach(function (btn) {
+ btn.addEventListener('click', function () { setDirection(btn.dataset.dir); });
+});
+
+// Swipe to steer on touch.
+let touchStart = null;
+canvas.addEventListener('touchstart', function (e) {
+ const t = e.touches[0];
+ touchStart = { x: t.clientX, y: t.clientY };
+}, { passive: true });
+canvas.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+canvas.addEventListener('touchend', function (e) {
+ if (!touchStart) return;
+ const t = e.changedTouches[0];
+ const ddx = t.clientX - touchStart.x;
+ const ddy = t.clientY - touchStart.y;
+ touchStart = null;
+ if (Math.abs(ddx) < 18 && Math.abs(ddy) < 18) return;
+ if (Math.abs(ddx) > Math.abs(ddy)) setDirection(ddx > 0 ? 'right' : 'left');
+ else setDirection(ddy > 0 ? 'down' : 'up');
+}, { passive: true });
+
+// ---- init: draw a ready frame; play begins on the first input / Start ----
+document.getElementById('highScore').innerHTML = highScore || 0;
 createFood();
-main();
+drawFrame();

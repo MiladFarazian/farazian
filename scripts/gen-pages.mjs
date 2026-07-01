@@ -474,7 +474,7 @@ const PAGES = [
     sub: "The arcade classic, rebuilt — and playable right here. Eat, grow, and don't bite yourself.",
     tags: ["JavaScript", "Canvas"],
     blocks: [
-      { t: "game", src: "/games/snake/index.html", title: "Snake", ratio: "3 / 2", note: "▶ Click the board, then steer with the arrow keys. Start / Pause / Restart below." },
+      { t: "game", src: "/games/snake/index.html", title: "Snake", ratio: "3 / 2", note: "▶ Click the board, then steer with the arrow keys or WASD (swipe / d-pad on mobile). Space pauses." },
       { t: "text", h: "Overview", html: "<p>An implementation of the arcade classic — grid movement, a growing tail, self-collision, and the one rule everyone knows. Not really much else to say. Sometimes you build a thing just because it's satisfying to build.</p>" },
     ],
   },

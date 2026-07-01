@@ -15,7 +15,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 14px;
+        gap: 12px;
         overflow: hidden;
       }
       h1 { font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #2af5ff; }
@@ -25,11 +25,42 @@
         background: #000;
         border: 1px solid rgba(110, 150, 220, 0.2);
         border-radius: 10px;
-        height: min(560px, 70vmin);
+        height: min(500px, 62vmin);
         width: auto;
         aspect-ratio: 1;
+        touch-action: none;
       }
       .controls { display: flex; gap: 8px; }
+      .hint {
+        font-size: 0.62rem;
+        letter-spacing: 0.03em;
+        color: #6b7a8c;
+        text-align: center;
+        max-width: 92%;
+      }
+      .hint b { color: #2af5ff; font-weight: 500; }
+      .dpad { display: none; flex-direction: column; align-items: center; gap: 6px; }
+      .dpad__row { display: flex; gap: 6px; }
+      .dpad button {
+        width: 46px;
+        height: 40px;
+        font-size: 0.95rem;
+        color: #2af5ff;
+        background: rgba(42, 245, 255, 0.07);
+        border: 1px solid rgba(42, 245, 255, 0.35);
+        border-radius: 10px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      .dpad button:active { background: rgba(42, 245, 255, 0.2); }
+      @media (hover: none) {
+        .dpad { display: flex; }
+      }
       button {
         font-family: inherit;
         font-size: 0.72rem;
@@ -53,6 +84,15 @@
       <button id="startButton">Start</button>
       <button id="pauseButton">Pause</button>
       <button id="restartButton">Restart</button>
+    </div>
+    <p class="hint">Click the board · <b>Arrow keys / WASD</b> to move · <b>Space</b> to pause · swipe on mobile</p>
+    <div class="dpad" aria-label="Direction pad">
+      <button data-dir="up" aria-label="Up">▲</button>
+      <div class="dpad__row">
+        <button data-dir="left" aria-label="Left">◀</button>
+        <button data-dir="down" aria-label="Down">▼</button>
+        <button data-dir="right" aria-label="Right">▶</button>
+      </div>
     </div>
     <script src="snake.js"></script>
   </body>
