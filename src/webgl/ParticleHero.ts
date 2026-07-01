@@ -406,26 +406,52 @@ export class ParticleHero {
   }
 
   private bindEvents() {
-    const onMove = (clientX: number, clientY: number) => {
-      this.mouseNorm.set(clientX / window.innerWidth, 1 - clientY / window.innerHeight);
+    const isTouch = this.profile.isTouch;
+
+    // Raycast a screen point onto the z=0 plane → world xy.
+    const toWorld = (clientX: number, clientY: number, out: THREE.Vector2) => {
       const ndc = new THREE.Vector2(
         (clientX / window.innerWidth) * 2 - 1,
         -(clientY / window.innerHeight) * 2 + 1
       );
       this.raycaster.setFromCamera(ndc, this.camera);
       const hit = new THREE.Vector3();
-      this.raycaster.ray.intersectPlane(this.plane, hit);
-      if (hit) this.mouseTarget.set(hit.x, hit.y);
-      this.mouseActive = 1;
+      if (this.raycaster.ray.intersectPlane(this.plane, hit)) out.set(hit.x, hit.y);
     };
 
-    window.addEventListener("pointermove", (e) => onMove(e.clientX, e.clientY), {
-      passive: true,
-    });
+    const onMove = (clientX: number, clientY: number, strength: number) => {
+      this.mouseNorm.set(clientX / window.innerWidth, 1 - clientY / window.innerHeight);
+      toWorld(clientX, clientY, this.mouseTarget);
+      // Coming from idle, snap the field to the pointer so the vortex doesn't
+      // sweep across the name from wherever it was last.
+      if (this.mouseActive <= 0.001) this.mouseWorld.copy(this.mouseTarget);
+      this.mouseActive = Math.max(this.mouseActive, strength);
+    };
+
+    // Touch drags drive only a gentle, fast-fading vortex; a desktop hover gets
+    // the full-strength trailing vortex.
+    window.addEventListener(
+      "pointermove",
+      (e) => onMove(e.clientX, e.clientY, isTouch ? 0.55 : 1),
+      { passive: true }
+    );
     window.addEventListener("pointerleave", () => (this.mouseActive = 0));
+    // A lifted finger releases the vortex immediately — decay is only a backstop.
+    const release = () => {
+      if (isTouch) this.mouseActive = 0;
+    };
+    window.addEventListener("pointerup", release, { passive: true });
+    window.addEventListener("pointercancel", release, { passive: true });
+
     window.addEventListener(
       "pointerdown",
       (e) => {
+        // Anchor the field at the tap point (no vortex engaged) so the shockwave
+        // — not a lingering swirl — is the tap's feedback and nothing sweeps in.
+        if (isTouch) {
+          toWorld(e.clientX, e.clientY, this.mouseTarget);
+          this.mouseWorld.copy(this.mouseTarget);
+        }
         if (e.clientY < window.innerHeight * 0.92 && window.scrollY < window.innerHeight * 0.6) {
           this.shockAt(e.clientX, e.clientY);
         }
@@ -442,7 +468,9 @@ export class ParticleHero {
           const gy = THREE.MathUtils.clamp((e.beta - 45) / 35, -1, 1);
           this.mouseTarget.set(gx * this.worldWidth * 0.4, -gy * this.worldWidth * 0.25);
           this.mouseNorm.set(0.5 + gx * 0.4, 0.5 - gy * 0.3);
-          this.mouseActive = 0.7;
+          // Gyro drives the parallax tilt via mouseNorm; keep only a whisper of
+          // vortex so tilt never dominates or "eats" the name.
+          this.mouseActive = Math.max(this.mouseActive, 0.32);
         },
         true
       );
@@ -501,8 +529,13 @@ export class ParticleHero {
     const elapsed = this.clock.elapsedTime;
 
     this.mouseWorld.lerp(this.mouseTarget, 0.12);
-    if (this.mouseActive > 0 && !this.profile.isTouch) {
-      this.mouseActive = Math.max(0, this.mouseActive - dt * 0.4);
+    if (this.mouseActive > 0) {
+      // The pointer vortex always fades on its own. On touch it releases fast so
+      // it can never get "stuck" swirling after the finger lifts (the mobile
+      // glitch where the name collapsed into a rotating ring); a desktop hover
+      // lingers longer for a smooth trailing vortex.
+      const decay = this.profile.isTouch ? 2.6 : 0.4;
+      this.mouseActive = Math.max(0, this.mouseActive - dt * decay);
     }
 
     const u = this.posVar.material.uniforms;
