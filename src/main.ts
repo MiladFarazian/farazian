@@ -7,6 +7,7 @@ import { buildContent, initReveals, initWorkCards } from "./sections/sections";
 import { ParticleHero } from "./webgl/ParticleHero";
 import { initCursor } from "./ui/cursor";
 import { initScramble } from "./ui/scramble";
+import { initScrollFX } from "./ui/scrollfx";
 import { initPalette, type Command } from "./ui/palette";
 import { initTerminal } from "./ui/terminal";
 import { initFps } from "./ui/fps";
@@ -31,6 +32,7 @@ initReveals(profile.reducedMotion);
 initWorkCards(profile.reducedMotion);
 initCursor();
 initScramble();
+initScrollFX(scroller.scrollTo);
 
 // ----- WebGL hero -----
 const canvas = document.getElementById("gl") as HTMLCanvasElement;
@@ -129,6 +131,8 @@ if (hero) {
     // Dissolve the name into stardust first, then fade the whole field out.
     hero!.setScatter(gsap.utils.clamp(0, 1, y / (window.innerHeight * 0.6)));
     hero!.setFade(gsap.utils.clamp(0, 1, 1 - y / (window.innerHeight * 0.85)));
+    // Dolly the camera back as the hero scrolls away (depth on handoff).
+    hero!.setScrollProgress(gsap.utils.clamp(0, 1, y / window.innerHeight));
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();

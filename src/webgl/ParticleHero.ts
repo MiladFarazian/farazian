@@ -83,6 +83,9 @@ export class ParticleHero {
   private burst = 0;
   private fade = 1;
   private scatter = 0;
+  private scrollP = 0;
+  private parallax = new THREE.Vector2(0, 0);
+  private baseCamZ = 6;
   private shockCenter = new THREE.Vector2(0, 0);
   private running = false;
   private failed = false;
@@ -146,7 +149,7 @@ export class ParticleHero {
   }
 
   private updateWorldWidth() {
-    const visH = 2 * Math.tan((this.camera.fov * Math.PI) / 360) * this.camera.position.z;
+    const visH = 2 * Math.tan((this.camera.fov * Math.PI) / 360) * this.baseCamZ;
     const visW = visH * this.camera.aspect;
     this.worldWidth = Math.min(visW * 0.86, 6.2);
   }
@@ -174,10 +177,12 @@ export class ParticleHero {
   }
 
   private updateBackdrop() {
-    const dist = this.camera.position.z - this.bgMesh.position.z;
+    const dist = this.baseCamZ - this.bgMesh.position.z;
     const visH = 2 * Math.tan((this.camera.fov * Math.PI) / 360) * dist;
     const visW = visH * this.camera.aspect;
-    this.bgMesh.scale.set(visW * 1.1, visH * 1.1, 1);
+    // Sized generously so the plane still covers the frustum when the camera
+    // dollies back on scroll.
+    this.bgMesh.scale.set(visW * 1.3, visH * 1.3, 1);
   }
 
   private initPost() {
@@ -454,6 +459,12 @@ export class ParticleHero {
     this.scatter = THREE.MathUtils.clamp(v, 0, 1);
   }
 
+  /** 0 at the top of the hero → 1 after one viewport of scroll. Dollies the
+   *  camera back so the dissolving field recedes into space. */
+  setScrollProgress(v: number) {
+    this.scrollP = THREE.MathUtils.clamp(v, 0, 1);
+  }
+
   setRunning(v: boolean) {
     this.running = v && !this.failed;
     if (this.running) this.clock.getDelta();
@@ -499,6 +510,15 @@ export class ParticleHero {
 
     this.bgMaterial.uniforms.uTime.value = elapsed;
     this.bgMaterial.uniforms.uFade.value = 0.55 + this.fade * 0.45;
+
+    // Scroll dollies the camera back; the cursor (or gyro) adds a gentle
+    // parallax tilt so the field reads as real 3D depth.
+    const targetZ = this.baseCamZ + this.scrollP * 2.3;
+    this.camera.position.z += (targetZ - this.camera.position.z) * 0.08;
+    this.parallax.x += ((this.mouseNorm.x - 0.5) * 0.5 - this.parallax.x) * 0.04;
+    this.parallax.y += ((this.mouseNorm.y - 0.5) * 0.5 - this.parallax.y) * 0.04;
+    this.points.rotation.y = this.parallax.x * 0.5;
+    this.points.rotation.x = this.parallax.y * 0.4;
 
     if (this.composer) {
       if (this.finalPass) this.finalPass.uniforms.uTime.value = elapsed;

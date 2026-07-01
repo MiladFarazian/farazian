@@ -312,6 +312,80 @@ strong {
     display: none;
   }
 }
+.nav__links a.is-active {
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(42, 245, 255, 0.45);
+}
+
+/* ============================================================
+   SCROLL PROGRESS RAIL (desktop scroll-spy)
+   ============================================================ */
+.scroll-rail {
+  position: fixed;
+  top: 50%;
+  right: clamp(0.9rem, 2vw, 1.8rem);
+  transform: translateY(-50%);
+  height: 42vh;
+  width: 2px;
+  z-index: 60;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+.scroll-rail__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  transform: scaleY(0);
+  background: linear-gradient(180deg, var(--cyan), var(--violet));
+  box-shadow: 0 0 10px rgba(42, 245, 255, 0.5);
+  border-radius: 2px;
+  will-change: transform;
+}
+.scroll-rail__dot {
+  position: absolute;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: none;
+  transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.scroll-rail__dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s var(--ease);
+}
+.scroll-rail__dot:hover {
+  transform: scale(1.4);
+}
+.scroll-rail__dot:hover::after {
+  opacity: 1;
+}
+.scroll-rail__dot.is-active {
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(42, 245, 255, 0.9);
+  transform: scale(1.35);
+}
+@media (max-width: 900px), (hover: none) {
+  .scroll-rail {
+    display: none;
+  }
+}
 
 /* ============================================================
    LAYOUT / SECTIONS
