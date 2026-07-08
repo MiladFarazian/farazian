@@ -566,6 +566,99 @@
 }
 .llm-col--win .llm-role { color: var(--cyan); }
 
+/* ---- LLM distillation: animated pipeline ---- */
+.llm-pipe {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(8, 12, 20, 0.5);
+  padding: clamp(1.1rem, 3.5vw, 1.8rem);
+  margin-top: 1.4rem;
+}
+.llm-stage {
+  flex: 1 1 120px;
+  min-width: 118px;
+  max-width: 190px;
+  display: grid;
+  align-content: center;
+  gap: 0.3rem;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.85rem 0.7rem;
+}
+.llm-stage b { color: var(--ink); font-size: 0.85rem; font-weight: 600; }
+.llm-stage span { color: var(--ink-faint); font-size: 0.7rem; font-family: var(--font-mono); line-height: 1.45; }
+.llm-stage--teacher { border-color: rgba(176, 107, 255, 0.5); box-shadow: 0 0 18px rgba(176, 107, 255, 0.12); }
+.llm-stage--teacher b { color: #b06bff; }
+.llm-stage--twin { border-style: dashed; }
+.llm-stage--student { border-color: rgba(42, 245, 255, 0.55); box-shadow: 0 0 18px rgba(42, 245, 255, 0.14); }
+.llm-stage--student b { color: var(--cyan); }
+.llm-pipe__arr { align-self: center; color: var(--cyan); opacity: 0.7; animation: llm-arr 1.5s ease-in-out infinite; }
+@keyframes llm-arr { 50% { opacity: 0.25; transform: translateX(3px); } }
+@media (prefers-reduced-motion: reduce) { .llm-pipe__arr { animation: none; } }
+@media (max-width: 640px) {
+  .llm-pipe { flex-direction: column; align-items: center; }
+  .llm-stage { width: 100%; max-width: 300px; }
+  .llm-pipe__arr { transform: rotate(90deg); }
+  @keyframes llm-arr { 50% { opacity: 0.25; transform: rotate(90deg) translateX(3px); } }
+}
+
+/* ---- LLM distillation: "watch it think" player ---- */
+.llm-play { display: grid; gap: 0.9rem; margin-top: 1.4rem; }
+.llm-term {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #070a11;
+  box-shadow: 0 0 0 1px rgba(42, 245, 255, 0.1), 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.llm-term__bar {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--line);
+}
+.llm-term__bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.llm-term__bar span { margin-left: 0.5rem; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+.llm-term__body { padding: 1.1rem 1.2rem 1.3rem; display: grid; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.86rem; }
+.llm-q { color: var(--ink); min-height: 2.6em; line-height: 1.6; }
+.llm-prompt { color: var(--cyan); margin-right: 0.4em; }
+.llm-caret { display: inline-block; width: 0.55em; height: 1.05em; margin-left: 2px; background: var(--cyan); vertical-align: text-bottom; animation: llm-caret 1s steps(1) infinite; }
+@keyframes llm-caret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .llm-caret { animation: none; } }
+.llm-a { color: var(--ink-dim); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.llm-badge {
+  display: inline-block; min-width: 5.4em; text-align: center;
+  border-radius: 6px; padding: 0.28em 0.7em; font-size: 0.78rem;
+  border: 1px solid transparent; opacity: 0; transform: scale(0.85);
+  transition: opacity 0.25s var(--ease), transform 0.3s var(--ease);
+}
+.llm-badge.is-on { opacity: 1; transform: scale(1); }
+.llm-badge--negative { color: #ff5470; border-color: rgba(255, 84, 112, 0.4); background: rgba(255, 84, 112, 0.08); }
+.llm-badge--neutral { color: var(--ink-dim); border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); }
+.llm-badge--positive { color: #7cff8b; border-color: rgba(124, 255, 139, 0.4); background: rgba(124, 255, 139, 0.08); }
+.llm-r { color: var(--ink-dim); line-height: 1.7; min-height: 4.5em; font-size: 0.82rem; }
+.llm-examples { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+.llm-ex {
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em;
+  color: var(--ink-dim); background: none; border: 1px solid var(--line); border-radius: 999px;
+  padding: 0.5em 1em; cursor: none; transition: 0.3s var(--ease);
+}
+.llm-ex:hover { color: var(--ink); border-color: var(--ink-faint); }
+.llm-ex.is-active { color: #04060a; background: var(--cyan); border-color: var(--cyan); }
+
+/* ---- LLM distillation: stat chips ---- */
+.llm-stats { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.llm-stat {
+  border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.2rem;
+  background: rgba(8, 12, 20, 0.5); display: grid; gap: 0.25rem;
+}
+.llm-stat b { font-size: 1.5rem; font-weight: 600; color: var(--cyan); font-family: var(--font-mono); }
+.llm-stat span { color: var(--ink-dim); font-size: 0.8rem; line-height: 1.5; }
+
 /* ---- How Machines Learn to Discriminate ---- */
 /* Feedback loop */
 .hml-loop {

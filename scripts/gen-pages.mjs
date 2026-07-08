@@ -222,7 +222,52 @@ const llmCol = (name, role, acc, f1, win) =>
             <span class="llm-name">${name}</span><span class="llm-role">${role}</span>
           </div>`;
 
+// Animated distillation pipeline (replaces the static Fig. 1 screenshot).
+const LLM_PIPE = `<section class="proj__section" data-reveal>
+        <h2>Methodology — The Pipeline</h2>
+        <p>Take a large unified financial dataset, preprocess it, and hand it to big, renowned LLMs — <strong>Meta's LLaMA 3</strong> and <strong>Claude 3.5 Haiku</strong>. The teachers don't just answer: they produce a <em>label</em> and a <em>rationale</em>. The student — a much smaller model like <strong>Flan-T5</strong> or GPT-2 — trains on both. It learns the reasoning, not just the answers.</p>
+        <div class="llm-pipe" role="img" aria-label="Distillation pipeline: financial text flows through teacher LLMs producing labels and rationales, which train a small student model">
+          <div class="llm-stage"><b>Financial text</b><span>FPB dataset, preprocessed</span></div>
+          <span class="llm-pipe__arr" aria-hidden="true">→</span>
+          <div class="llm-stage llm-stage--teacher"><b>Teacher LLMs</b><span>LLaMA 3 · Claude 3.5 Haiku</span></div>
+          <span class="llm-pipe__arr" aria-hidden="true">→</span>
+          <div class="llm-stage llm-stage--twin"><b>label + rationale</b><span>the answer <em>and</em> the why</span></div>
+          <span class="llm-pipe__arr" aria-hidden="true">→</span>
+          <div class="llm-stage llm-stage--student"><b>Student — Flan-T5</b><span>a fraction of the parameters</span></div>
+          <span class="llm-pipe__arr" aria-hidden="true">→</span>
+          <div class="llm-stage"><b>Predictions</b><span>fast, cheap, specialized</span></div>
+        </div>
+      </section>`;
+
+// "Watch the model think" — real example outputs from the poster, verbatim.
+const LLM_PLAY = `<section class="proj__section" data-reveal>
+        <h2>Watch It Think</h2>
+        <p>Real outputs from our runs, verbatim — the standing prompt is <em>“What is the sentiment of this news? Please choose an answer from {negative/neutral/positive}.”</em> Note the student doesn't just classify; it explains itself, the way its teachers taught it to.</p>
+        <div class="llm-play" id="llm-play">
+          <div class="llm-term">
+            <div class="llm-term__bar"><i></i><i></i><i></i><span id="llm-term-title">distilled T5 — student</span></div>
+            <div class="llm-term__body">
+              <p class="llm-q"><span class="llm-prompt">›</span> <span id="llm-input"></span><span class="llm-caret" aria-hidden="true"></span></p>
+              <p class="llm-a">sentiment: <span class="llm-badge" id="llm-badge"></span></p>
+              <p class="llm-r" id="llm-rationale"></p>
+            </div>
+          </div>
+          <div class="llm-examples" role="group" aria-label="Example">
+            <button class="llm-ex is-active" data-ex="0" aria-pressed="true">Student · “Bitcoin just crashed…”</button>
+            <button class="llm-ex" data-ex="1" aria-pressed="false">Teacher · “Amazon opens a store…”</button>
+          </div>
+        </div>
+        <p class="proj-note">Quirks included — “disaastah” is the actual test sentence, and the student's explanation is untouched.</p>
+      </section>`;
+
 const LLM_DEMO = `<section class="proj__section" data-reveal>
+        <div class="llm-stats">
+          <div class="llm-stat"><b>&lt;12%</b><span>of the original training data</span></div>
+          <div class="llm-stat"><b>+0.14</b><span>accuracy over its own teacher</span></div>
+          <div class="llm-stat"><b>faster</b><span>inference — runs where LLMs can't</span></div>
+        </div>
+      </section>
+      <section class="proj__section" data-reveal>
         <h2>Distilled, and still winning</h2>
         <p>On the Financial Phrase Bank benchmark, the distilled T5 doesn't just approach its teachers — it edges past them, at a fraction of the size and trained on under 12% of the data. Toggle the metric:</p>
         <div class="llm-demo" id="llm-demo" data-demo="llm-distillation">
@@ -461,13 +506,14 @@ const PAGES = [
     category: "AI / ML",
     year: "2024",
     sub: "Using knowledge distillation to build a financial-analysis model that is computationally efficient and specialized for financial contexts — without the cost of hosting a full-size LLM.",
-    meta: "Harshit Shah · Sebastian Escalante · Milad Farazian · Rizq Khateeb",
-    tags: ["Python", "LLMs", "Distillation", "NLP"],
+    meta: "Finance Bros — Harshit Shah · Sebastian Escalante · Milad Farazian · Rizq Khateeb",
+    tags: ["Python", "LLMs", "Distillation", "NLP", "Interactive"],
     blocks: [
       { t: "text", h: "Problem", html: "<p>We used distillation to develop a financial-analysis tool that is computationally efficient and simpler than traditional LLMs, while being specialized for financial contexts. LLMs cannot be efficiently used and hosted on an ad-hoc basis — so we aimed to train smaller models that are easily accessible.</p>" },
       { t: "text", h: "Why It Matters", html: "<p>Financial-analysis tools are essential for evaluating a company's fiscal health. Current tools demand significant computational resources while remaining too general to stay consistently accurate in financial contexts. Distillation combines the strengths of multiple models while being far more resource-efficient — making advanced financial analysis accessible, and improving decision-making across industries.</p>" },
-      { t: "figure", h: "Methodology", html: "<p>The approach is depicted in Fig. 1. We take a large unified dataset, perform the required preprocessing, and pass it to large, renowned LLMs such as <strong>Claude 3.5 Haiku</strong> and <strong>Meta's Llama 3</strong> to generate “labels” and “rationales.” Combining these, we train a much smaller model (in terms of parameters — e.g. Flan-T5 or GPT-2) on the outputs and rationales of the big models.</p>", src: "llm_mapping.png", title: "Fig. 1 — Distillation pipeline" },
-      { t: "text", h: "Discussion", html: "<p>LLaMA 3 and Claude 3.5 excel in similar areas, making distillation effective for combining their strengths. T5 distilled from LLaMA 3 outperforms FinGPT — indicating that step-by-step distillation is more effective than fine-tuning or LoRAs, offering cost-efficient performance and suggesting distillation is a promising optimization strategy.</p>" },
+      { t: "raw", html: LLM_PIPE },
+      { t: "raw", html: LLM_PLAY },
+      { t: "text", h: "Discussion", html: "<p>LLaMA 3 and Claude 3.5 excel in similar areas, making distillation effective for combining their strengths. T5 distilled from LLaMA 3 outperforms FinGPT — indicating that <strong>step-by-step distillation is more effective than fine-tuning or LoRAs</strong>, offering cost-efficient performance and suggesting distillation is a promising optimization strategy.</p>" },
       { t: "text", h: "Results", html: "<p>We provided a model that outperforms current LoRAs and fine-tuned GPTs using <strong>less than 12% of the original dataset</strong> (Sentiment Train FinGPT) on the FPB benchmark. It not only takes less training time, but inference is dramatically faster — making the model usable in resource-constrained systems.</p>" },
       { t: "raw", html: LLM_DEMO },
     ],
