@@ -288,6 +288,52 @@ const LLM_DEMO = `<section class="proj__section" data-reveal>
 
 // ---- Parkzy: interactive product page ----
 
+// A stylized city for the demo map: blocks, streets, a diagonal boulevard,
+// a park, and water — generated so it actually reads as a map, not a grid.
+const pkCity = () => {
+  const W = 800, H = 500, G = 14; // canvas + street gap
+  const xs = [0, 120, 250, 360, 500, 620, 800]; // street edges (vertical)
+  const ys = [0, 110, 235, 340, 500]; // street edges (horizontal)
+  let blocks = "";
+  for (let i = 0; i < xs.length - 1; i++) {
+    for (let j = 0; j < ys.length - 1; j++) {
+      const x = xs[i] + (i === 0 ? 0 : G), y = ys[j] + (j === 0 ? 0 : G);
+      const w = xs[i + 1] - x, h = ys[j + 1] - y;
+      if (i === 1 && j === 1) {
+        // the park
+        blocks += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="rgba(124,255,139,0.09)" stroke="rgba(124,255,139,0.22)"/>`;
+        blocks += `<circle cx="${x + w * 0.3}" cy="${y + h * 0.4}" r="5" fill="rgba(124,255,139,0.35)"/><circle cx="${x + w * 0.6}" cy="${y + h * 0.65}" r="4" fill="rgba(124,255,139,0.3)"/><circle cx="${x + w * 0.72}" cy="${y + h * 0.3}" r="3.5" fill="rgba(124,255,139,0.3)"/>`;
+        continue;
+      }
+      blocks += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.07)"/>`;
+      // building hints: a couple of inner rects on some blocks
+      if ((i + j) % 2 === 0 && w > 80) {
+        blocks += `<rect x="${x + 10}" y="${y + 10}" width="${Math.min(46, w * 0.3)}" height="${Math.min(34, h * 0.3)}" rx="3" fill="rgba(255,255,255,0.05)"/>`;
+        blocks += `<rect x="${x + w - Math.min(56, w * 0.35)}" y="${y + h - Math.min(44, h * 0.35)}" width="${Math.min(46, w * 0.3)}" height="${Math.min(34, h * 0.3)}" rx="3" fill="rgba(255,255,255,0.045)"/>`;
+      }
+    }
+  }
+  // lane markings on the two main roads
+  const laneH = ys[2] + G / 2, laneV = xs[3] + G / 2;
+  const lanes =
+    `<line x1="0" y1="${laneH}" x2="${W}" y2="${laneH}" stroke="rgba(255,255,255,0.16)" stroke-dasharray="14 18" stroke-width="2"/>` +
+    `<line x1="${laneV}" y1="0" x2="${laneV}" y2="${H}" stroke="rgba(255,255,255,0.16)" stroke-dasharray="14 18" stroke-width="2"/>`;
+  // diagonal boulevard + water
+  const extras =
+    `<path d="M -20 430 L 820 60" stroke="#0b0f18" stroke-width="26"/>` +
+    `<path d="M -20 430 L 820 60" stroke="rgba(42,245,255,0.10)" stroke-width="26"/>` +
+    `<path d="M -20 430 L 820 60" stroke="rgba(255,255,255,0.14)" stroke-dasharray="12 20" stroke-width="1.6"/>` +
+    `<path d="M ${W - 150} ${H} Q ${W - 90} ${H - 70} ${W} ${H - 110} L ${W} ${H} Z" fill="rgba(80,150,255,0.12)" stroke="rgba(80,150,255,0.25)"/>`;
+  const labels =
+    `<text x="16" y="${laneH - 10}" class="pk-street">GRID AVE</text>` +
+    `<text x="${laneV + 12}" y="490" class="pk-street" transform="rotate(-90 ${laneV + 12} 490)" text-anchor="start">NEON ST</text>` +
+    `<text x="${W - 96}" y="${H - 16}" class="pk-street" fill="rgba(120,170,255,0.5)">THE BAY</text>` +
+    `<text x="${xs[1] + G + 10}" y="${ys[1] + G + 22}" class="pk-street" fill="rgba(124,255,139,0.45)">PARK</text>`;
+  return `<svg class="pk-city" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="${W}" height="${H}" fill="#0b0f18"/>${blocks}${lanes}${extras}${labels}
+          </svg>`;
+};
+
 const PK_APPCARD = `<section class="proj__section" data-reveal>
         <div class="pk-appcard">
           <img src="pk-icon.png" alt="" width="72" height="72" />
@@ -310,8 +356,7 @@ const PK_DEMO = `<section class="proj__section" data-reveal>
             <button class="pk-dest-btn" data-dest="echo" aria-pressed="false">Echo Park</button>
           </div>
           <div class="pk-map" id="pk-map">
-            <div class="pk-road pk-road--h"></div>
-            <div class="pk-road pk-road--v"></div>
+            ${pkCity()}
             <div class="pk-marker" id="pk-dest"><i>◎</i><span>SoFi Stadium</span></div>
             <div class="pk-you" id="pk-you" title="You"></div>
             <div id="pk-pins"></div>
