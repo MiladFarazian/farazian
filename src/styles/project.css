@@ -506,3 +506,62 @@
 .lmbis-fill--paper { background: rgba(255, 255, 255, 0.22); }
 .lmbis-metric--win .lmbis-fill--ours { background: linear-gradient(90deg, #7cff8b, var(--cyan)); box-shadow: 0 0 12px rgba(124, 255, 139, 0.4); }
 .lmbis-row__v { width: 3.7rem; text-align: right; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); }
+
+/* ---- Interactive LLM-distillation benchmark ---- */
+.llm-demo { display: grid; gap: 1.3rem; }
+.llm-toggle { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+.llm-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.5em 1.05em;
+  cursor: none;
+  transition: 0.3s var(--ease);
+}
+.llm-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+.llm-btn.is-active { color: #04060a; background: var(--cyan); border-color: var(--cyan); }
+.llm-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(0.8rem, 4vw, 2.2rem);
+  height: 240px;
+  padding: 0 clamp(0.4rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--line);
+}
+.llm-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.llm-bar-wrap { flex: 1; width: min(70%, 78px); display: flex; flex-direction: column; justify-content: flex-end; }
+.llm-val { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); text-align: center; margin-bottom: 0.4rem; }
+.llm-bar {
+  width: 100%;
+  height: 0;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.1));
+  transition: height 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.llm-col--win .llm-bar {
+  background: linear-gradient(180deg, var(--cyan), #6bb8ff);
+  box-shadow: 0 0 18px rgba(42, 245, 255, 0.35);
+}
+.llm-col--win .llm-val { color: var(--cyan); }
+.llm-name { margin-top: 0.7rem; font-size: 0.82rem; color: var(--ink); text-align: center; line-height: 1.2; }
+.llm-role {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 0.15rem;
+}
+.llm-col--win .llm-role { color: var(--cyan); }

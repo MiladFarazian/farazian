@@ -216,6 +216,29 @@ const LMBIS_BENCH = `<section class="proj__section" data-reveal>
         </div>
       </section>`;
 
+const llmCol = (name, role, acc, f1, win) =>
+  `<div class="llm-col${win ? " llm-col--win" : ""}" data-acc="${acc}" data-f1="${f1}">
+            <div class="llm-bar-wrap"><span class="llm-val">${acc}</span><i class="llm-bar"></i></div>
+            <span class="llm-name">${name}</span><span class="llm-role">${role}</span>
+          </div>`;
+
+const LLM_DEMO = `<section class="proj__section" data-reveal>
+        <h2>Distilled, and still winning</h2>
+        <p>On the Financial Phrase Bank benchmark, the distilled T5 doesn't just approach its teachers — it edges past them, at a fraction of the size and trained on under 12% of the data. Toggle the metric:</p>
+        <div class="llm-demo" id="llm-demo" data-demo="llm-distillation">
+          <div class="llm-toggle" role="group" aria-label="Metric">
+            <button class="llm-btn is-active" data-metric="acc" aria-pressed="true">Accuracy</button>
+            <button class="llm-btn" data-metric="f1" aria-pressed="false">F1 Score</button>
+          </div>
+          <div class="llm-chart" id="llm-chart">
+            ${llmCol("LLaMA 3", "teacher", "0.68", "0.74", false)}
+            ${llmCol("FinGPT", "baseline", "0.77", "0.76", false)}
+            ${llmCol("T5-Distilled", "ours", "0.82", "0.82", true)}
+          </div>
+          <p class="proj-note">Financial Phrase Bank — 3-class financial sentiment. T5-Distilled is our model; LLaMA 3 is the teacher it learns from, FinGPT the specialized baseline.</p>
+        </div>
+      </section>`;
+
 const PAGES = [
   {
     slug: "raytracer",
@@ -285,7 +308,8 @@ const PAGES = [
       { t: "text", h: "Why It Matters", html: "<p>Financial-analysis tools are essential for evaluating a company's fiscal health. Current tools demand significant computational resources while remaining too general to stay consistently accurate in financial contexts. Distillation combines the strengths of multiple models while being far more resource-efficient — making advanced financial analysis accessible, and improving decision-making across industries.</p>" },
       { t: "figure", h: "Methodology", html: "<p>The approach is depicted in Fig. 1. We take a large unified dataset, perform the required preprocessing, and pass it to large, renowned LLMs such as <strong>Claude 3.5 Haiku</strong> and <strong>Meta's Llama 3</strong> to generate “labels” and “rationales.” Combining these, we train a much smaller model (in terms of parameters — e.g. Flan-T5 or GPT-2) on the outputs and rationales of the big models.</p>", src: "llm_mapping.png", title: "Fig. 1 — Distillation pipeline" },
       { t: "text", h: "Discussion", html: "<p>LLaMA 3 and Claude 3.5 excel in similar areas, making distillation effective for combining their strengths. T5 distilled from LLaMA 3 outperforms FinGPT — indicating that step-by-step distillation is more effective than fine-tuning or LoRAs, offering cost-efficient performance and suggesting distillation is a promising optimization strategy.</p>" },
-      { t: "figure", h: "Results", html: "<p>We provided a model that outperforms current LoRAs and fine-tuned GPTs using <strong>less than 12% of the original dataset</strong> (Sentiment Train FinGPT) on the FPB benchmark. It not only takes less training time, but inference is dramatically faster — making the model usable in resource-constrained systems.</p>", src: "llm_results.png", title: "Benchmark results" },
+      { t: "text", h: "Results", html: "<p>We provided a model that outperforms current LoRAs and fine-tuned GPTs using <strong>less than 12% of the original dataset</strong> (Sentiment Train FinGPT) on the FPB benchmark. It not only takes less training time, but inference is dramatically faster — making the model usable in resource-constrained systems.</p>" },
+      { t: "raw", html: LLM_DEMO },
     ],
   },
 
