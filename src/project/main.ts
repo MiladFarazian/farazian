@@ -39,11 +39,15 @@ if (!profile.reducedMotion) {
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-// The C++ ray tracer page ships a self-contained interactive demo. Load it
-// only when its canvas is present (it self-boots regardless of timing).
-if (document.getElementById("rt-canvas")) {
+// Interactive per-project demos: any element with data-demo="<slug>" pulls in
+// its self-contained /work/<slug>/demo.js, loaded only on the page that needs
+// it (each script self-boots on its own container, regardless of timing).
+new Set(
+  Array.from(document.querySelectorAll<HTMLElement>("[data-demo]"), (el) => el.dataset.demo)
+).forEach((slug) => {
+  if (!slug) return;
   const s = document.createElement("script");
-  s.src = "/work/raytracer/demo.js";
+  s.src = `/work/${slug}/demo.js`;
   s.defer = true;
   document.body.appendChild(s);
-}
+});

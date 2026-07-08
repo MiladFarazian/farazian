@@ -388,3 +388,121 @@
   .proj-gallery { grid-template-columns: repeat(2, 1fr); }
   .proj-gallery .proj-figure:first-child { grid-column: 1 / -1; }
 }
+
+/* ---- Interactive LMBiS-Net segmentation demo ---- */
+.lmbis-demo { display: grid; gap: 1.1rem; }
+.lmbis-stage {
+  --pos: 58%;
+  --accent: var(--cyan);
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(42, 245, 255, 0.15), 0 24px 60px rgba(0, 0, 0, 0.55);
+  cursor: ew-resize;
+  touch-action: none;
+}
+.lmbis-stage[data-accent="violet"] { --accent: #b06bff; }
+.lmbis-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.lmbis-reveal { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--pos)); }
+/* Screen-blend so the neon vessels glow over the retina rather than sit on it. */
+.lmbis-overlay { mix-blend-mode: screen; filter: drop-shadow(0 0 4px var(--accent)); }
+.lmbis-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  width: 2px;
+  transform: translateX(-1px);
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+.lmbis-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--accent);
+  border: 2px solid currentColor;
+  background: rgba(4, 6, 10, 0.65);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+.lmbis-divider:focus-visible { outline: none; }
+.lmbis-divider:focus-visible .lmbis-handle { outline: 2px solid #fff; outline-offset: 3px; }
+.lmbis-tag {
+  position: absolute;
+  bottom: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3em 0.6em;
+  border-radius: 6px;
+  background: rgba(4, 6, 10, 0.62);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+.lmbis-tag--l { left: 0.7rem; color: var(--ink-dim); }
+.lmbis-tag--r { right: 0.7rem; color: var(--accent); }
+.lmbis-toggle { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+.lmbis-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.5em 1.05em;
+  cursor: none;
+  transition: 0.3s var(--ease);
+}
+.lmbis-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+.lmbis-btn.is-active { color: #04060a; background: var(--cyan); border-color: var(--cyan); }
+.lmbis-btn.is-active[data-accent="violet"] { background: #b06bff; border-color: #b06bff; }
+
+/* ---- Benchmark bars ---- */
+.lmbis-bench { display: grid; gap: 1.4rem; }
+.lmbis-metric__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.55rem;
+}
+.lmbis-metric__note { color: var(--cyan); font-size: 0.7rem; letter-spacing: 0.04em; }
+.lmbis-row { display: flex; align-items: center; gap: 0.8rem; margin: 0.4rem 0; }
+.lmbis-row__k { width: 3.2rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-dim); }
+.lmbis-track { flex: 1; height: 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); overflow: hidden; }
+.lmbis-fill { display: block; height: 100%; width: 0; border-radius: 999px; transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1); }
+.lmbis-fill--ours { background: linear-gradient(90deg, var(--cyan), #7cc9ff); box-shadow: 0 0 12px rgba(42, 245, 255, 0.4); }
+.lmbis-fill--paper { background: rgba(255, 255, 255, 0.22); }
+.lmbis-metric--win .lmbis-fill--ours { background: linear-gradient(90deg, #7cff8b, var(--cyan)); box-shadow: 0 0 12px rgba(124, 255, 139, 0.4); }
+.lmbis-row__v { width: 3.7rem; text-align: right; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); }

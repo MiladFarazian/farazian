@@ -161,7 +161,7 @@ Vec3 trace(const Ray& ray, int depth) {
 const RT_DEMO = `<section class="proj__section" data-reveal>
         <h2>Interactive Demo</h2>
         <p>Drag to orbit the camera. This real-time ray tracer runs entirely in your browser, implementing the same algorithms as the C++ version above.</p>
-        <div class="rt-demo">
+        <div class="rt-demo" data-demo="raytracer">
           <div class="rt-stage"><canvas id="rt-canvas" width="480" height="270"></canvas></div>
           <div class="rt-controls">
             <button id="btn-add" class="demo-btn">Add Sphere</button>
@@ -176,6 +176,43 @@ const RT_DEMO = `<section class="proj__section" data-reveal>
             </div>
           </div>
           <p class="proj-note">Renders at 480×270 with progressive refinement. Reflections limited to 3 bounces for real-time performance.</p>
+        </div>
+      </section>`;
+
+const LMBIS_DEMO = `<section class="proj__section" data-reveal>
+        <h2>See it segment</h2>
+        <p>Drag across the retina to reveal what the network traced — every vessel it found in a raw CHASE_DB1 fundus photograph. Then switch to the expert's hand-labeled ground truth to see how close it got.</p>
+        <div class="lmbis-demo" id="lmbis-demo" data-demo="lmbis-net">
+          <div class="lmbis-stage" id="lmbis-stage" data-accent="cyan">
+            <img class="lmbis-img lmbis-base" src="lmbis-input.png" alt="Raw retinal fundus photograph" draggable="false" />
+            <div class="lmbis-reveal">
+              <img class="lmbis-img" src="lmbis-input.png" alt="" draggable="false" />
+              <img class="lmbis-img lmbis-overlay" id="lmbis-overlay" src="lmbis-pred-overlay.png" alt="AI vessels" draggable="false" />
+            </div>
+            <div class="lmbis-divider" id="lmbis-divider"><span class="lmbis-handle">⟷</span></div>
+            <span class="lmbis-tag lmbis-tag--l">retina</span>
+            <span class="lmbis-tag lmbis-tag--r" id="lmbis-tag-r">AI vessels</span>
+          </div>
+          <div class="lmbis-toggle" role="group" aria-label="Overlay source">
+            <button class="lmbis-btn is-active" data-src="lmbis-pred-overlay.png" data-accent="cyan" data-label="AI vessels" aria-pressed="true">Prediction</button>
+            <button class="lmbis-btn" data-src="lmbis-gt-overlay.png" data-accent="violet" data-label="Ground truth" aria-pressed="false">Ground truth</button>
+          </div>
+          <p class="proj-note">A held-out CHASE_DB1 image — the model's own output, overlaid on the source photograph. Cyan is the network's prediction; violet is the expert label.</p>
+        </div>
+      </section>`;
+
+const bar = (k, cls, v) =>
+  `<div class="lmbis-row"><span class="lmbis-row__k">${k}</span><div class="lmbis-track"><i class="lmbis-fill lmbis-fill--${cls}" data-val="${v}"></i></div><span class="lmbis-row__v">${v}</span></div>`;
+const metric = (name, note, ours, paper, win) =>
+  `<div class="lmbis-metric${win ? " lmbis-metric--win" : ""}"><div class="lmbis-metric__head"><span>${name}</span><span class="lmbis-metric__note">${note}</span></div>${bar("Ours", "ours", ours)}${bar("Paper", "paper", paper)}</div>`;
+
+const LMBIS_BENCH = `<section class="proj__section" data-reveal>
+        <h2>Benchmark — CHASE_DB1</h2>
+        <p>Our from-scratch implementation, measured against the figures reported in the original paper. We reproduced its segmentation quality — and edged past it on sensitivity, the rate of true vessels caught.</p>
+        <div class="lmbis-bench" id="lmbis-bench">
+          ${metric("AUC", "", "0.8688", "0.9897", false)}
+          ${metric("Sensitivity", "▲ ours +0.0161", "0.8766", "0.8605", true)}
+          ${metric("Specificity", "", "0.9493", "0.9896", false)}
         </div>
       </section>`;
 
@@ -227,17 +264,11 @@ const PAGES = [
     blocks: [
       { t: "text", h: "Project Goal", html: "<p>To implement the LMBiS-Net model and confirm the findings presented in the original paper. Additionally, we aimed to apply our implementation to a different dataset that was not used in the paper.</p>" },
       { t: "text", h: "Why It Matters", html: "<p>LMBiS-Net's primary benefit is an accurate retinal blood-vessel segmentation model that is computationally efficient compared to state-of-the-art models. This efficiency can assist ophthalmologists in the early detection and treatment of retinal diseases, reducing manual effort and potential human error.</p><p>Retinal diseases are a major cause of visual impairment and blindness — studies show that <strong>5%–20% of the global population aged 40+</strong> has retinal disorders. Examining retinal vessels provides critical insight into the underlying conditions that contribute to these diseases.</p>" },
+      { t: "raw", html: LMBIS_DEMO },
       { t: "figure", h: "The Model", html: "<p>LMBiS-Net is a CNN consisting of three encoder blocks, a bottleneck layer, and three decoder blocks. It uses multipath feature-extraction blocks and bidirectional skip connections to enhance information flow between the encoders and decoders.</p>", src: "LMBiS.png", title: "LMBiS-Net architecture" },
       { t: "figure", h: "Multi-Path Feature Extraction", html: "<p>This component introduces feature diversity into the model, reducing overfitting and improving generalization. By using different-sized convolutions, the network captures both low-level and high-level features crucial for blood-vessel segmentation.</p>", src: "multipath.png", title: "Multi-path feature extraction block" },
       { t: "text", h: "Our Contribution", html: "<p>We created the <strong>first publicly available implementation</strong> of LMBiS-Net and developed code to augment retinal images, increasing the size of training datasets. Our findings support the original paper's claims that LMBiS-Net is a computationally efficient and accurate state-of-the-art model for retinal blood-vessel segmentation.</p>" },
-      {
-        t: "gallery",
-        h: "Results",
-        items: [
-          { src: "results_comparison.png", title: "Metrics", caption: "AUC, Sensitivity & Specificity vs. the original paper" },
-          { src: "predictions.png", title: "Predictions", caption: "Input, model prediction, and ground truth" },
-        ],
-      },
+      { t: "raw", html: LMBIS_BENCH },
     ],
   },
 
