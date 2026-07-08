@@ -58,7 +58,7 @@ const renderBlock = (b) => {
         .map((c) => `<div class="proj-control"><kbd>${c.key}</kbd><span>${c.label}</span></div>`)
         .join("")}</div></section>`;
     case "award":
-      return `<section class="proj__section" data-reveal><div class="proj-award"><span class="proj-award__badge">🏆 winner</span><div class="proj-award__body"><b>${b.prize}</b><span>Submitted to <a href="${b.href}" target="_blank" rel="noopener">${b.event}</a></span></div></div></section>`;
+      return `<section class="proj__section" data-reveal><div class="proj-award"><span class="proj-award__badge">${b.badge || "🏆 winner"}</span><div class="proj-award__body"><b>${b.prize}</b><span>${b.lead || "Submitted to"} <a href="${b.href}" target="_blank" rel="noopener">${b.event}</a></span></div></div></section>`;
     case "raw":
       return b.html;
     default:
@@ -286,6 +286,64 @@ const LLM_DEMO = `<section class="proj__section" data-reveal>
         </div>
       </section>`;
 
+// ---- Parkzy: interactive product page ----
+
+const PK_APPCARD = `<section class="proj__section" data-reveal>
+        <div class="pk-appcard">
+          <img src="pk-icon.png" alt="" width="72" height="72" />
+          <div class="pk-appcard__body">
+            <b>Parkzy: Find Parking Nearby</b>
+            <span>Book Spots or Earn From Yours.</span>
+            <div class="pk-appcard__meta"><span class="pk-stars" aria-label="Rated 5.0 out of 5">★★★★★</span> 5.0 · Travel · Free · v2.2</div>
+          </div>
+          <a class="btn btn--primary" href="https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" target="_blank" rel="noopener" data-magnetic data-scramble>App Store ↗</a>
+        </div>
+      </section>`;
+
+const PK_DEMO = `<section class="proj__section" data-reveal>
+        <h2>Skip the Search. Ping a Host Instead.</h2>
+        <p>This is the whole product in one interaction. Pick a destination, ping every nearby host at once, and a real human accepts — usually in under a minute. Try it:</p>
+        <div class="pk-demo" id="pk-demo" data-demo="parkzy">
+          <div class="pk-dests" role="group" aria-label="Destination">
+            <button class="pk-dest-btn is-active" data-dest="sofi" aria-pressed="true">SoFi Stadium</button>
+            <button class="pk-dest-btn" data-dest="usc" aria-pressed="false">USC</button>
+            <button class="pk-dest-btn" data-dest="echo" aria-pressed="false">Echo Park</button>
+          </div>
+          <div class="pk-map" id="pk-map">
+            <div class="pk-road pk-road--h"></div>
+            <div class="pk-road pk-road--v"></div>
+            <div class="pk-marker" id="pk-dest"><i>◎</i><span>SoFi Stadium</span></div>
+            <div class="pk-you" id="pk-you" title="You"></div>
+            <div id="pk-pins"></div>
+            <div class="pk-card" id="pk-card"></div>
+          </div>
+          <p class="pk-status" id="pk-status" aria-live="polite"></p>
+          <button class="pk-ping" id="pk-ping">⚡ Ping hosts</button>
+        </div>
+        <div class="pk-stats">
+          <div class="pk-stat"><b>$15</b><span>average spot — vs $40+ in stadium lots</span></div>
+          <div class="pk-stat"><b>&lt;60s</b><span>typical host response</span></div>
+          <div class="pk-stat"><b>100%</b><span>in-app payment — no cash, no Venmo</span></div>
+        </div>
+        <p class="proj-note">Hosts and prices above are illustrative — the flow and the numbers are the real product's. Live map at <a href="https://useparkzy.com" target="_blank" rel="noopener" style="color:var(--cyan)">useparkzy.com ↗</a></p>
+      </section>`;
+
+const PK_STEPS = `<section class="proj__section" data-reveal>
+        <h2>How It Works</h2>
+        <div class="pk-steps">
+          <div class="pk-step"><i>01</i><b>Drop a pin</b><p>Tell us where you're going. Search a destination — SoFi, USC, a friend's apartment in Echo Park. We surface hosts within walking distance.</p></div>
+          <div class="pk-step"><i>02</i><b>Ping hosts</b><p>One tap. Real humans respond. Parkzy pings every nearby host at once — hosts accept in real time, usually under 60 seconds.</p></div>
+          <div class="pk-step"><i>03</i><b>Park &amp; go</b><p>Drive up. Pull in. Done. Your host's address, access notes, and a live chat thread are waiting.</p></div>
+        </div>
+      </section>`;
+
+const PK_REVIEW = `<section class="proj__section" data-reveal>
+        <div class="pk-review">
+          <span class="pk-stars pk-stars--lg" aria-hidden="true">★★★★★</span>
+          <blockquote>“I listed 12 of my spots on Parkzy and was able to successfully rent out all of them. They earned me <b>$600 in just one night</b> from an event.”</blockquote>
+          <cite>— App Store review, 5.0★ rating</cite>
+        </div>
+      </section>`;
 // ---- How Machines Learn to Discriminate: bespoke illustrated sections ----
 
 // Feedback loop: real-world bias → training → algorithmic bias → decisions → world.
@@ -561,17 +619,38 @@ const PAGES = [
     title: "Parkzy",
     category: "Software",
     year: "2025",
-    sub: "Find parking. Anywhere. Anytime. A peer-to-peer marketplace that connects drivers who need a spot with property owners who have space to spare — turning empty driveways into revenue and helping drivers skip the circling.",
+    icon: "pk-icon.png",
+    sub: "Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 5.0★ rating. My company; built end-to-end.",
+    meta: "Parkzy, Inc. · useparkzy.com",
     tags: ["React Native", "Supabase", "Stripe", "Maps", "i18n"],
-    links: [{ label: "Visit useparkzy.com", href: "https://useparkzy.com" }],
+    links: [
+      { label: "Download on the App Store", href: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" },
+      { label: "Visit useparkzy.com", href: "https://useparkzy.com" },
+    ],
     blocks: [
+      { t: "award", badge: "★ 5.0", prize: "Rated 5.0 on the App Store — live in production", lead: "Shipping as", event: "Parkzy: Find Parking Nearby", href: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" },
+      { t: "raw", html: PK_DEMO },
+      { t: "raw", html: PK_STEPS },
+      { t: "raw", html: PK_REVIEW },
+      {
+        t: "shots",
+        h: "On the App Store",
+        items: [
+          { src: "pk-shot-1.png", title: "Find a spot" },
+          { src: "pk-shot-2.png", title: "Booked" },
+          { src: "pk-shot-3.png", title: "Host earnings" },
+          { src: "pk-shot-4.png", title: "Get started" },
+        ],
+        note: "The real App Store listing — “Stop Circling for Parking. Name your price and book a private spot in seconds.”",
+      },
+      { t: "raw", html: PK_APPCARD },
       {
         t: "features",
         h: "For spot hosts",
         items: [
           { title: "List in seconds", desc: "Put an unused driveway, lot, or private space online in under a minute." },
-          { title: "Earn automatically", desc: "Get paid every time a driver parks — scheduling, pricing, and availability all in your control." },
-          { title: "Parkzy signage", desc: "Optional physical signage so passing drivers know your spot is available." },
+          { title: "Earn automatically", desc: "Get paid every time a driver parks — pricing, scheduling, and availability all in your control." },
+          { title: "Accept from the lock screen", desc: "v2.2 — approve or decline a parking request straight from the notification, without opening the app." },
         ],
       },
       {
@@ -579,11 +658,11 @@ const PAGES = [
         h: "For drivers",
         items: [
           { title: "Guaranteed parking", desc: "Find a spot when you actually need it — book last-minute or reserve ahead." },
-          { title: "Filter what matters", desc: "Search by location, price, and availability to land the right spot." },
-          { title: "Skip the circling", desc: "No more laps around the block hunting for street parking." },
+          { title: "Pay in-app", desc: "Apple Pay and Google Pay through Stripe. No cash, no Venmo, no sketchiness." },
+          { title: "Talk to a human", desc: "A live chat thread with your host — access notes, voice messages, gate codes." },
         ],
       },
-      { t: "text", h: "Status", html: "<p>Live in production — payments, maps, search, host tools, a mobile app, and English/Spanish localization, all running at <a href=\"https://useparkzy.com\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--cyan)\">useparkzy.com ↗</a>.</p>" },
+      { t: "text", h: "Under the Hood", html: "<p>React Native + Supabase + Stripe + native maps, with English/Spanish localization — one codebase from database to App Store. Payments, real-time host pings, push notifications with actionable buttons, chat with voice notes, host analytics: all built end-to-end, all in production at <a href=\"https://useparkzy.com\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--cyan)\">useparkzy.com ↗</a>.</p>" },
     ],
   },
 
