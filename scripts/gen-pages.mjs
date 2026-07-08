@@ -239,6 +239,166 @@ const LLM_DEMO = `<section class="proj__section" data-reveal>
         </div>
       </section>`;
 
+// ---- How Machines Learn to Discriminate: bespoke illustrated sections ----
+
+// Feedback loop: real-world bias → training → algorithmic bias → decisions → world.
+const HML_LOOP = `<section class="proj__section" data-reveal>
+        <h2>The Feedback Loop</h2>
+        <p>Data collected from the real world carries the real world's bias — and algorithms develop by training on that data. When the data is biased, <strong>the algorithm inherits the bias</strong>. Then its decisions flow back into the world, generating the next round of biased data.</p>
+        <div class="hml-loop">
+          <svg viewBox="0 0 640 210" role="img" aria-label="Feedback loop between real-world data bias and algorithmic bias">
+            <defs>
+              <marker id="hml-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#2af5ff"/>
+              </marker>
+            </defs>
+            <path class="hml-flow" d="M 232 74 C 290 22, 350 22, 408 74" fill="none" stroke="#2af5ff" stroke-width="2" marker-end="url(#hml-arr)"/>
+            <path class="hml-flow hml-flow--back" d="M 408 136 C 350 188, 290 188, 232 136" fill="none" stroke="#b06bff" stroke-width="2" marker-end="url(#hml-arr2)"/>
+            <defs>
+              <marker id="hml-arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#b06bff"/>
+              </marker>
+            </defs>
+            <text x="320" y="36" text-anchor="middle" class="hml-svg-label">training</text>
+            <text x="320" y="186" text-anchor="middle" class="hml-svg-label">decisions reshape the world</text>
+            <g>
+              <rect x="26" y="74" width="206" height="62" rx="14" class="hml-node hml-node--data"/>
+              <text x="129" y="99" text-anchor="middle" class="hml-node-title">REAL-WORLD</text>
+              <text x="129" y="117" text-anchor="middle" class="hml-node-title">DATA BIAS</text>
+            </g>
+            <g>
+              <rect x="408" y="74" width="206" height="62" rx="14" class="hml-node hml-node--algo"/>
+              <text x="511" y="99" text-anchor="middle" class="hml-node-title">ALGORITHMIC</text>
+              <text x="511" y="117" text-anchor="middle" class="hml-node-title">BIAS</text>
+            </g>
+          </svg>
+        </div>
+        <p class="hml-note"><b>Note:</b> this is how biased algorithms don't just reflect systems of oppression — they <em>reinforce</em> them.</p>
+      </section>`;
+
+// The black-box transparency problem.
+const HML_BB = `<section class="proj__section" data-reveal>
+        <h2>The Lack-of-Transparency Problem</h2>
+        <div class="hml-bb">
+          <div class="hml-bb__col">
+            <div class="hml-chips"><span>résumé</span><span>zip code</span><span>photo</span><span>history</span></div>
+            <label>input data</label>
+          </div>
+          <span class="hml-bb__arrow">→</span>
+          <div class="hml-bb__box"><span>?</span><label>“black box”</label></div>
+          <span class="hml-bb__arrow">→</span>
+          <div class="hml-bb__col">
+            <div class="hml-verdict"><i class="ok">approved</i><i class="no">denied</i><i class="no">denied</i><i class="ok">approved</i></div>
+            <label>predicted results</label>
+          </div>
+        </div>
+        <p>The model can't articulate <strong>why</strong> its predictions are what they are — and when it encodes bias, that opacity hides it. Transparency about <strong>who designs these systems</strong> is what makes accountability possible.</p>
+      </section>`;
+
+// Two ways to define fairness.
+const HML_DEFS = `<section class="proj__section" data-reveal>
+        <h2>What Is Fairness, Anyway?</h2>
+        <p>Fairness can be defined many ways. The talk focuses on two families — and they pull in different directions:</p>
+        <div class="hml-defs">
+          <div class="hml-def" data-accent="violet">
+            <span class="hml-def__icon">＝</span>
+            <h3>Individual Fairness</h3>
+            <p>People are treated <em>equally</em> to one another despite varying protected traits. Prioritizes <strong>equal treatment</strong> — the same rule for everybody.</p>
+          </div>
+          <div class="hml-def" data-accent="cyan">
+            <span class="hml-def__icon">≈</span>
+            <h3>Group Fairness</h3>
+            <p>People are treated <em>equitably</em> to one another despite varying protected traits. Prioritizes <strong>equal outcome</strong> — the results even out across groups.</p>
+          </div>
+        </div>
+      </section>`;
+
+// The interactive fairness playground.
+const HML_DEMO = `<section class="proj__section" data-reveal>
+        <h2>The Fairness Playground</h2>
+        <p>Two groups of candidates with <strong>identical true talent</strong>. But history depressed the recorded scores of most of group B — the world was biased, so the data is biased. Now <em>you</em> run the hiring model. Pick a policy and watch who gets in, who gets wrongly rejected, and what each definition of fairness trades away.</p>
+        <div class="hml-demo" id="hml-demo" data-demo="how-machines-learn">
+          <div class="hml-stage"><canvas id="hml-canvas" aria-label="Hiring simulation: candidates as dots with per-group score cutoffs"></canvas></div>
+          <div class="hml-legend">
+            <span><i class="hml-sw hml-sw--fill"></i> truly qualified</span>
+            <span><i class="hml-sw hml-sw--hollow"></i> not qualified</span>
+            <span><i class="hml-sw hml-sw--red"></i> qualified — but rejected</span>
+          </div>
+          <div class="hml-toggle" role="group" aria-label="Hiring policy">
+            <button class="hml-btn is-active" data-policy="raw" aria-pressed="true">Biased model</button>
+            <button class="hml-btn" data-policy="blind" aria-pressed="false">Equal treatment</button>
+            <button class="hml-btn" data-policy="eo" aria-pressed="false">Equal opportunity</button>
+            <button class="hml-btn" data-policy="dp" aria-pressed="false">Demographic parity</button>
+          </div>
+          <div class="hml-metrics">
+            <div class="hml-metric"><span class="hml-k">group a hired</span><div class="hml-track"><i class="hml-fill hml-fill--a" id="hml-bar-a"></i></div><span class="hml-v" id="hml-val-a">–</span></div>
+            <div class="hml-metric"><span class="hml-k">group b hired</span><div class="hml-track"><i class="hml-fill hml-fill--b" id="hml-bar-b"></i></div><span class="hml-v" id="hml-val-b">–</span></div>
+            <div class="hml-wrong">qualified, but rejected → <b>group a: <span id="hml-wrong-a">–</span></b> · <b>group b: <span id="hml-wrong-b">–</span></b></div>
+          </div>
+          <div class="hml-read"><code id="hml-formula"></code><p id="hml-expl"></p></div>
+        </div>
+        <p class="proj-note">An illustrative simulation — 160 synthetic candidates, same talent distribution in both groups. Fairness definitions from Fu, Aseri, Singh &amp; Srinivasan [3].</p>
+      </section>`;
+
+// Equality / Equity / Justice triptych (original SVG line-art in the site style).
+const hmlPerson = (x, h, crates, sees) => {
+  const baseY = 196 - crates * 20;
+  const headTop = baseY - h;
+  const col = sees ? "#2af5ff" : "rgba(255,255,255,0.30)";
+  let s = "";
+  for (let i = 0; i < crates; i++)
+    s += `<rect x="${x - 11}" y="${196 - (i + 1) * 20 + 1}" width="22" height="18" rx="2" class="hml-crate"/>`;
+  s += `<circle cx="${x}" cy="${headTop + 9}" r="8" fill="none" stroke="${col}" stroke-width="2"/>`;
+  s += `<rect x="${x - 8}" y="${headTop + 20}" width="16" height="${h - 20}" rx="7" fill="none" stroke="${col}" stroke-width="2"/>`;
+  return s;
+};
+const hmlFence = (mesh) => {
+  let s = `<line x1="12" y1="96" x2="208" y2="96" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>`;
+  if (mesh) {
+    for (let x = -88; x < 220; x += 14) {
+      s += `<line x1="${x}" y1="196" x2="${x + 100}" y2="96" stroke="rgba(255,255,255,0.13)"/>`;
+      s += `<line x1="${x + 100}" y1="196" x2="${x}" y2="96" stroke="rgba(255,255,255,0.13)"/>`;
+    }
+  } else {
+    s += `<rect x="12" y="96" width="196" height="100" fill="rgba(255,255,255,0.05)"/>`;
+    for (let x = 26; x < 208; x += 14)
+      s += `<line x1="${x}" y1="96" x2="${x}" y2="196" stroke="rgba(255,255,255,0.14)"/>`;
+  }
+  return s;
+};
+const hmlField = `<circle cx="150" cy="52" r="4" fill="#7cff8b" opacity="0.9"/>
+      <path d="M 138 44 q 8 -8 16 -2" fill="none" stroke="rgba(124,255,139,0.4)" stroke-dasharray="2 3"/>
+      <rect x="30" y="34" width="52" height="34" fill="none" stroke="rgba(255,255,255,0.14)"/>
+      <line x1="12" y1="80" x2="208" y2="80" stroke="rgba(255,255,255,0.10)" stroke-dasharray="3 5"/>`;
+const hmlPanel = (title, accent, caption, fig) => `<figure class="hml-panel">
+          <svg viewBox="0 0 220 210" role="img" aria-label="${title}">${hmlField}${fig}</svg>
+          <figcaption><b style="color:${accent}">${title}</b><span>${caption}</span></figcaption>
+        </figure>`;
+const HML_TRIPTYCH = `<section class="proj__section" data-reveal>
+        <h2>Equality, Equity, Justice</h2>
+        <p>The classic picture, and the reason “treat everyone the same” isn't the end of the conversation <b>[2]</b>:</p>
+        <div class="hml-triptych">
+        ${hmlPanel(
+          "Equality",
+          "#2af5ff",
+          "Everyone gets the same support — equal treatment. The shortest fan still can't see.",
+          hmlFence(false) + hmlPerson(55, 104, 1, true) + hmlPerson(110, 88, 1, true) + hmlPerson(165, 64, 1, false)
+        )}
+        ${hmlPanel(
+          "Equity",
+          "#7cff8b",
+          "Everyone gets the support they need — equal outcome.",
+          hmlFence(false) + hmlPerson(55, 104, 0, true) + hmlPerson(110, 88, 1, true) + hmlPerson(165, 64, 2, true)
+        )}
+        ${hmlPanel(
+          "Justice",
+          "#b06bff",
+          "The barrier itself is fixed. Nobody needs support at all.",
+          hmlFence(true) + hmlPerson(55, 104, 0, true) + hmlPerson(110, 88, 0, true) + hmlPerson(165, 64, 0, true)
+        )}
+        </div>
+      </section>`;
+
 const PAGES = [
   {
     slug: "raytracer",
@@ -556,10 +716,28 @@ const PAGES = [
     title: "How Machines Learn to Discriminate",
     category: "Writing",
     year: "2024",
-    sub: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
-    tags: ["Ethics", "ML"],
+    sub: "Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back.",
+    meta: "A talk by Milad Farazian · Inspired by CSE 146: Ethics and Algorithms with Lise Getoor",
+    tags: ["Ethics", "ML", "Fairness", "Interactive"],
     blocks: [
-      { t: "text", h: "Abstract", html: "<p>Inspired by Professor Lise Getoor's <em>Ethics &amp; Algorithms</em> course and Ruha Benjamin's <em>The New Jim Code</em>, this presentation shows how — even without malicious intent — algorithms trained on past real-life data tend to automate and amplify existing discrimination on the basis of race and sex. Bias doesn't have to be designed in; it's often inherited from the data we feed the machine.</p>" },
+      { t: "text", h: "The Thesis", html: "<p>Nobody has to <em>design</em> a discriminatory algorithm. Inspired by Professor Lise Getoor's <em>Ethics &amp; Algorithms</em> course and Ruha Benjamin's <em>The New Jim Code</em>, this talk shows how models trained on past real-world data tend to automate — and amplify — existing discrimination on the basis of race and sex. Bias doesn't have to be written in; it's <strong>inherited from the data we feed the machine</strong>.</p>" },
+      { t: "raw", html: HML_LOOP },
+      { t: "figure", h: "Data Bias in Action", html: "<p>The same photo of a hand holding a thermometer, run through Google Vision — once as-is, once with the skin tone edited light. The dark-skinned hand is labeled <strong>“Gun” at 61% confidence</strong>; the light-skinned hand, <strong>“Monocular” at 60%</strong>. Nobody programmed that. The training data did <b>[1]</b>.</p>", src: "google-vision.png", title: "Google Vision, April 2020", caption: "Same object, different skin tone — different label [1]" },
+      { t: "raw", html: HML_BB },
+      { t: "raw", html: HML_DEFS },
+      { t: "raw", html: HML_DEMO },
+      { t: "raw", html: HML_TRIPTYCH },
+      {
+        t: "features",
+        h: "Correcting Bias in the Process",
+        items: [
+          { title: "Pre-Processing", desc: "Detect and remove bias in the data where possible, add corrective sampling, and embed features carefully before training ever starts." },
+          { title: "Processing", desc: "Evaluate the model's rankings for bias while it works — and search for inference: is it reconstructing protected attributes from proxies?" },
+          { title: "Post-Processing", desc: "Examine causal relations in the outputs and verify results for the accuracy-versus-fairness trade-off before anything ships." },
+          { title: "Question Your Own Bias", desc: "The people building the pipeline are part of the pipeline. Fairness constraints in the algorithm can't compensate for never asking the question." },
+        ],
+      },
+      { t: "text", h: "The Takeaway", html: "<p><strong>There is no one correct way to define fairness.</strong> Equal treatment and equal outcome are both principled — and, as the playground above shows, they can be mutually exclusive on biased data. The choice between them is not a technical decision; it's an ethical one. The danger isn't choosing wrong — it's letting the data choose by default.</p><h2 style=\"margin-top:2.4rem\">References</h2><ol class=\"hml-refs\"><li>Kayser-Bril, N. (2020). <a href=\"https://algorithmwatch.org/en/google-vision-racism/\" target=\"_blank\" rel=\"noopener\">Google apologizes after its Vision AI produced racist results</a>. AlgorithmWatch.</li><li>MobilizeGreen (2021). <a href=\"https://www.mobilizegreen.org/blog/2018/9/30/environmental-equity-vs-environmental-justice-whats-the-difference\" target=\"_blank\" rel=\"noopener\">Environmental equity vs. environmental justice</a>.</li><li>Fu, R., Aseri, M., Singh, P. V., &amp; Srinivasan, K. (2021). <a href=\"https://doi.org/10.1287/mnsc.2021.4065\" target=\"_blank\" rel=\"noopener\">“Un”Fair Machine Learning Algorithms</a>. Management Science.</li></ol>" },
     ],
   },
 ];

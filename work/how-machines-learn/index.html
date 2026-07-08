@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#04060a" />
     <title>How Machines Learn to Discriminate — Milad Farazian</title>
-    <meta name="description" content="A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent." />
+    <meta name="description" content="Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back." />
     <link rel="canonical" href="https://farazian.com/work/how-machines-learn/" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Milad Farazian" />
     <meta property="og:title" content="How Machines Learn to Discriminate — Milad Farazian" />
-    <meta property="og:description" content="A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent." />
+    <meta property="og:description" content="Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back." />
     <meta property="og:url" content="https://farazian.com/work/how-machines-learn/" />
     <meta property="og:image" content="https://farazian.com/og.png" />
     <meta property="og:image:width" content="2400" />
     <meta property="og:image:height" content="1260" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="How Machines Learn to Discriminate — Milad Farazian" />
-    <meta name="twitter:description" content="A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent." />
+    <meta name="twitter:description" content="Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back." />
     <meta name="twitter:image" content="https://farazian.com/og.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icon-180.png" />
@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"How Machines Learn to Discriminate","description":"A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.","url":"https://farazian.com/work/how-machines-learn/","image":"https://farazian.com/og.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"How Machines Learn to Discriminate","description":"Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back.","url":"https://farazian.com/work/how-machines-learn/","image":"https://farazian.com/og.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -40,12 +40,133 @@
       
       <p class="proj__eyebrow" data-reveal>Writing · 2024</p>
       <h1 class="proj__title" data-reveal>How Machines Learn to Discriminate</h1>
-      <p class="proj__sub" data-reveal>A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.</p>
-      
-      <div class="proj__tags" data-reveal><span class="tag">Ethics</span><span class="tag">ML</span></div>
+      <p class="proj__sub" data-reveal>Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back.</p>
+      <p class="proj__meta" data-reveal>A talk by Milad Farazian · Inspired by CSE 146: Ethics and Algorithms with Lise Getoor</p>
+      <div class="proj__tags" data-reveal><span class="tag">Ethics</span><span class="tag">ML</span><span class="tag">Fairness</span><span class="tag">Interactive</span></div>
       
     </section>
-      <section class="proj__section" data-reveal><h2>Abstract</h2><p>Inspired by Professor Lise Getoor's <em>Ethics &amp; Algorithms</em> course and Ruha Benjamin's <em>The New Jim Code</em>, this presentation shows how — even without malicious intent — algorithms trained on past real-life data tend to automate and amplify existing discrimination on the basis of race and sex. Bias doesn't have to be designed in; it's often inherited from the data we feed the machine.</p></section>
+      <section class="proj__section" data-reveal><h2>The Thesis</h2><p>Nobody has to <em>design</em> a discriminatory algorithm. Inspired by Professor Lise Getoor's <em>Ethics &amp; Algorithms</em> course and Ruha Benjamin's <em>The New Jim Code</em>, this talk shows how models trained on past real-world data tend to automate — and amplify — existing discrimination on the basis of race and sex. Bias doesn't have to be written in; it's <strong>inherited from the data we feed the machine</strong>.</p></section>
+      <section class="proj__section" data-reveal>
+        <h2>The Feedback Loop</h2>
+        <p>Data collected from the real world carries the real world's bias — and algorithms develop by training on that data. When the data is biased, <strong>the algorithm inherits the bias</strong>. Then its decisions flow back into the world, generating the next round of biased data.</p>
+        <div class="hml-loop">
+          <svg viewBox="0 0 640 210" role="img" aria-label="Feedback loop between real-world data bias and algorithmic bias">
+            <defs>
+              <marker id="hml-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#2af5ff"/>
+              </marker>
+            </defs>
+            <path class="hml-flow" d="M 232 74 C 290 22, 350 22, 408 74" fill="none" stroke="#2af5ff" stroke-width="2" marker-end="url(#hml-arr)"/>
+            <path class="hml-flow hml-flow--back" d="M 408 136 C 350 188, 290 188, 232 136" fill="none" stroke="#b06bff" stroke-width="2" marker-end="url(#hml-arr2)"/>
+            <defs>
+              <marker id="hml-arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#b06bff"/>
+              </marker>
+            </defs>
+            <text x="320" y="36" text-anchor="middle" class="hml-svg-label">training</text>
+            <text x="320" y="186" text-anchor="middle" class="hml-svg-label">decisions reshape the world</text>
+            <g>
+              <rect x="26" y="74" width="206" height="62" rx="14" class="hml-node hml-node--data"/>
+              <text x="129" y="99" text-anchor="middle" class="hml-node-title">REAL-WORLD</text>
+              <text x="129" y="117" text-anchor="middle" class="hml-node-title">DATA BIAS</text>
+            </g>
+            <g>
+              <rect x="408" y="74" width="206" height="62" rx="14" class="hml-node hml-node--algo"/>
+              <text x="511" y="99" text-anchor="middle" class="hml-node-title">ALGORITHMIC</text>
+              <text x="511" y="117" text-anchor="middle" class="hml-node-title">BIAS</text>
+            </g>
+          </svg>
+        </div>
+        <p class="hml-note"><b>Note:</b> this is how biased algorithms don't just reflect systems of oppression — they <em>reinforce</em> them.</p>
+      </section>
+      <section class="proj__section"><h2 data-reveal>Data Bias in Action</h2><div data-reveal><p>The same photo of a hand holding a thermometer, run through Google Vision — once as-is, once with the skin tone edited light. The dark-skinned hand is labeled <strong>“Gun” at 61% confidence</strong>; the light-skinned hand, <strong>“Monocular” at 60%</strong>. Nobody programmed that. The training data did <b>[1]</b>.</p></div><figure class="proj-figure" data-reveal><img src="google-vision.png" alt="Google Vision, April 2020" loading="lazy" /><figcaption><b>Google Vision, April 2020</b><span>Same object, different skin tone — different label [1]</span></figcaption></figure></section>
+      <section class="proj__section" data-reveal>
+        <h2>The Lack-of-Transparency Problem</h2>
+        <div class="hml-bb">
+          <div class="hml-bb__col">
+            <div class="hml-chips"><span>résumé</span><span>zip code</span><span>photo</span><span>history</span></div>
+            <label>input data</label>
+          </div>
+          <span class="hml-bb__arrow">→</span>
+          <div class="hml-bb__box"><span>?</span><label>“black box”</label></div>
+          <span class="hml-bb__arrow">→</span>
+          <div class="hml-bb__col">
+            <div class="hml-verdict"><i class="ok">approved</i><i class="no">denied</i><i class="no">denied</i><i class="ok">approved</i></div>
+            <label>predicted results</label>
+          </div>
+        </div>
+        <p>The model can't articulate <strong>why</strong> its predictions are what they are — and when it encodes bias, that opacity hides it. Transparency about <strong>who designs these systems</strong> is what makes accountability possible.</p>
+      </section>
+      <section class="proj__section" data-reveal>
+        <h2>What Is Fairness, Anyway?</h2>
+        <p>Fairness can be defined many ways. The talk focuses on two families — and they pull in different directions:</p>
+        <div class="hml-defs">
+          <div class="hml-def" data-accent="violet">
+            <span class="hml-def__icon">＝</span>
+            <h3>Individual Fairness</h3>
+            <p>People are treated <em>equally</em> to one another despite varying protected traits. Prioritizes <strong>equal treatment</strong> — the same rule for everybody.</p>
+          </div>
+          <div class="hml-def" data-accent="cyan">
+            <span class="hml-def__icon">≈</span>
+            <h3>Group Fairness</h3>
+            <p>People are treated <em>equitably</em> to one another despite varying protected traits. Prioritizes <strong>equal outcome</strong> — the results even out across groups.</p>
+          </div>
+        </div>
+      </section>
+      <section class="proj__section" data-reveal>
+        <h2>The Fairness Playground</h2>
+        <p>Two groups of candidates with <strong>identical true talent</strong>. But history depressed the recorded scores of most of group B — the world was biased, so the data is biased. Now <em>you</em> run the hiring model. Pick a policy and watch who gets in, who gets wrongly rejected, and what each definition of fairness trades away.</p>
+        <div class="hml-demo" id="hml-demo" data-demo="how-machines-learn">
+          <div class="hml-stage"><canvas id="hml-canvas" aria-label="Hiring simulation: candidates as dots with per-group score cutoffs"></canvas></div>
+          <div class="hml-legend">
+            <span><i class="hml-sw hml-sw--fill"></i> truly qualified</span>
+            <span><i class="hml-sw hml-sw--hollow"></i> not qualified</span>
+            <span><i class="hml-sw hml-sw--red"></i> qualified — but rejected</span>
+          </div>
+          <div class="hml-toggle" role="group" aria-label="Hiring policy">
+            <button class="hml-btn is-active" data-policy="raw" aria-pressed="true">Biased model</button>
+            <button class="hml-btn" data-policy="blind" aria-pressed="false">Equal treatment</button>
+            <button class="hml-btn" data-policy="eo" aria-pressed="false">Equal opportunity</button>
+            <button class="hml-btn" data-policy="dp" aria-pressed="false">Demographic parity</button>
+          </div>
+          <div class="hml-metrics">
+            <div class="hml-metric"><span class="hml-k">group a hired</span><div class="hml-track"><i class="hml-fill hml-fill--a" id="hml-bar-a"></i></div><span class="hml-v" id="hml-val-a">–</span></div>
+            <div class="hml-metric"><span class="hml-k">group b hired</span><div class="hml-track"><i class="hml-fill hml-fill--b" id="hml-bar-b"></i></div><span class="hml-v" id="hml-val-b">–</span></div>
+            <div class="hml-wrong">qualified, but rejected → <b>group a: <span id="hml-wrong-a">–</span></b> · <b>group b: <span id="hml-wrong-b">–</span></b></div>
+          </div>
+          <div class="hml-read"><code id="hml-formula"></code><p id="hml-expl"></p></div>
+        </div>
+        <p class="proj-note">An illustrative simulation — 160 synthetic candidates, same talent distribution in both groups. Fairness definitions from Fu, Aseri, Singh &amp; Srinivasan [3].</p>
+      </section>
+      <section class="proj__section" data-reveal>
+        <h2>Equality, Equity, Justice</h2>
+        <p>The classic picture, and the reason “treat everyone the same” isn't the end of the conversation <b>[2]</b>:</p>
+        <div class="hml-triptych">
+        <figure class="hml-panel">
+          <svg viewBox="0 0 220 210" role="img" aria-label="Equality"><circle cx="150" cy="52" r="4" fill="#7cff8b" opacity="0.9"/>
+      <path d="M 138 44 q 8 -8 16 -2" fill="none" stroke="rgba(124,255,139,0.4)" stroke-dasharray="2 3"/>
+      <rect x="30" y="34" width="52" height="34" fill="none" stroke="rgba(255,255,255,0.14)"/>
+      <line x1="12" y1="80" x2="208" y2="80" stroke="rgba(255,255,255,0.10)" stroke-dasharray="3 5"/><line x1="12" y1="96" x2="208" y2="96" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><rect x="12" y="96" width="196" height="100" fill="rgba(255,255,255,0.05)"/><line x1="26" y1="96" x2="26" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="40" y1="96" x2="40" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="54" y1="96" x2="54" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="68" y1="96" x2="68" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="82" y1="96" x2="82" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="96" y1="96" x2="96" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="110" y1="96" x2="110" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="124" y1="96" x2="124" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="138" y1="96" x2="138" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="152" y1="96" x2="152" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="166" y1="96" x2="166" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="180" y1="96" x2="180" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="194" y1="96" x2="194" y2="196" stroke="rgba(255,255,255,0.14)"/><rect x="44" y="177" width="22" height="18" rx="2" class="hml-crate"/><circle cx="55" cy="81" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="47" y="92" width="16" height="84" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="99" y="177" width="22" height="18" rx="2" class="hml-crate"/><circle cx="110" cy="97" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="102" y="108" width="16" height="68" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="154" y="177" width="22" height="18" rx="2" class="hml-crate"/><circle cx="165" cy="121" r="8" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><rect x="157" y="132" width="16" height="44" rx="7" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2"/></svg>
+          <figcaption><b style="color:#2af5ff">Equality</b><span>Everyone gets the same support — equal treatment. The shortest fan still can't see.</span></figcaption>
+        </figure>
+        <figure class="hml-panel">
+          <svg viewBox="0 0 220 210" role="img" aria-label="Equity"><circle cx="150" cy="52" r="4" fill="#7cff8b" opacity="0.9"/>
+      <path d="M 138 44 q 8 -8 16 -2" fill="none" stroke="rgba(124,255,139,0.4)" stroke-dasharray="2 3"/>
+      <rect x="30" y="34" width="52" height="34" fill="none" stroke="rgba(255,255,255,0.14)"/>
+      <line x1="12" y1="80" x2="208" y2="80" stroke="rgba(255,255,255,0.10)" stroke-dasharray="3 5"/><line x1="12" y1="96" x2="208" y2="96" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><rect x="12" y="96" width="196" height="100" fill="rgba(255,255,255,0.05)"/><line x1="26" y1="96" x2="26" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="40" y1="96" x2="40" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="54" y1="96" x2="54" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="68" y1="96" x2="68" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="82" y1="96" x2="82" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="96" y1="96" x2="96" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="110" y1="96" x2="110" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="124" y1="96" x2="124" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="138" y1="96" x2="138" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="152" y1="96" x2="152" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="166" y1="96" x2="166" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="180" y1="96" x2="180" y2="196" stroke="rgba(255,255,255,0.14)"/><line x1="194" y1="96" x2="194" y2="196" stroke="rgba(255,255,255,0.14)"/><circle cx="55" cy="101" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="47" y="112" width="16" height="84" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="99" y="177" width="22" height="18" rx="2" class="hml-crate"/><circle cx="110" cy="97" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="102" y="108" width="16" height="68" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="154" y="177" width="22" height="18" rx="2" class="hml-crate"/><rect x="154" y="157" width="22" height="18" rx="2" class="hml-crate"/><circle cx="165" cy="101" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="157" y="112" width="16" height="44" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/></svg>
+          <figcaption><b style="color:#7cff8b">Equity</b><span>Everyone gets the support they need — equal outcome.</span></figcaption>
+        </figure>
+        <figure class="hml-panel">
+          <svg viewBox="0 0 220 210" role="img" aria-label="Justice"><circle cx="150" cy="52" r="4" fill="#7cff8b" opacity="0.9"/>
+      <path d="M 138 44 q 8 -8 16 -2" fill="none" stroke="rgba(124,255,139,0.4)" stroke-dasharray="2 3"/>
+      <rect x="30" y="34" width="52" height="34" fill="none" stroke="rgba(255,255,255,0.14)"/>
+      <line x1="12" y1="80" x2="208" y2="80" stroke="rgba(255,255,255,0.10)" stroke-dasharray="3 5"/><line x1="12" y1="96" x2="208" y2="96" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><line x1="-88" y1="196" x2="12" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="12" y1="196" x2="-88" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="-74" y1="196" x2="26" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="26" y1="196" x2="-74" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="-60" y1="196" x2="40" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="40" y1="196" x2="-60" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="-46" y1="196" x2="54" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="54" y1="196" x2="-46" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="-32" y1="196" x2="68" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="68" y1="196" x2="-32" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="-18" y1="196" x2="82" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="82" y1="196" x2="-18" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="-4" y1="196" x2="96" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="96" y1="196" x2="-4" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="10" y1="196" x2="110" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="110" y1="196" x2="10" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="24" y1="196" x2="124" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="124" y1="196" x2="24" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="38" y1="196" x2="138" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="138" y1="196" x2="38" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="52" y1="196" x2="152" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="152" y1="196" x2="52" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="66" y1="196" x2="166" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="166" y1="196" x2="66" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="80" y1="196" x2="180" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="180" y1="196" x2="80" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="94" y1="196" x2="194" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="194" y1="196" x2="94" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="108" y1="196" x2="208" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="208" y1="196" x2="108" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="122" y1="196" x2="222" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="222" y1="196" x2="122" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="136" y1="196" x2="236" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="236" y1="196" x2="136" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="150" y1="196" x2="250" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="250" y1="196" x2="150" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="164" y1="196" x2="264" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="264" y1="196" x2="164" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="178" y1="196" x2="278" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="278" y1="196" x2="178" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="192" y1="196" x2="292" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="292" y1="196" x2="192" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="206" y1="196" x2="306" y2="96" stroke="rgba(255,255,255,0.13)"/><line x1="306" y1="196" x2="206" y2="96" stroke="rgba(255,255,255,0.13)"/><circle cx="55" cy="101" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="47" y="112" width="16" height="84" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/><circle cx="110" cy="117" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="102" y="128" width="16" height="68" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/><circle cx="165" cy="141" r="8" fill="none" stroke="#2af5ff" stroke-width="2"/><rect x="157" y="152" width="16" height="44" rx="7" fill="none" stroke="#2af5ff" stroke-width="2"/></svg>
+          <figcaption><b style="color:#b06bff">Justice</b><span>The barrier itself is fixed. Nobody needs support at all.</span></figcaption>
+        </figure>
+        </div>
+      </section>
+      <section class="proj__section" data-reveal><h2>Correcting Bias in the Process</h2><div class="proj-features"><div class="proj-feature"><h3>Pre-Processing</h3><p>Detect and remove bias in the data where possible, add corrective sampling, and embed features carefully before training ever starts.</p></div><div class="proj-feature"><h3>Processing</h3><p>Evaluate the model's rankings for bias while it works — and search for inference: is it reconstructing protected attributes from proxies?</p></div><div class="proj-feature"><h3>Post-Processing</h3><p>Examine causal relations in the outputs and verify results for the accuracy-versus-fairness trade-off before anything ships.</p></div><div class="proj-feature"><h3>Question Your Own Bias</h3><p>The people building the pipeline are part of the pipeline. Fairness constraints in the algorithm can't compensate for never asking the question.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>The Takeaway</h2><p><strong>There is no one correct way to define fairness.</strong> Equal treatment and equal outcome are both principled — and, as the playground above shows, they can be mutually exclusive on biased data. The choice between them is not a technical decision; it's an ethical one. The danger isn't choosing wrong — it's letting the data choose by default.</p><h2 style="margin-top:2.4rem">References</h2><ol class="hml-refs"><li>Kayser-Bril, N. (2020). <a href="https://algorithmwatch.org/en/google-vision-racism/" target="_blank" rel="noopener">Google apologizes after its Vision AI produced racist results</a>. AlgorithmWatch.</li><li>MobilizeGreen (2021). <a href="https://www.mobilizegreen.org/blog/2018/9/30/environmental-equity-vs-environmental-justice-whats-the-difference" target="_blank" rel="noopener">Environmental equity vs. environmental justice</a>.</li><li>Fu, R., Aseri, M., Singh, P. V., &amp; Srinivasan, K. (2021). <a href="https://doi.org/10.1287/mnsc.2021.4065" target="_blank" rel="noopener">“Un”Fair Machine Learning Algorithms</a>. Management Science.</li></ol></section>
       <footer class="footer">
         <span>© <span id="year">2026</span> Milad Farazian</span>
         <a href="/#work" data-scramble>← back to work</a>
