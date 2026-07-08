@@ -98,21 +98,13 @@ export const PROJECTS: Project[] = [
   {
     no: "11",
     title: "Canvas Year in Review",
-    desc: "A Spotify-Wrapped for school — a Chrome extension that scrapes your Canvas account into a semester stats recap.",
+    desc: "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a semester recap. CruzHacks 2021 Secret Prize winner.",
     tags: ["JavaScript", "Chrome Extension"],
     href: "/work/canvas-year-in-review/",
     category: "Web",
   },
   {
     no: "12",
-    title: "Usurper",
-    desc: "Promo site for the debut short film USURPER by Edward Avalos.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    href: "/work/usurper/",
-    category: "Web",
-  },
-  {
-    no: "13",
     title: "Katsuya's Revenge",
     desc: "A 2D samurai-turned-ninja revenge platformer — restored, re-presented, and playable in the browser.",
     tags: ["Java", "Canvas"],
@@ -120,7 +112,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "14",
+    no: "13",
     title: "Bound",
     desc: "The first game I built solo — a Java/Processing platformer, with a playable p5.js web port.",
     tags: ["Java", "Processing"],
@@ -128,7 +120,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "15",
+    no: "14",
     title: "Snake",
     desc: "The arcade classic, rebuilt and playable right in the browser.",
     tags: ["JavaScript", "Canvas"],
@@ -136,7 +128,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "16",
+    no: "15",
     title: "How Machines Learn to Discriminate",
     desc: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
     tags: ["Ethics", "ML"],

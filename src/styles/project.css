@@ -249,6 +249,37 @@
 .proj-code pre .k { color: var(--violet); }
 .proj-code pre .f { color: var(--cyan); }
 
+/* ---- Award / submitted-to badge ---- */
+.proj-award {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  border: 1px solid rgba(255, 195, 94, 0.4);
+  background: linear-gradient(135deg, rgba(255, 195, 94, 0.09), rgba(255, 195, 94, 0.02) 60%);
+  border-radius: 16px;
+  padding: 1.1rem 1.4rem;
+  box-shadow: 0 0 40px rgba(255, 195, 94, 0.07);
+}
+.proj-award__badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #04060a;
+  background: linear-gradient(135deg, #ffd98a, #ffc35e);
+  border-radius: 999px;
+  padding: 0.5em 1.05em;
+  white-space: nowrap;
+  box-shadow: 0 0 18px rgba(255, 195, 94, 0.35);
+}
+.proj-award__body { display: grid; gap: 0.15rem; }
+.proj-award__body b { color: var(--ink); font-size: 1.02rem; font-weight: 600; }
+.proj-award__body span { color: var(--ink-dim); font-size: 0.85rem; }
+.proj-award__body a { color: #ffc35e; text-decoration: none; }
+.proj-award__body a:hover { text-decoration: underline; }
+
 /* ---- Embeds (video) ---- */
 .proj-embed {
   position: relative;
@@ -260,56 +291,6 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
 .proj-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-
-/* ---- Film trailer poster (links out when embed is domain-restricted) ---- */
-.film-poster {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.1rem;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  background: radial-gradient(60% 80% at 50% 38%, rgba(176, 107, 255, 0.14), transparent),
-    linear-gradient(160deg, #0a0d14, #05070c);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-  cursor: none;
-  text-align: center;
-  transition: border-color 0.4s, box-shadow 0.4s;
-}
-.film-poster:hover {
-  border-color: rgba(42, 245, 255, 0.4);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 0 70px rgba(42, 245, 255, 0.08);
-}
-.film-poster__play {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(42, 245, 255, 0.5);
-  color: var(--cyan);
-  font-size: 1.3rem;
-  padding-left: 5px;
-  box-shadow: var(--glow-cyan);
-  transition: transform 0.4s var(--ease);
-}
-.film-poster:hover .film-poster__play { transform: scale(1.1); }
-.film-poster__title {
-  font-size: clamp(2rem, 6vw, 3.4rem);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: #fff;
-}
-.film-poster__cta {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--cyan);
-}
 
 /* ---- Playable game ---- */
 .proj-game {

@@ -57,6 +57,8 @@ const renderBlock = (b) => {
       return `<section class="proj__section" data-reveal><h2>Controls</h2><div class="proj-controls">${b.items
         .map((c) => `<div class="proj-control"><kbd>${c.key}</kbd><span>${c.label}</span></div>`)
         .join("")}</div></section>`;
+    case "award":
+      return `<section class="proj__section" data-reveal><div class="proj-award"><span class="proj-award__badge">🏆 winner</span><div class="proj-award__body"><b>${b.prize}</b><span>Submitted to <a href="${b.href}" target="_blank" rel="noopener">${b.event}</a></span></div></div></section>`;
     case "raw":
       return b.html;
     default:
@@ -520,33 +522,6 @@ const PAGES = [
   },
 
   {
-    slug: "usurper",
-    title: "Usurper",
-    category: "Web",
-    year: "2025",
-    sub: "A promo site for the debut short film USURPER by Edward Avalos — scroll-triggered reveals and a mouse-tracking parallax title over the film's trailer.",
-    meta: "A film by Edward Avalos · Starring Matthew Frietze",
-    tags: ["HTML", "CSS", "JavaScript"],
-    links: [{ label: "Watch on Vimeo", href: "https://vimeo.com/1070369663" }],
-    blocks: [
-      {
-        t: "raw",
-        html: `<section class="proj__section" data-reveal>
-        <h2>Trailer</h2>
-        <a class="film-poster" href="https://vimeo.com/1070369663" target="_blank" rel="noopener" data-magnetic>
-          <span class="film-poster__play">▶</span>
-          <span class="film-poster__title">USURPER</span>
-          <span class="film-poster__cta">Watch the trailer on Vimeo ↗</span>
-        </a>
-        <p class="proj-note">The trailer is a private screener hosted on the filmmaker's Vimeo.</p>
-      </section>`,
-      },
-      { t: "text", h: "Synopsis", html: "<p>Starring Matthew Frietze, <strong>USURPER</strong> stalks a withdrawn Abel, who becomes consumed by addiction and anxiety. He begins to struggle to face an unsettling truth when his friend Seth intervenes.</p>" },
-      { t: "text", html: '<p class="proj-note">© 2025 Usurper Film. All rights reserved.</p>' },
-    ],
-  },
-
-  {
     slug: "katsuya",
     title: "Katsuya's Revenge",
     category: "Games",
@@ -735,12 +710,31 @@ const PAGES = [
     slug: "canvas-year-in-review",
     title: "Canvas Year in Review",
     category: "Web",
-    year: "2024",
-    sub: "A Spotify-Wrapped for school — a Chrome extension that scrapes your Canvas account and turns your semester into a stats recap.",
-    tags: ["JavaScript", "Chrome Extension"],
-    links: [{ label: "View on Devpost", href: "https://devpost.com/software/canvas-year-in-review" }],
+    year: "2021",
+    sub: "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a color-coded semester recap. Winner of the Secret Prize at CruzHacks 2021.",
+    meta: "Vinay Venkat · Milad Farazian · Bryce Tsuyuki",
+    tags: ["JavaScript", "WebExtensions", "Canvas API", "Bulma"],
+    links: [
+      { label: "View on Devpost", href: "https://devpost.com/software/canvas-year-in-review" },
+      { label: "Source on GitHub", href: "https://github.com/cool00geek/canvas-year" },
+    ],
     blocks: [
-      { t: "text", h: "Overview", html: "<p>Canvas Year in Review pulls the data Canvas already has on you — grades, submissions, deadlines met (and missed) — and presents it as a fun, shareable end-of-semester recap. A quick gauge of how the term actually went, in the spirit of Spotify Wrapped.</p>" },
+      { t: "award", prize: "Secret Prize — Wildest Idea", event: "CruzHacks 2021", href: "https://devpost.com/software/canvas-year-in-review" },
+      { t: "embed", h: "Demo", html: '<iframe src="https://www.youtube.com/embed/IAeu4GNfjp8?rel=0" title="Canvas Year in Review — demo" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' },
+      { t: "text", h: "Inspiration", html: "<p>Built mid-pandemic, when every class had been forced online — most of them through <strong>Canvas</strong>, the platform universities use to centralize courses, assignments, and grades. All that data was just sitting there. We turned it into a recap.</p>" },
+      { t: "text", h: "What It Does", html: "<p>Canvas Year in Review analyzes every assignment submission in your account and generates the semester's stats — then presents them in a dashboard where each metric is color-coded <span style=\"color:#7cff8b\">green</span>, <span style=\"color:#ffc35e\">yellow</span>, or <span style=\"color:#ff5470\">red</span> so you can gauge your performance at a glance.</p>" },
+      {
+        t: "features",
+        h: "The Report",
+        items: [
+          { title: "Assignments & submissions", desc: "Total assignments assigned vs. how many you actually submitted." },
+          { title: "Late & missing", desc: "Every deadline you slipped past — and the ones that never got anything at all." },
+          { title: "Rush submissions", desc: "Assignments turned in less than 30 minutes before the due date. The panic metric." },
+          { title: "Grade averages", desc: "Average grades across assignments and across all courses." },
+        ],
+      },
+      { t: "text", h: "How We Built It", html: "<p>JavaScript on the <strong>WebExtensions</strong> framework, with the UI in HTML/CSS styled with <strong>Bulma</strong>. The extension talks to the <strong>Canvas API</strong> to fetch courses and assignments, then runs all the analytics locally — your data never leaves the browser.</p><p>It was our first browser extension, and the first hackathon project we both finished <em>and</em> were proud to look at — my corner of it was the CSS and debugging support.</p>" },
+      { t: "text", h: "What's Next", html: "<p>Custom time periods to snapshot, including or excluding specific courses, and sharing your year-in-review as an image on social media — Wrapped all the way.</p>" },
     ],
   },
 
