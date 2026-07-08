@@ -47,18 +47,22 @@
     </section>
       <section class="proj__section" data-reveal><div class="proj-award"><span class="proj-award__badge">★ 5.0</span><div class="proj-award__body"><b>Rated 5.0 on the App Store — live in production</b><span>Shipping as <a href="https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" target="_blank" rel="noopener">Parkzy: Find Parking Nearby</a></span></div></div></section>
       <section class="proj__section" data-reveal>
-        <h2>Watch the Real Thing</h2>
-        <p>No mockups — this is a screen recording of the actual product booking a real spot near SoFi Stadium: search, live map, host's lot, order summary, pay. The steps follow along as it plays; tap one to jump the video there.</p>
+        <h2>Skip the Search. Ping a Host Instead.</h2>
+        <p>The whole product, frame-accurate: this walkthrough is <strong>rendered from code with Remotion</strong> — the same pipeline that renders Parkzy's App Store previews — so it's always the current app. The steps follow along as it plays; tap one (or scrub) to jump anywhere.</p>
         <div class="pk-walk" id="pk-walk" data-demo="parkzy">
-          <div class="pk-phone">
-            <video id="pk-video" src="parkzy-demo.mp4" poster="pk-poster.jpg" muted loop playsinline preload="metadata" aria-label="Screen recording of booking a parking spot in the Parkzy app"></video>
+          <div class="pk-side">
+            <div class="pk-phone">
+              <video id="pk-video" src="parkzy-ping-demo.mp4" poster="pk-poster.jpg" muted loop playsinline preload="metadata" aria-label="Code-rendered walkthrough of pinging a host and booking a spot in the Parkzy app"></video>
+            </div>
+            <input type="range" class="pk-scrub" id="pk-scrub" min="0" max="1000" value="0" step="1" aria-label="Scrub the walkthrough" />
           </div>
           <ol class="pk-flow" aria-label="Booking flow">
-            <li><button data-t="0" class="is-active" aria-current="step"><i>01</i><div><b>Search</b><span>Where and when — Inglewood, by SoFi Stadium.</span></div></button></li>
-            <li><button data-t="4.53" aria-current="false"><i>02</i><div><b>Explore the map</b><span>Real spots from real hosts, live prices.</span></div></button></li>
-            <li><button data-t="7.04" aria-current="false"><i>03</i><div><b>Pick a spot</b><span>$44 event lot · 0.3 mi · 6 min walk.</span></div></button></li>
-            <li><button data-t="12.4" aria-current="false"><i>04</i><div><b>Review</b><span>Host, hours, your car, price breakdown.</span></div></button></li>
-            <li><button data-t="16.19" aria-current="false"><i>05</i><div><b>Pay</b><span>Saved card or Apple Pay. You're parked.</span></div></button></li>
+            <li><button data-t="2.2" class="is-active" aria-current="step"><i>01</i><div><b>Search</b><span>Where to? SoFi Stadium, game night.</span></div></button></li>
+            <li><button data-t="6.9" aria-current="false"><i>02</i><div><b>Explore the map</b><span>Hosts within walking distance, live prices.</span></div></button></li>
+            <li><button data-t="11.0" aria-current="false"><i>03</i><div><b>Name your price</b><span>What's it worth to you? You set the number.</span></div></button></li>
+            <li><button data-t="14.9" aria-current="false"><i>04</i><div><b>Ping hosts</b><span>One request to every host you pick — at once.</span></div></button></li>
+            <li><button data-t="24.0" aria-current="false"><i>05</i><div><b>A host accepts</b><span>Real humans on the other side — one tap to earn.</span></div></button></li>
+            <li><button data-t="30.5" aria-current="false"><i>06</i><div><b>You're booked</b><span>Address, hours, your car. Drive up, pull in, done.</span></div></button></li>
           </ol>
         </div>
         <div class="pk-stats">
@@ -66,7 +70,7 @@
           <div class="pk-stat"><b>&lt;60s</b><span>typical host response</span></div>
           <div class="pk-stat"><b>100%</b><span>in-app payment — no cash, no Venmo</span></div>
         </div>
-        <p class="proj-note">Recorded from the production app. Live map at <a href="https://useparkzy.com" target="_blank" rel="noopener" style="color:var(--cyan)">useparkzy.com ↗</a></p>
+        <p class="proj-note">Live map at <a href="https://useparkzy.com" target="_blank" rel="noopener" style="color:var(--cyan)">useparkzy.com ↗</a></p>
       </section>
       <section class="proj__section" data-reveal>
         <h2>How It Works</h2>
