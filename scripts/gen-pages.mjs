@@ -710,6 +710,14 @@ const PAGES = [
     links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/mehdi" }],
     blocks: [
       {
+        t: "video",
+        h: "Watch the Demo",
+        src: "mehdi-demo.mp4",
+        poster: "mehdi-poster.jpg",
+        title: "Mehdi demo — linking accounts read-only, catching runaway subscriptions, and asking the advisor what to cancel",
+        note: "Link your accounts read-only, and Mehdi maps every transaction — catching the subscriptions quietly draining you, and answering “what should I cancel first?” from your real data.",
+      },
+      {
         t: "features",
         h: "What it surfaces",
         items: [
