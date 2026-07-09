@@ -51,6 +51,8 @@ const renderBlock = (b) => {
       return `<section class="proj__section" data-reveal><h2>${b.h}</h2><div class="proj-code"><div class="proj-code__bar"><i></i><i></i><i></i><span>${b.file}</span></div><pre>${esc(b.code)}</pre></div></section>`;
     case "embed":
       return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}<div class="proj-embed" data-reveal>${b.html}</div></section>`;
+    case "video":
+      return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}${b.html ? `<div data-reveal>${b.html}</div>` : ""}<div class="proj-embed" data-reveal><video src="${b.src}"${b.poster ? ` poster="${b.poster}"` : ""} controls playsinline preload="metadata"${b.title ? ` aria-label="${b.title}"` : ""}></video></div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
     case "game":
       return `<section class="proj__section" data-reveal><div class="proj-game"${b.ratio ? ` style="aspect-ratio:${b.ratio}"` : ""}><iframe src="${b.src}" title="${b.title || ""}" loading="lazy" allow="autoplay; fullscreen"></iframe></div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
     case "controls":
@@ -676,6 +678,14 @@ const PAGES = [
     tags: ["Swift", "macOS", "AVAudioEngine", "AI"],
     links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/daw" }],
     blocks: [
+      {
+        t: "video",
+        h: "Watch the Demo",
+        src: "gosan-demo.mp4",
+        poster: "gosan-poster.jpg",
+        title: "Gosan demo — the song starter arranging a track inside a native macOS DAW",
+        note: "▶ Sound on — it's a DAW. The song starter arranges an idea, then it lands as editable tracks in a real native timeline.",
+      },
       {
         t: "features",
         h: "What it does",

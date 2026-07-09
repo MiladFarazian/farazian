@@ -290,7 +290,8 @@
   border: 1px solid var(--line);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
-.proj-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.proj-embed iframe,
+.proj-embed video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #000; }
 
 /* ---- Playable game ---- */
 .proj-game {
