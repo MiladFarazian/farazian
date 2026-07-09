@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Lincoln — Milad Farazian</title>
+    <meta name="description" content="Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume." />
+    <link rel="canonical" href="https://farazian.com/work/lincoln/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Lincoln — Milad Farazian" />
+    <meta property="og:description" content="Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume." />
+    <meta property="og:url" content="https://farazian.com/work/lincoln/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lincoln — Milad Farazian" />
+    <meta name="twitter:description" content="Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume." />
+    <meta name="twitter:image" content="https://farazian.com/og.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Lincoln","description":"Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume.","url":"https://farazian.com/work/lincoln/","image":"https://farazian.com/og.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2026</p>
+      <h1 class="proj__title" data-reveal>Lincoln</h1>
+      <p class="proj__sub" data-reveal>Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">Next.js</span><span class="tag">FastAPI</span><span class="tag">scikit-learn</span><span class="tag">Postgres</span><span class="tag">Claude</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://github.com/MiladFarazian/Lincoln" target="_blank" rel="noopener" data-magnetic data-scramble>Source on GitHub ↗</a></div>
+    </section>
+      <section class="proj__section"><h2 data-reveal>Watch the Demo</h2><div class="proj-embed" data-reveal><video src="lincoln-demo.mp4" poster="lincoln-poster.jpg" controls playsinline preload="metadata" aria-label="Lincoln demo — swiping through job postings, the recommender retraining, and a tailored resume draft"></video></div><p class="proj-note">▶ Sound on. Swipe right on the good ones — it retrains on your taste every 20 swipes, then drafts the resume.</p></section>
+      <section class="proj__section" data-reveal><h2>The Loop</h2><p>Scrape postings → swipe left/right → after every <strong>20 new swipes</strong>, a background task retrains a <strong>TF-IDF + Logistic Regression</strong> model on your swipe history → the feed re-ranks toward what you actually like. No preference forms, no keyword filters — the model reads your taste from behavior alone.</p></section>
+      <section class="proj__section" data-reveal><h2>How It's Built</h2><div class="proj-features"><div class="proj-feature"><h3>Swipe UI</h3><p>Next.js + TypeScript front-end — postings as cards, one decision at a time.</p></div><div class="proj-feature"><h3>Self-retraining recommender</h3><p>TfidfVectorizer + LogisticRegression over your swipe history; trains once 20 labeled swipes exist, then retrains automatically every 20 more. Artifacts pickled and reloaded on boot.</p></div><div class="proj-feature"><h3>Job-board scraper</h3><p>FastAPI + SQLAlchemy backend keeps the deck stocked with fresh postings in Postgres.</p></div><div class="proj-feature"><h3>Resume crafting</h3><p>Right-swiped a job? Claude drafts a resume tailored to that exact posting via the Anthropic API.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>Status</h2><p>Dockerized and deployed on Railway — scraper, recommender, and resume crafting all running as one service.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

@@ -733,6 +733,38 @@ const PAGES = [
   },
 
   {
+    slug: "lincoln",
+    title: "Lincoln",
+    category: "AI / ML",
+    year: "2026",
+    sub: "Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume.",
+    tags: ["Next.js", "FastAPI", "scikit-learn", "Postgres", "Claude"],
+    links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/Lincoln" }],
+    blocks: [
+      {
+        t: "video",
+        h: "Watch the Demo",
+        src: "lincoln-demo.mp4",
+        poster: "lincoln-poster.jpg",
+        title: "Lincoln demo — swiping through job postings, the recommender retraining, and a tailored resume draft",
+        note: "▶ Sound on. Swipe right on the good ones — it retrains on your taste every 20 swipes, then drafts the resume.",
+      },
+      { t: "text", h: "The Loop", html: "<p>Scrape postings → swipe left/right → after every <strong>20 new swipes</strong>, a background task retrains a <strong>TF-IDF + Logistic Regression</strong> model on your swipe history → the feed re-ranks toward what you actually like. No preference forms, no keyword filters — the model reads your taste from behavior alone.</p>" },
+      {
+        t: "features",
+        h: "How It's Built",
+        items: [
+          { title: "Swipe UI", desc: "Next.js + TypeScript front-end — postings as cards, one decision at a time." },
+          { title: "Self-retraining recommender", desc: "TfidfVectorizer + LogisticRegression over your swipe history; trains once 20 labeled swipes exist, then retrains automatically every 20 more. Artifacts pickled and reloaded on boot." },
+          { title: "Job-board scraper", desc: "FastAPI + SQLAlchemy backend keeps the deck stocked with fresh postings in Postgres." },
+          { title: "Resume crafting", desc: "Right-swiped a job? Claude drafts a resume tailored to that exact posting via the Anthropic API." },
+        ],
+      },
+      { t: "text", h: "Status", html: "<p>Dockerized and deployed on Railway — scraper, recommender, and resume crafting all running as one service.</p>" },
+    ],
+  },
+
+  {
     slug: "wax",
     title: "Wax",
     category: "Software",

@@ -41,6 +41,14 @@ export const PROJECTS: Project[] = [
   },
   {
     no: "04",
+    title: "Lincoln",
+    desc: "Tinder for jobs — swipe through postings and a recommender retrains on your taste every 20 swipes. Swipe right, and it drafts you a tailored resume.",
+    tags: ["Next.js", "FastAPI", "scikit-learn", "Claude"],
+    href: "/work/lincoln/",
+    category: "AI / ML",
+  },
+  {
+    no: "05",
     title: "Wax",
     desc: "Instagram without the Reels rabbit hole — a calm, fast client that keeps the feed, stories, and DMs you love while silencing the algorithmic pull.",
     tags: ["TypeScript", "Mobile", "API"],
@@ -48,7 +56,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "05",
+    no: "06",
     title: "C++ Ray Tracer",
     desc: "A from-scratch ray tracer in pure C++17, no external libraries — recursive ray tracing, Blinn-Phong lighting, shadows, mirror reflections, and 4× anti-aliasing.",
     tags: ["C++17", "Graphics"],
@@ -56,7 +64,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "06",
+    no: "07",
     title: "LMBiS-Net",
     desc: "The first public implementation of Abbasi et al.'s LMBiS-Net — a lightweight bidirectional-skip-connection CNN for retinal blood-vessel segmentation.",
     tags: ["Python", "PyTorch", "CNN"],
@@ -64,7 +72,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "07",
+    no: "08",
     title: "LLM Distillation for Financial Reports",
     desc: "Distilling large language models into compact, specialized models tuned for analyzing financial reports.",
     tags: ["Python", "LLMs", "Distillation"],
@@ -72,7 +80,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "08",
+    no: "09",
     title: "Emotion Translation with Transformers",
     desc: "A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.",
     tags: ["Python", "Transformers", "NLP"],
@@ -80,7 +88,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "09",
+    no: "10",
     title: "StudyBuddy",
     desc: "A USC-based tutoring and mentoring app that matches students to the help they need.",
     tags: ["React", "Next.js", "Tailwind", "Prisma"],
@@ -88,7 +96,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "10",
+    no: "11",
     title: "Innsæi",
     desc: "A Twitter-esque social app reclaiming the original mission — share ideas instantly, without barriers. Innsæi is Icelandic for the sea within.",
     tags: ["React", "JavaScript"],
@@ -96,7 +104,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "11",
+    no: "12",
     title: "Canvas Year in Review",
     desc: "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a semester recap. CruzHacks 2021 Secret Prize winner.",
     tags: ["JavaScript", "Chrome Extension"],
@@ -104,7 +112,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "12",
+    no: "13",
     title: "Katsuya's Revenge",
     desc: "A 2D samurai-turned-ninja revenge platformer — restored, re-presented, and playable in the browser.",
     tags: ["Java", "Canvas"],
@@ -112,7 +120,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "13",
+    no: "14",
     title: "Bound",
     desc: "The first game I built solo — a Java/Processing platformer, with a playable p5.js web port.",
     tags: ["Java", "Processing"],
@@ -120,7 +128,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "14",
+    no: "15",
     title: "Snake",
     desc: "The arcade classic, rebuilt and playable right in the browser.",
     tags: ["JavaScript", "Canvas"],
@@ -128,7 +136,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "15",
+    no: "16",
     title: "How Machines Learn to Discriminate",
     desc: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
     tags: ["Ethics", "ML"],
