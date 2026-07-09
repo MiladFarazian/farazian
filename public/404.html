@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>404 — Milad Farazian</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+        src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { height: 100%; }
+      body {
+        background: #04060a;
+        color: #e8f0ff;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(70% 50% at 50% 0%, rgba(45, 60, 130, 0.18), transparent 70%),
+          radial-gradient(40% 40% at 80% 90%, rgba(176, 107, 255, 0.07), transparent 70%);
+      }
+      .term {
+        width: min(640px, 100%);
+        border: 1px solid rgba(110, 150, 220, 0.18);
+        border-radius: 14px;
+        background: rgba(7, 10, 17, 0.9);
+        box-shadow: 0 0 0 1px rgba(42, 245, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+      }
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.65rem 0.95rem;
+        border-bottom: 1px solid rgba(110, 150, 220, 0.14);
+      }
+      .bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+      .bar span { margin-left: 0.5rem; font-size: 0.68rem; letter-spacing: 0.08em; color: #72829a; }
+      .body { padding: 1.4rem 1.5rem 1.6rem; font-size: 0.92rem; line-height: 1.9; }
+      .p { color: #2af5ff; }
+      .dim { color: #8aa0c0; }
+      .err { color: #ff5470; }
+      .path { color: #b06bff; }
+      a.cmd {
+        color: #04060a;
+        background: #2af5ff;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 0.45em 1.1em;
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-top: 1.1rem;
+      }
+      a.cmd:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+      .cursor {
+        display: inline-block;
+        width: 0.6em;
+        height: 1.1em;
+        background: #2af5ff;
+        vertical-align: text-bottom;
+        animation: blink 1s steps(1) infinite;
+      }
+      @keyframes blink { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <main class="term" aria-labelledby="t">
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>farazian — zsh</span></div>
+      <div class="body">
+        <div><span class="p">farazian:~$</span> cd <span class="path" id="path">/this/page</span></div>
+        <div class="err" id="t">cd: no such file or directory <span class="dim">(404)</span></div>
+        <div class="dim">the page moved, never existed, or dissolved into particles.</div>
+        <div><span class="p">farazian:~$</span> cd ~<span class="cursor" aria-hidden="true"></span></div>
+        <a class="cmd" href="/">← back home</a>
+      </div>
+    </main>
+    <script>
+      // Show the path that was actually requested.
+      var el = document.getElementById("path");
+      if (el && location.pathname !== "/404.html") el.textContent = location.pathname;
+    </script>
+  </body>
+</html>

@@ -32,10 +32,21 @@ export function buildContent() {
     const arrow = linked ? ` <span class="arrow">${external ? "↗" : "→"}</span>` : "";
     const accent = accentByCat[p.category] || "cyan";
     const mono = (p.title.match(/[A-Za-z]/)?.[0] || "•").toUpperCase();
+    const EXTRAS: Record<string, [string, string]> = {
+      interactive: ["⚡", "interactive demo"],
+      video: ["▶", "demo video"],
+      playable: ["🕹", "playable"],
+      winner: ["🏆", "hackathon winner"],
+    };
+    const ex = p.extra ? EXTRAS[p.extra] : null;
+    const extraChip = ex
+      ? `<span class="work-card__extra" data-kind="${p.extra}"><i>${ex[0]}</i> ${ex[1]}</span>`
+      : "";
     return `<${tag} class="work-card" data-category="${p.category}" data-accent="${accent}" ${attrs}>
       <span class="work-card__ghost" aria-hidden="true">${mono}</span>
       <span class="work-card__head">
         <span class="work-card__no">${p.no}</span>
+        ${extraChip}
         <span class="work-card__cat">${p.category}</span>
       </span>
       <span class="work-card__title">${p.title}${arrow}</span>

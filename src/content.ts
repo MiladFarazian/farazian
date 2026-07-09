@@ -8,6 +8,8 @@ export interface Project {
   title: string;
   desc: string;
   tags: string[];
+  /** Optional chip advertising what's on the page: interactive demo, video, playable game, award. */
+  extra?: "interactive" | "video" | "playable" | "winner";
   href: string; // "#" = no public link
   category: string;
 }
@@ -18,6 +20,7 @@ export const PROJECTS: Project[] = [
   {
     no: "01",
     title: "Parkzy",
+    extra: "interactive",
     desc: "Airbnb for parking — a marketplace turning empty driveways into bookable spots. Payments, maps, hosts, and a mobile app, all in production.",
     tags: ["React Native", "Supabase", "Stripe", "Maps"],
     href: "/work/parkzy/",
@@ -26,6 +29,7 @@ export const PROJECTS: Project[] = [
   {
     no: "02",
     title: "Gosan",
+    extra: "video",
     desc: "A native macOS DAW with an AI taste engine — Suno generates musical ideas, Moises dissects and finishes audio, and you stay the producer.",
     tags: ["Swift", "macOS", "CoreAudio", "AI"],
     href: "/work/gosan/",
@@ -34,6 +38,7 @@ export const PROJECTS: Project[] = [
   {
     no: "03",
     title: "Mehdi",
+    extra: "video",
     desc: "A personal financial-intelligence assistant that links your accounts, models your spending, and flags runaway subscriptions and lifestyle creep in plain language.",
     tags: ["TypeScript", "Plaid", "LLM"],
     href: "/work/mehdi/",
@@ -42,6 +47,7 @@ export const PROJECTS: Project[] = [
   {
     no: "04",
     title: "Lincoln",
+    extra: "video",
     desc: "Tinder for jobs — swipe through postings and a recommender retrains on your taste every 20 swipes. Swipe right, and it drafts you a tailored resume.",
     tags: ["Next.js", "FastAPI", "scikit-learn", "Claude"],
     href: "/work/lincoln/",
@@ -58,6 +64,7 @@ export const PROJECTS: Project[] = [
   {
     no: "06",
     title: "C++ Ray Tracer",
+    extra: "interactive",
     desc: "A from-scratch ray tracer in pure C++17, no external libraries — recursive ray tracing, Blinn-Phong lighting, shadows, mirror reflections, and 4× anti-aliasing.",
     tags: ["C++17", "Graphics"],
     href: "/work/raytracer/",
@@ -66,6 +73,7 @@ export const PROJECTS: Project[] = [
   {
     no: "07",
     title: "LMBiS-Net",
+    extra: "interactive",
     desc: "The first public implementation of Abbasi et al.'s LMBiS-Net — a lightweight bidirectional-skip-connection CNN for retinal blood-vessel segmentation.",
     tags: ["Python", "PyTorch", "CNN"],
     href: "/work/lmbis-net/",
@@ -74,6 +82,7 @@ export const PROJECTS: Project[] = [
   {
     no: "08",
     title: "LLM Distillation for Financial Reports",
+    extra: "interactive",
     desc: "Distilling large language models into compact, specialized models tuned for analyzing financial reports.",
     tags: ["Python", "LLMs", "Distillation"],
     href: "/work/llm-distillation/",
@@ -106,6 +115,7 @@ export const PROJECTS: Project[] = [
   {
     no: "12",
     title: "Canvas Year in Review",
+    extra: "winner",
     desc: "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a semester recap. CruzHacks 2021 Secret Prize winner.",
     tags: ["JavaScript", "Chrome Extension"],
     href: "/work/canvas-year-in-review/",
@@ -114,6 +124,7 @@ export const PROJECTS: Project[] = [
   {
     no: "13",
     title: "Katsuya's Revenge",
+    extra: "playable",
     desc: "A 2D samurai-turned-ninja revenge platformer — restored, re-presented, and playable in the browser.",
     tags: ["Java", "Canvas"],
     href: "/work/katsuya/",
@@ -122,6 +133,7 @@ export const PROJECTS: Project[] = [
   {
     no: "14",
     title: "Bound",
+    extra: "playable",
     desc: "The first game I built solo — a Java/Processing platformer, with a playable p5.js web port.",
     tags: ["Java", "Processing"],
     href: "/work/bound/",
@@ -130,6 +142,7 @@ export const PROJECTS: Project[] = [
   {
     no: "15",
     title: "Snake",
+    extra: "playable",
     desc: "The arcade classic, rebuilt and playable right in the browser.",
     tags: ["JavaScript", "Canvas"],
     href: "/work/snake/",
@@ -138,6 +151,7 @@ export const PROJECTS: Project[] = [
   {
     no: "16",
     title: "How Machines Learn to Discriminate",
+    extra: "interactive",
     desc: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
     tags: ["Ethics", "ML"],
     href: "/work/how-machines-learn/",
@@ -172,6 +186,7 @@ export interface Link {
 }
 
 export const LINKS: Link[] = [
+  { label: "Resume", href: "/resume/" },
   { label: "GitHub", href: "https://github.com/MiladFarazian" },
   { label: "miladfarazian.com", href: "https://miladfarazian.com" },
   { label: "Parkzy", href: "https://useparkzy.com" },

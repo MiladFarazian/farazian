@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://farazian.com/</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://farazian.com/resume/</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://farazian.com/work/raytracer/</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://farazian.com/work/lmbis-net/</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://farazian.com/work/llm-distillation/</loc><changefreq>monthly</changefreq></url>

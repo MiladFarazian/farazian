@@ -16,6 +16,9 @@ if (existsSync(workDir)) {
   }
 }
 
+const resumeHtml = resolve(root, "resume", "index.html");
+if (existsSync(resumeHtml)) projectInputs["resume"] = resumeHtml;
+
 export default defineConfig({
   plugins: [glsl()],
   build: {

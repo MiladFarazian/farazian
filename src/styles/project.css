@@ -548,6 +548,46 @@
 }
 .llm-col--win .llm-role { color: var(--cyan); }
 
+/* ---- Resume page ---- */
+.rs-item {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(8, 12, 20, 0.5);
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 1.1rem;
+}
+.rs-item__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+.rs-item__head b { color: var(--ink); font-size: 1.05rem; font-weight: 600; }
+.rs-role { display: block; color: var(--cyan); font-size: 0.85rem; margin-top: 0.15rem; }
+.rs-when { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--ink-faint); white-space: nowrap; }
+.rs-item ul { margin: 0 0 0 1.1rem; display: grid; gap: 0.5rem; }
+.rs-item li { color: var(--ink-dim); font-size: 0.9rem; line-height: 1.65; }
+.rs-item li::marker { color: var(--cyan); }
+.rs-projects { display: grid; gap: 0.8rem; }
+@media (min-width: 720px) { .rs-projects { grid-template-columns: repeat(3, 1fr); } }
+.rs-projects a {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(8, 12, 20, 0.5);
+  padding: 1.1rem 1.2rem;
+  text-decoration: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.rs-projects a:hover { border-color: rgba(42, 245, 255, 0.45); box-shadow: 0 0 24px rgba(42, 245, 255, 0.1); }
+.rs-projects b { color: var(--cyan); font-size: 0.95rem; font-weight: 600; }
+.rs-projects span { color: var(--ink-dim); font-size: 0.82rem; line-height: 1.55; }
+.rs-skills { max-width: none; }
+
 /* ---- Parkzy: app card ---- */
 .pk-appcard {
   display: flex;
