@@ -287,6 +287,29 @@ const LLM_DEMO = `<section class="proj__section" data-reveal>
         </div>
       </section>`;
 
+// ---- Honest: LLM eval harness ----
+const HONEST_DEMO = `<section class="proj__section" data-reveal>
+        <h2>Grade a Model, Live</h2>
+        <p>Pick a production feature, then pick a candidate answer. Honest runs its checks in your browser and flags anything ungrounded — try the bad answers and watch it catch the hallucination before a user would.</p>
+        <div class="honest-demo" id="honest-demo" data-demo="honest">
+          <div class="h-tabs" id="h-tabs" role="group" aria-label="Feature"></div>
+          <div class="h-panel">
+            <div class="h-col">
+              <span class="h-feature" id="h-feature"></span>
+              <div class="h-sub">facts the system computed</div>
+              <div class="h-context" id="h-context"></div>
+              <div class="h-sub">user asks</div>
+              <p class="h-question" id="h-question"></p>
+              <div class="h-answers" id="h-answers" role="group" aria-label="Candidate answer"></div>
+              <p class="h-answer" id="h-answer"></p>
+            </div>
+            <div class="h-scorecard" id="h-scorecard"></div>
+          </div>
+          <div class="h-gate" id="h-gate"></div>
+        </div>
+        <p class="proj-note">The checks are real functions running client-side on a seeded suite — nothing is hardcoded per answer. Hover a <mark>flag</mark> to see why it failed.</p>
+      </section>`;
+
 // ---- Parkzy: interactive product page ----
 
 
@@ -760,6 +783,32 @@ export const PAGES = [
         ],
       },
       { t: "text", h: "Status", html: "<p>Dockerized and deployed on Railway — scraper, recommender, and resume crafting all running as one service.</p>" },
+    ],
+  },
+
+  {
+    slug: "honest",
+    title: "Honest",
+    category: "AI / ML",
+    year: "2026",
+    sub: "A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses.",
+    tags: ["LLM Evals", "Groundedness", "Guardrails", "CI Gate"],
+    links: [{ label: "How I build with AI", href: "/work/how-i-build-with-ai/", internal: true }],
+    blocks: [
+      { t: "text", h: "Why this exists", html: "<p>Shipping AI features into <a href=\"/work/parkzy/\" style=\"color:var(--cyan)\">Parkzy</a> taught me the real failure mode isn't the model being dumb — it's the model being <strong>confidently wrong</strong>. A pricing explanation that invents a fee. An availability answer that hallucinates a time slot. A support bot that follows a prompt injection. The model sounds fine; the answer ships a bug.</p><p>My fix in production was to ground the LLM in code-computed facts — the deterministic engine calculates every number, the model only explains what's already true. <strong>Honest</strong> is that instinct turned into a reusable gate: nothing reaches a user unless it passes the checks.</p>" },
+      { t: "raw", html: HONEST_DEMO },
+      {
+        t: "features",
+        h: "The checks",
+        items: [
+          { title: "Groundedness", desc: "Every factual claim — numbers, fees, amenities, times — must trace to the provided facts. Anything the model invented gets flagged and highlighted. This is where most hallucinations die." },
+          { title: "Correctness", desc: "Beyond grounded: is the answer actually right? A per-case assertion checks the true thing was said (the price breakdown adds up; the availability answer says “no”)." },
+          { title: "Guardrail / safety", desc: "Does it refuse out-of-scope and prompt-injection requests instead of complying or leaking the system prompt? Detects both the leak and the obey." },
+          { title: "Regression gate", desc: "The whole suite runs as a CI-style gate — a single red bar means a prompt or model change regressed a case. Fail the build, not the user." },
+        ],
+      },
+      { t: "text", h: "How it slots in", html: "<p>Honest runs on <strong>every prompt or model change</strong>, in CI, before deploy. Deterministic checks (grounding, format, safety patterns) run instantly and for free; subjective dimensions can add an LLM-as-judge pass. A failing check blocks the merge, and every answer gets a scored trace — the observability layer for an AI feature. It's model-agnostic: point it at any provider's output.</p>" },
+      { t: "text", h: "Honest about Honest", html: "<p>This is a working <em>demonstration</em> harness — the three checks above run live, client-side, on a seeded suite, and nothing is hardcoded per answer. It is not a battle-tested platform at production traffic. It's the eval layer I'd build on a production AI team, here as a runnable proof of the approach — because the fastest way to show you can keep AI honest is to hand you the thing that does it.</p>" },
     ],
   },
 

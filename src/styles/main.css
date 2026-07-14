@@ -950,6 +950,7 @@ main {
 .stack__group[data-accent="lime"]   { --accent: #6effb4; }
 .stack__group[data-accent="blue"]   { --accent: #5c9dff; }
 .stack__group[data-accent="magenta"] { --accent: #ff5db1; }
+.stack__group[data-accent="amber"]  { --accent: #ffc35e; }
 .stack__group-label {
   display: block;
   font-family: var(--font-mono);

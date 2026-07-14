@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Honest — Milad Farazian</title>
+    <meta name="description" content="A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses." />
+    <link rel="canonical" href="https://farazian.com/work/honest/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Honest — Milad Farazian" />
+    <meta property="og:description" content="A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses." />
+    <meta property="og:url" content="https://farazian.com/work/honest/" />
+    <meta property="og:image" content="https://farazian.com/og/honest.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Honest — Milad Farazian" />
+    <meta name="twitter:description" content="A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses." />
+    <meta name="twitter:image" content="https://farazian.com/og/honest.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Honest","description":"A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses.","url":"https://farazian.com/work/honest/","image":"https://farazian.com/og/honest.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2026</p>
+      <h1 class="proj__title" data-reveal>Honest</h1>
+      <p class="proj__sub" data-reveal>A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">LLM Evals</span><span class="tag">Groundedness</span><span class="tag">Guardrails</span><span class="tag">CI Gate</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="/work/how-i-build-with-ai/" data-magnetic data-scramble>How I build with AI</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>Why this exists</h2><p>Shipping AI features into <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a> taught me the real failure mode isn't the model being dumb — it's the model being <strong>confidently wrong</strong>. A pricing explanation that invents a fee. An availability answer that hallucinates a time slot. A support bot that follows a prompt injection. The model sounds fine; the answer ships a bug.</p><p>My fix in production was to ground the LLM in code-computed facts — the deterministic engine calculates every number, the model only explains what's already true. <strong>Honest</strong> is that instinct turned into a reusable gate: nothing reaches a user unless it passes the checks.</p></section>
+      <section class="proj__section" data-reveal>
+        <h2>Grade a Model, Live</h2>
+        <p>Pick a production feature, then pick a candidate answer. Honest runs its checks in your browser and flags anything ungrounded — try the bad answers and watch it catch the hallucination before a user would.</p>
+        <div class="honest-demo" id="honest-demo" data-demo="honest">
+          <div class="h-tabs" id="h-tabs" role="group" aria-label="Feature"></div>
+          <div class="h-panel">
+            <div class="h-col">
+              <span class="h-feature" id="h-feature"></span>
+              <div class="h-sub">facts the system computed</div>
+              <div class="h-context" id="h-context"></div>
+              <div class="h-sub">user asks</div>
+              <p class="h-question" id="h-question"></p>
+              <div class="h-answers" id="h-answers" role="group" aria-label="Candidate answer"></div>
+              <p class="h-answer" id="h-answer"></p>
+            </div>
+            <div class="h-scorecard" id="h-scorecard"></div>
+          </div>
+          <div class="h-gate" id="h-gate"></div>
+        </div>
+        <p class="proj-note">The checks are real functions running client-side on a seeded suite — nothing is hardcoded per answer. Hover a <mark>flag</mark> to see why it failed.</p>
+      </section>
+      <section class="proj__section" data-reveal><h2>The checks</h2><div class="proj-features"><div class="proj-feature"><h3>Groundedness</h3><p>Every factual claim — numbers, fees, amenities, times — must trace to the provided facts. Anything the model invented gets flagged and highlighted. This is where most hallucinations die.</p></div><div class="proj-feature"><h3>Correctness</h3><p>Beyond grounded: is the answer actually right? A per-case assertion checks the true thing was said (the price breakdown adds up; the availability answer says “no”).</p></div><div class="proj-feature"><h3>Guardrail / safety</h3><p>Does it refuse out-of-scope and prompt-injection requests instead of complying or leaking the system prompt? Detects both the leak and the obey.</p></div><div class="proj-feature"><h3>Regression gate</h3><p>The whole suite runs as a CI-style gate — a single red bar means a prompt or model change regressed a case. Fail the build, not the user.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>How it slots in</h2><p>Honest runs on <strong>every prompt or model change</strong>, in CI, before deploy. Deterministic checks (grounding, format, safety patterns) run instantly and for free; subjective dimensions can add an LLM-as-judge pass. A failing check blocks the merge, and every answer gets a scored trace — the observability layer for an AI feature. It's model-agnostic: point it at any provider's output.</p></section>
+      <section class="proj__section" data-reveal><h2>Honest about Honest</h2><p>This is a working <em>demonstration</em> harness — the three checks above run live, client-side, on a seeded suite, and nothing is hardcoded per answer. It is not a battle-tested platform at production traffic. It's the eval layer I'd build on a production AI team, here as a runnable proof of the approach — because the fastest way to show you can keep AI honest is to hand you the thing that does it.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

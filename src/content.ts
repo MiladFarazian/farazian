@@ -55,6 +55,15 @@ export const PROJECTS: Project[] = [
   },
   {
     no: "05",
+    title: "Honest",
+    extra: "interactive",
+    desc: "A working LLM evaluation harness — grades every model answer for hallucination, ungrounded claims, and broken guardrails before a user sees it. The eval layer production AI features need.",
+    tags: ["LLM Evals", "Guardrails", "TypeScript"],
+    href: "/work/honest/",
+    category: "AI / ML",
+  },
+  {
+    no: "06",
     title: "Wax",
     desc: "Instagram without the Reels rabbit hole — a calm, fast client that keeps the feed, stories, and DMs you love while silencing the algorithmic pull.",
     tags: ["TypeScript", "Mobile", "API"],
@@ -62,7 +71,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "06",
+    no: "07",
     title: "C++ Ray Tracer",
     extra: "interactive",
     desc: "A from-scratch ray tracer in pure C++17, no external libraries — recursive ray tracing, Blinn-Phong lighting, shadows, mirror reflections, and 4× anti-aliasing.",
@@ -71,7 +80,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "07",
+    no: "08",
     title: "LMBiS-Net",
     extra: "interactive",
     desc: "The first public implementation of Abbasi et al.'s LMBiS-Net — a lightweight bidirectional-skip-connection CNN for retinal blood-vessel segmentation.",
@@ -80,7 +89,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "08",
+    no: "09",
     title: "LLM Distillation for Financial Reports",
     extra: "interactive",
     desc: "Distilling large language models into compact, specialized models tuned for analyzing financial reports.",
@@ -89,7 +98,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "09",
+    no: "10",
     title: "Emotion Translation with Transformers",
     desc: "A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.",
     tags: ["Python", "Transformers", "NLP"],
@@ -97,7 +106,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "10",
+    no: "11",
     title: "StudyBuddy",
     desc: "A USC-based tutoring and mentoring app that matches students to the help they need.",
     tags: ["React", "Next.js", "Tailwind", "Supabase"],
@@ -105,7 +114,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "11",
+    no: "12",
     title: "Innsæi",
     desc: "A Twitter-esque social app reclaiming the original mission — share ideas instantly, without barriers. Innsæi is Icelandic for the sea within.",
     tags: ["React", "JavaScript"],
@@ -113,7 +122,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "12",
+    no: "13",
     title: "Canvas Year in Review",
     extra: "winner",
     desc: "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a semester recap. CruzHacks 2021 Secret Prize winner.",
@@ -122,7 +131,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "13",
+    no: "14",
     title: "Katsuya's Revenge",
     extra: "playable",
     desc: "A 2D samurai-turned-ninja revenge platformer — restored, re-presented, and playable in the browser.",
@@ -131,7 +140,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "14",
+    no: "15",
     title: "Bound",
     extra: "playable",
     desc: "The first game I built solo — a Java/Processing platformer, with a playable p5.js web port.",
@@ -140,7 +149,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "15",
+    no: "16",
     title: "Snake",
     extra: "playable",
     desc: "The arcade classic, rebuilt and playable right in the browser.",
@@ -149,7 +158,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "16",
+    no: "17",
     title: "How Machines Learn to Discriminate",
     extra: "interactive",
     desc: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
@@ -158,7 +167,7 @@ export const PROJECTS: Project[] = [
     category: "Writing",
   },
   {
-    no: "17",
+    no: "18",
     title: "How I Build With AI",
     desc: "How I actually ship production software with AI — the plan → generate → verify loop, what I delegate vs. own, and the test suite that makes the speed safe.",
     tags: ["AI-Paired Dev", "Verification", "Essay"],
@@ -174,30 +183,35 @@ export interface StackGroup {
 }
 
 export const STACK_GROUPS: StackGroup[] = [
-  { label: "Languages", accent: "cyan", items: ["TypeScript", "Python", "Swift", "C++"] },
+  { label: "Languages", accent: "cyan", items: ["TypeScript", "Python", "Swift / SwiftUI", "C++", "Java", "SQL"] },
   {
     label: "AI / ML",
     accent: "magenta",
     items: [
       "LLM APIs (Anthropic · OpenAI)",
-      "pgvector / semantic search",
-      "PyTorch",
+      "RAG · pgvector · embeddings",
+      "LLM evals · guardrails",
+      "MCP · agentic tooling",
+      "PyTorch · Hugging Face",
       "scikit-learn",
-      "Hugging Face",
-      "Claude Code / agentic tooling",
     ],
   },
   {
-    label: "Web & Frameworks",
+    label: "Web & Mobile",
     accent: "violet",
-    items: ["React", "React Native", "Next.js", "Node.js"],
+    items: ["React", "React Native · Expo", "Next.js", "Node.js · FastAPI", "Capacitor (iOS · Android)", "Tailwind"],
   },
   {
-    label: "Data & Infra",
+    label: "Cloud & Data",
     accent: "blue",
-    items: ["Postgres / Supabase", "Stripe", "AWS", "Docker", "Terraform", "GitHub Actions"],
+    items: ["Postgres · Supabase", "AWS (RDS · Lambda)", "Terraform", "Docker", "Stripe Connect · Identity", "Mapbox GL"],
   },
-  { label: "Graphics", accent: "lime", items: ["Three.js", "WebGL / WebGPU", "GLSL", "GSAP"] },
+  {
+    label: "Reliability",
+    accent: "amber",
+    items: ["GitHub Actions CI", "Playwright · Vitest", "Sentry", "PostHog"],
+  },
+  { label: "Graphics & Media", accent: "lime", items: ["Three.js", "WebGL · WebGPU", "GLSL · Metal", "CoreAudio"] },
 ];
 
 export interface Link {

@@ -548,6 +548,73 @@
 }
 .llm-col--win .llm-role { color: var(--cyan); }
 
+/* ---- Honest: LLM eval harness ---- */
+.honest-demo { display: grid; gap: 1rem; margin-top: 1.3rem; }
+.h-tabs, .h-answers { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.h-tabs button, .h-answers button {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em;
+  color: var(--ink-dim); background: none; border: 1px solid var(--line); border-radius: 999px;
+  padding: 0.5em 1em; cursor: none; transition: 0.3s var(--ease);
+}
+.h-tabs button:hover, .h-answers button:hover { color: var(--ink); border-color: var(--ink-faint); }
+.h-tabs button.is-active { color: #04060a; background: var(--cyan); border-color: var(--cyan); }
+.h-answers button.is-active { color: var(--ink); border-color: var(--cyan); background: rgba(42, 245, 255, 0.08); }
+.h-panel { display: grid; gap: 1rem; }
+@media (min-width: 780px) { .h-panel { grid-template-columns: 1.3fr 1fr; align-items: start; } }
+.h-col {
+  border: 1px solid var(--line); border-radius: 16px; background: rgba(8, 12, 20, 0.5);
+  padding: 1.2rem 1.3rem; display: grid; gap: 0.5rem;
+}
+.h-feature { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cyan); }
+.h-sub { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-top: 0.5rem; }
+.h-context { display: grid; gap: 0.35rem; }
+.h-fact { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.82rem; border-bottom: 1px dashed var(--line); padding-bottom: 0.35rem; }
+.h-fact span { color: var(--ink-dim); }
+.h-fact b { color: var(--ink); font-family: var(--font-mono); }
+.h-question { color: var(--ink); font-size: 0.95rem; font-style: italic; line-height: 1.5; }
+.h-answers { margin-top: 0.4rem; }
+.h-answer {
+  color: var(--ink); font-size: 0.92rem; line-height: 1.6; margin-top: 0.4rem;
+  border-left: 2px solid var(--line); padding-left: 0.85rem;
+}
+.h-answer mark {
+  background: rgba(255, 84, 112, 0.18); color: #ff8fa3; border-radius: 3px;
+  padding: 0 0.15em; text-decoration: underline wavy rgba(255, 84, 112, 0.7); cursor: help;
+}
+.h-scorecard {
+  border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.2rem;
+  background: rgba(8, 12, 20, 0.5); display: grid; gap: 0.6rem; align-content: start;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.h-scorecard.is-pass { border-color: rgba(74, 222, 128, 0.4); box-shadow: 0 0 26px rgba(74, 222, 128, 0.08); }
+.h-scorecard.is-fail { border-color: rgba(255, 84, 112, 0.4); box-shadow: 0 0 26px rgba(255, 84, 112, 0.08); }
+.h-verdict { display: flex; align-items: center; gap: 0.7rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+.h-verdict__badge {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  border-radius: 6px; padding: 0.3em 0.7em;
+}
+.is-pass .h-verdict__badge { color: #04060a; background: #4ade80; }
+.is-fail .h-verdict__badge { color: #fff; background: #ff5470; }
+.h-verdict__label { color: var(--ink-dim); font-size: 0.82rem; }
+.h-check { display: grid; grid-template-columns: 1.3em auto 1fr; align-items: baseline; gap: 0.5rem; }
+.h-check i { font-style: normal; font-weight: 700; }
+.h-check.ok i { color: #4ade80; }
+.h-check.no i { color: #ff5470; }
+.h-check b { color: var(--ink); font-size: 0.85rem; font-weight: 600; }
+.h-check span { color: var(--ink-dim); font-size: 0.8rem; font-family: var(--font-mono); }
+.h-gate {
+  border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem;
+  background: rgba(8, 12, 20, 0.5); display: grid; gap: 0.7rem;
+}
+.h-gate__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.h-gate__head b { color: var(--ink); font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.h-gate__head span { color: var(--ink-dim); font-size: 0.78rem; font-family: var(--font-mono); }
+.h-gate__bars { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.h-gate__bars i { width: 26px; height: 8px; border-radius: 3px; }
+.h-gate__bars i.pass { background: #4ade80; }
+.h-gate__bars i.fail { background: #ff5470; }
+.h-gate__bars i.miss { outline: 2px solid #ffc35e; outline-offset: 1px; }
+
 /* ---- Creative page ---- */
 .cr-spotify { margin-top: 1.3rem; border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); }
 .cr-spotify iframe { display: block; }
