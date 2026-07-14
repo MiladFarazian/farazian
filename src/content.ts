@@ -21,8 +21,8 @@ export const PROJECTS: Project[] = [
     no: "01",
     title: "Parkzy",
     extra: "interactive",
-    desc: "Airbnb for parking — a marketplace turning empty driveways into bookable spots. Payments, maps, hosts, and a mobile app, all in production.",
-    tags: ["React Native", "Supabase", "Stripe", "Maps"],
+    desc: "Airbnb for parking — live on the App Store (5.0★, 1,000+ downloads). Payments, maps, real-time matching, and a production AI suite: semantic search, LLM-explained pricing, AI-graded photos.",
+    tags: ["React Native", "Supabase", "Stripe", "LLMs"],
     href: "/work/parkzy/",
     category: "Software",
   },
@@ -100,7 +100,7 @@ export const PROJECTS: Project[] = [
     no: "10",
     title: "StudyBuddy",
     desc: "A USC-based tutoring and mentoring app that matches students to the help they need.",
-    tags: ["React", "Next.js", "Tailwind", "Prisma"],
+    tags: ["React", "Next.js", "Tailwind", "Supabase"],
     href: "/work/studybuddy/",
     category: "Web",
   },
@@ -166,18 +166,30 @@ export interface StackGroup {
 }
 
 export const STACK_GROUPS: StackGroup[] = [
-  { label: "Languages", accent: "cyan", items: ["TypeScript", "Swift", "Python", "C++"] },
+  { label: "Languages", accent: "cyan", items: ["TypeScript", "Python", "Swift", "C++"] },
+  {
+    label: "AI / ML",
+    accent: "magenta",
+    items: [
+      "LLM APIs (Anthropic · OpenAI)",
+      "pgvector / semantic search",
+      "PyTorch",
+      "scikit-learn",
+      "Hugging Face",
+      "Claude Code / agentic tooling",
+    ],
+  },
   {
     label: "Web & Frameworks",
     accent: "violet",
     items: ["React", "React Native", "Next.js", "Node.js"],
   },
-  { label: "Graphics", accent: "lime", items: ["Three.js", "WebGL / WebGPU", "GLSL", "GSAP"] },
   {
     label: "Data & Infra",
     accent: "blue",
-    items: ["Postgres", "Supabase", "Stripe", "PyTorch", "Docker", "AWS"],
+    items: ["Postgres / Supabase", "Stripe", "AWS", "Docker", "Terraform", "GitHub Actions"],
   },
+  { label: "Graphics", accent: "lime", items: ["Three.js", "WebGL / WebGPU", "GLSL", "GSAP"] },
 ];
 
 export interface Link {

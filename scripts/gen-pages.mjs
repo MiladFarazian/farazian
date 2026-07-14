@@ -323,7 +323,7 @@ const PK_DEMO = `<section class="proj__section" data-reveal>
         </div>
         <div class="pk-stats">
           <div class="pk-stat"><b>$15</b><span>average spot — vs $40+ in stadium lots</span></div>
-          <div class="pk-stat"><b>&lt;60s</b><span>typical host response</span></div>
+          <div class="pk-stat"><b>&lt;60s</b><span>the accept target — built for sub-60-second responses</span></div>
           <div class="pk-stat"><b>100%</b><span>in-app payment — no cash, no Venmo</span></div>
         </div>
         <p class="proj-note">Live map at <a href="https://useparkzy.com" target="_blank" rel="noopener" style="color:var(--cyan)">useparkzy.com ↗</a></p>
@@ -333,7 +333,7 @@ const PK_STEPS = `<section class="proj__section" data-reveal>
         <h2>How It Works</h2>
         <div class="pk-steps">
           <div class="pk-step"><i>01</i><b>Drop a pin</b><p>Tell us where you're going. Search a destination — SoFi, USC, a friend's apartment in Echo Park. We surface hosts within walking distance.</p></div>
-          <div class="pk-step"><i>02</i><b>Ping hosts</b><p>One tap. Real humans respond. Parkzy pings every nearby host at once — hosts accept in real time, usually under 60 seconds.</p></div>
+          <div class="pk-step"><i>02</i><b>Ping hosts</b><p>One tap. Real humans respond. Parkzy pings every nearby host at once — hosts accept in real time — the matching system is built for sub-60-second accepts.</p></div>
           <div class="pk-step"><i>03</i><b>Park &amp; go</b><p>Drive up. Pull in. Done. Your host's address, access notes, and a live chat thread are waiting.</p></div>
         </div>
       </section>`;
@@ -815,7 +815,7 @@ export const PAGES = [
     category: "Web",
     year: "2025",
     sub: "A USC-based tutoring and mentoring app that matches students to the help they need.",
-    tags: ["React", "Next.js", "Tailwind", "Prisma"],
+    tags: ["React", "Next.js", "Tailwind", "Supabase"],
     blocks: [
       { t: "text", h: "Overview", html: "<p>StudyBuddy pairs students with tutors and mentors based on their specific needs — the courses they're taking, the topics they're stuck on, and how they like to learn. A matching layer connects the right people, so finding help on campus stops being a group-chat scavenger hunt.</p>" },
     ],
