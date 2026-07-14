@@ -1012,6 +1012,120 @@ const RESUME_HTML = `<!doctype html>
 </html>
 `;
 
+// ============================================================
+// HIRE PAGE — /hire/  (freelance services; prices are starting anchors)
+// ============================================================
+const hireSvc = (tag, name, price, desc, includes) =>
+  `<div class="hire-svc" data-reveal><div class="hire-svc__top"><span class="hire-svc__tag">${tag}</span><span class="hire-svc__price">${price}</span></div><h3>${name}</h3><p>${desc}</p><ul>${includes.map((i) => `<li>${i}</li>`).join("")}</ul></div>`;
+
+const HIRE_HTML = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Hire Me — Milad Farazian</title>
+    <meta name="description" content="Work with Milad Farazian — fractional AI/engineering advisor, automation & AI agents, and production LLM features. Part-time, Los Angeles, remote-friendly." />
+    <link rel="canonical" href="https://farazian.com/hire/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Hire Milad Farazian — AI & Full-Stack Engineering" />
+    <meta property="og:description" content="Fractional AI/engineering advisor · automation & AI agents · production LLM features. The engineer who shipped a live App Store product solo." />
+    <meta property="og:url" content="https://farazian.com/hire/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+        <p class="proj__eyebrow" data-reveal>work with me</p>
+        <h1 class="proj__title" data-reveal>Ship AI features that survive real users.</h1>
+        <p class="proj__sub" data-reveal>I'm a full-stack engineer with real AI depth — I built <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>, a live App Store marketplace (5.0★, 1,000+ downloads), end to end as sole engineer, LLM features and all. Now I take on a few focused engagements at a time: <strong>advisory, automation, and production AI</strong>.</p>
+        <div class="proj__links" data-reveal>
+          <a class="btn btn--primary" href="mailto:miladfarazian@gmail.com?subject=Project%20inquiry" data-magnetic data-scramble>Start a project →</a>
+          <a class="btn btn--ghost" href="/#work" data-magnetic data-scramble>See the work</a>
+          <a class="btn btn--ghost" href="/resume/" data-magnetic data-scramble>Resume</a>
+        </div>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>How I can help</h2>
+        <div class="hire-grid">
+          ${hireSvc(
+            "Fractional advisor",
+            "Fractional AI / Engineering Advisor",
+            "from $1,500/mo",
+            "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Retainer or per-session.",
+            ["Working calls + async review (Slack/email)", "Architecture, model choice, build-vs-buy", "Code & AI reviews on your real repo", "Also available per-session — from $250 / 90 min"]
+          )}
+          ${hireSvc(
+            "Automation & agents",
+            "Automation & AI Agents",
+            "from $1,500",
+            "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows.",
+            ["One scoped automation or agent, shipped", "Runs in your stack — no lock-in", "Docs + a handoff walkthrough", "Typical turnaround: 1–2 weeks"]
+          )}
+          ${hireSvc(
+            "AI features",
+            "AI Features Into Your Product",
+            "from $3,000",
+            "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy.",
+            ["Design, build, and ship one AI feature", "RAG / embeddings / function-calling as needed", "Evals + guardrails so it survives real users", "Integrated into your codebase, tested"]
+          )}
+          ${hireSvc(
+            "Start here",
+            "AI / Codebase Audit",
+            "from $500",
+            "A fast, honest review of your codebase or AI setup — where it's fragile, what to fix first, what's worth building. The low-risk way to start.",
+            ["Deep read of your repo or AI stack", "Written report: risks, quick wins, roadmap", "A live call to walk through it", "Credited toward a larger project if you continue"]
+          )}
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>Why me</h2>
+        <div class="hire-proof">
+          <div><b>Shipped, not theoretical</b><span>A live App Store product (5.0★), built solo — 392 migrations, 163 edge functions, production LLM features. I've done this for real.</span></div>
+          <div><b>Fast</b><span>A native macOS DAW in ~10 days; new products from zero on a regular cadence. You'll see progress in days, not months.</span></div>
+          <div><b>Verified</b><span>Playwright/Vitest in CI, Sentry, human review of every merge. AI-accelerated, not AI-sloppy.</span></div>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>How it works</h2>
+        <div class="pk-steps">
+          <div class="pk-step"><i>01</i><b>Intro call</b><p>15–20 minutes. You tell me the problem; I tell you honestly whether I'm the right fit and how I'd approach it.</p></div>
+          <div class="pk-step"><i>02</i><b>Scoped proposal</b><p>A fixed scope, price, and timeline in writing. 50% deposit to start — no open-ended hourly surprises.</p></div>
+          <div class="pk-step"><i>03</i><b>Build &amp; ship</b><p>I build in your stack with regular check-ins, hand it off with docs, and it's yours. Balance due on delivery.</p></div>
+        </div>
+        <p class="proj-note">Part-time and selective — I take a few engagements at a time, so the ones I take get real focus. Los Angeles · remote-friendly.</p>
+        <div class="proj__links" data-reveal style="margin-top:1.6rem">
+          <a class="btn btn--primary" href="mailto:miladfarazian@gmail.com?subject=Project%20inquiry" data-magnetic data-scramble>Email me →</a>
+          <a class="btn btn--ghost" href="https://linkedin.com/in/miladfarazian" target="_blank" rel="noopener" data-magnetic data-scramble>LinkedIn ↗</a>
+        </div>
+      </section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>
+`;
+
 // ---- write ----
 for (const p of PAGES) {
   const dir = resolve(ROOT, "work", p.slug);
@@ -1022,10 +1136,13 @@ for (const p of PAGES) {
 mkdirSync(resolve(ROOT, "resume"), { recursive: true });
 writeFileSync(resolve(ROOT, "resume", "index.html"), RESUME_HTML);
 console.log("generated resume/index.html");
+mkdirSync(resolve(ROOT, "hire"), { recursive: true });
+writeFileSync(resolve(ROOT, "hire", "index.html"), HIRE_HTML);
+console.log("generated hire/index.html");
 
 // ---- sitemap + robots (kept in sync with the generated pages) ----
 const BASE = "https://farazian.com";
-const urls = [`${BASE}/`, `${BASE}/resume/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
+const urls = [`${BASE}/`, `${BASE}/hire/`, `${BASE}/resume/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

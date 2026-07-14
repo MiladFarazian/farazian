@@ -118,6 +118,7 @@ const commands: Command[] = [
   { id: "contact", label: "Go to Contact", icon: "▸", hint: "04", run: () => scroller.scrollTo("#contact") },
   { id: "top", label: "Back to top", icon: "↑", run: () => scroller.scrollTo(0) },
   { id: "terminal", label: "Open terminal", icon: "›_", hint: "easter egg", run: () => terminal.open() },
+  { id: "hire", label: "Hire me", icon: "◈", hint: "freelance", run: () => (window.location.href = "/hire/") },
   { id: "resume", label: "View resume", icon: "▤", run: () => (window.location.href = "/resume/") },
   { id: "email", label: "Email me", icon: "@", run: () => (window.location.href = "mailto:miladfarazian@gmail.com") },
   { id: "source", label: "View source on GitHub", icon: "</>", run: () => window.open("https://github.com/MiladFarazian/farazian", "_blank") },

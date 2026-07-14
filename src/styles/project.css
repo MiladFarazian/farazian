@@ -548,6 +548,40 @@
 }
 .llm-col--win .llm-role { color: var(--cyan); }
 
+/* ---- Hire page ---- */
+.hire-grid { display: grid; gap: 1.1rem; margin-top: 1.3rem; }
+@media (min-width: 720px) { .hire-grid { grid-template-columns: 1fr 1fr; } }
+.hire-svc {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(8, 12, 20, 0.5);
+  padding: 1.5rem 1.6rem;
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.hire-svc:hover { border-color: rgba(42, 245, 255, 0.4); box-shadow: 0 0 30px rgba(42, 245, 255, 0.08); }
+.hire-svc__top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.hire-svc__tag {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cyan); border: 1px solid rgba(42, 245, 255, 0.35); border-radius: 999px; padding: 0.35em 0.75em;
+}
+.hire-svc__price { font-family: var(--font-mono); font-size: 0.9rem; color: var(--ink); font-weight: 500; white-space: nowrap; }
+.hire-svc h3 { color: var(--ink); font-size: 1.1rem; font-weight: 600; }
+.hire-svc > p { color: var(--ink-dim); font-size: 0.9rem; line-height: 1.6; }
+.hire-svc ul { margin: 0.2rem 0 0 1.1rem; display: grid; gap: 0.4rem; }
+.hire-svc li { color: var(--ink-dim); font-size: 0.84rem; line-height: 1.5; }
+.hire-svc li::marker { color: var(--cyan); }
+.hire-proof { display: grid; gap: 1rem; margin-top: 1.2rem; }
+@media (min-width: 720px) { .hire-proof { grid-template-columns: repeat(3, 1fr); } }
+.hire-proof div {
+  border: 1px solid var(--line); border-radius: 14px; background: rgba(8, 12, 20, 0.5);
+  padding: 1.2rem 1.3rem; display: grid; gap: 0.4rem; align-content: start;
+}
+.hire-proof b { color: var(--cyan); font-size: 0.95rem; }
+.hire-proof span { color: var(--ink-dim); font-size: 0.86rem; line-height: 1.6; }
+
 /* ---- Resume page ---- */
 .rs-item {
   border: 1px solid var(--line);
