@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>BigUps — Milad Farazian</title>
+    <meta name="description" content="One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result." />
+    <link rel="canonical" href="https://farazian.com/work/bigups/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="BigUps — Milad Farazian" />
+    <meta property="og:description" content="One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result." />
+    <meta property="og:url" content="https://farazian.com/work/bigups/" />
+    <meta property="og:image" content="https://farazian.com/og/bigups.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BigUps — Milad Farazian" />
+    <meta name="twitter:description" content="One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result." />
+    <meta name="twitter:image" content="https://farazian.com/og/bigups.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"BigUps","description":"One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result.","url":"https://farazian.com/work/bigups/","image":"https://farazian.com/og/bigups.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2026</p>
+      <h1 class="proj__title" data-reveal>BigUps</h1>
+      <p class="proj__sub" data-reveal>One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">Python</span><span class="tag">Multi-provider AI</span><span class="tag">Pipeline</span><span class="tag">CLI</span></div>
+      
+    </section>
+      <section class="proj__section" data-reveal><h2>What it does</h2><p>One command takes a topic and returns a finished video. Under the hood it chains four AI stages: an <strong>LLM</strong> (Claude / GPT) writes the script, <strong>Flux-Pro</strong> on Replicate generates a scene image per beat, <strong>ElevenLabs</strong> narrates it, and the pipeline generates captions and assembles the cut. A verified run produced 18 scene images, 18 voice clips, a caption track, and the final MP4.</p></section>
+      <section class="proj__section" data-reveal><h2>The orchestration problem</h2><div class="proj-features"><div class="proj-feature"><h3>Three vendors, one run</h3><p>Each provider has different latency, rate limits, and failure modes. The pipeline sequences them into a single command and keeps partial work when one stage misbehaves.</p></div><div class="proj-feature"><h3>Parallel where it pays</h3><p>Image and voice generation are independent and both slow, so they run concurrently on a ThreadPoolExecutor instead of serially.</p></div><div class="proj-feature"><h3>Timed off measured reality</h3><p>The subtle one: captions and final assembly are timed from the *actual* duration of the generated audio, not a pre-estimate. TTS clip lengths are unpredictable — assume them and the whole video drifts out of sync.</p></div><div class="proj-feature"><h3>Ten modules</h3><p>script_gen · image_gen · voiceover · captions · video_assembly · pipeline · cli — packaged as an installable CLI.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>Honest about BigUps</h2><p>This is a working <strong>personal prototype</strong>, not a shipped product: it never left single-topic testing and it isn't under version control. I'm including it because the interesting engineering isn't the video — it's making a downstream stage (captioning) depend on the <em>real output</em> of an upstream one (audio duration) rather than an assumption, across three vendors that each fail differently.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

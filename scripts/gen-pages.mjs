@@ -686,7 +686,20 @@ export const PAGES = [
           { title: "Talk to a human", desc: "A live chat thread with your host — access notes, voice messages, gate codes." },
         ],
       },
-      { t: "text", h: "Under the Hood", html: "<p>React Native + Supabase + Stripe + native maps, with English/Spanish localization — one codebase from database to App Store. Payments, real-time host pings, push notifications with actionable buttons, chat with voice notes, host analytics: all built end-to-end, all in production at <a href=\"https://useparkzy.com\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--cyan)\">useparkzy.com ↗</a>.</p>" },
+      {
+        t: "features",
+        h: "Under the hood",
+        items: [
+          { title: "The shape of it", desc: "598 TypeScript source files (~184k lines), 392 SQL migrations, and 163 Supabase edge functions — built and operated as sole engineer since Sept 2025." },
+          { title: "One codebase, three platforms", desc: "React 18 + Vite + TypeScript, shipped to web, iOS, and Android through Capacitor 7 — with Capgo for over-the-air updates so a fix doesn't wait on app review." },
+          { title: "Payments & identity", desc: "Stripe Connect for host payouts plus Stripe Identity for ID verification — the trust layer a stranger-parks-in-your-driveway marketplace actually requires." },
+          { title: "Geospatial search", desc: "Mapbox GL with supercluster, so thousands of spots cluster and re-rank smoothly as you pan." },
+          { title: "Tested, not hoped", desc: "6 Playwright end-to-end specs (guest booking, auth booking, pricing, Safari), Vitest units on the pricing engine, and a Deno test on the edge functions — all gated in GitHub Actions." },
+          { title: "Data warehouse", desc: "A separate dbt + BigQuery stack lands PostHog, Supabase, and Stripe data in one place, so product questions get answered with SQL instead of vibes." },
+        ],
+      },
+      { t: "text", h: "Disaster recovery — the part nobody sees", html: "<p>Parkzy runs on Supabase, which means Supabase is a single point of failure for a business that takes people's money. So there's a <strong>Terraform-managed AWS standby</strong>: an RDS Postgres 17 instance configured for logical replication to match Supabase's defaults, standby Lambdas covering the critical paths (auth, spot search, profile, payment methods, health check), and a GitHub Actions cron that <strong>syncs the database every four hours</strong>.</p><p>It's applied infrastructure, not a diagram — the Terraform state is on disk. Most solo products don't have a failover story. This one does, because a marketplace that can't take a booking is a marketplace that's dead.</p>" },
+      { t: "text", h: "The AI suite, shipped", html: "<p>All of it is in production, not in progress: <strong>semantic spot search</strong> (pgvector embeddings, with a backfill function), <strong>LLM-explained dynamic pricing</strong>, <strong>AI-graded listing photos</strong>, <strong>message translation</strong>, audio transcription, and <strong>AI-drafted support replies</strong> — all routed through one shared LLM/embeddings helper so every function gets model access the same way. That shared helper is the small, honest version of the model-access layer a platform team builds at real scale.</p><p>Live at <a href=\"https://useparkzy.com\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--cyan)\">useparkzy.com ↗</a>.</p>" },
     ],
   },
 
@@ -813,6 +826,54 @@ export const PAGES = [
   },
 
   {
+    slug: "nik",
+    title: "Nik",
+    category: "Software",
+    year: "2026",
+    sub: "An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken.",
+    tags: ["Swift", "AVFoundation", "Metal", "Vision", "StoreKit 2"],
+    links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/nik" }],
+    blocks: [
+      { t: "text", h: "What it is", html: "<p>A short-form video templating app in the CapCut mold: browse a template, let it auto-fill from your camera roll, add text and on-device auto-captions, and export a 9:16 cut for TikTok, Reels, or Shorts. SwiftUI + AVFoundation, iOS 17+, and <strong>zero third-party dependencies</strong> — every hard part is built, not imported.</p>" },
+      {
+        t: "features",
+        h: "The engineering",
+        items: [
+          { title: "A compositor, because Apple's was broken", desc: "Apple's standard AVVideoCompositionCoreAnimationTool export path crashes in the iOS 26 Simulator. Rather than route around it, I wrote a custom AVVideoCompositing compositor on Core Image with a Metal-backed CIContext — which also unlocked filters and true crossfades the standard path never supported." },
+          { title: "On-device smart crop", desc: "Vision samples three frames per template slot and runs face detection + saliency (faces weighted 3×) to choose the 9:16 pan point — with a user override and a centered fallback when it isn't confident." },
+          { title: "Exports you can verify", desc: "A Maestro end-to-end flow drives launch → pick template → fill four slots → export → share, and the output is checked with ffprobe as a valid 1080×1920 H.264/AAC MP4. The test asserts the artifact, not the UI." },
+          { title: "Shipping surface, pre-ship", desc: "StoreKit 2 subscriptions wired with real product IDs, on-device SFSpeechRecognizer captions, and a competitive teardown of 12+ apps done before a line of code — which set product rules like “never gate a completed export.”" },
+        ],
+      },
+      { t: "text", h: "The bug I'm proudest of finding", html: "<p>Exports were failing with cryptic <code>-11800</code> / <code>-12780</code> OSStatus codes. The root cause: a two-pass build was deallocating source <code>AVURLAsset</code>s too early — the asset was gone by the time the second pass read from it. Fixed by explicitly retaining the source assets in <code>SlotInfo</code>. Chasing a lifetime bug through an opaque Apple error code is the kind of debugging that doesn't show up in a feature list.</p>" },
+      { t: "text", h: "Status", html: "<p><strong>Prototype / early v2</strong> — 27 Swift files, ~5,100 lines. StoreKit pricing is wired, but it is <em>not</em> on the App Store. I'm showing it for the compositor and the Vision crop, not as a shipped product.</p>" },
+    ],
+  },
+
+  {
+    slug: "bigups",
+    title: "BigUps",
+    category: "AI / ML",
+    year: "2026",
+    sub: "One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result.",
+    tags: ["Python", "Multi-provider AI", "Pipeline", "CLI"],
+    blocks: [
+      { t: "text", h: "What it does", html: "<p>One command takes a topic and returns a finished video. Under the hood it chains four AI stages: an <strong>LLM</strong> (Claude / GPT) writes the script, <strong>Flux-Pro</strong> on Replicate generates a scene image per beat, <strong>ElevenLabs</strong> narrates it, and the pipeline generates captions and assembles the cut. A verified run produced 18 scene images, 18 voice clips, a caption track, and the final MP4.</p>" },
+      {
+        t: "features",
+        h: "The orchestration problem",
+        items: [
+          { title: "Three vendors, one run", desc: "Each provider has different latency, rate limits, and failure modes. The pipeline sequences them into a single command and keeps partial work when one stage misbehaves." },
+          { title: "Parallel where it pays", desc: "Image and voice generation are independent and both slow, so they run concurrently on a ThreadPoolExecutor instead of serially." },
+          { title: "Timed off measured reality", desc: "The subtle one: captions and final assembly are timed from the *actual* duration of the generated audio, not a pre-estimate. TTS clip lengths are unpredictable — assume them and the whole video drifts out of sync." },
+          { title: "Ten modules", desc: "script_gen · image_gen · voiceover · captions · video_assembly · pipeline · cli — packaged as an installable CLI." },
+        ],
+      },
+      { t: "text", h: "Honest about BigUps", html: "<p>This is a working <strong>personal prototype</strong>, not a shipped product: it never left single-topic testing and it isn't under version control. I'm including it because the interesting engineering isn't the video — it's making a downstream stage (captioning) depend on the <em>real output</em> of an upstream one (audio duration) rather than an assumption, across three vendors that each fail differently.</p>" },
+    ],
+  },
+
+  {
     slug: "wax",
     title: "Wax",
     category: "Software",
@@ -850,11 +911,21 @@ export const PAGES = [
     title: "Emotion Translation with Transformers",
     category: "AI / ML",
     year: "2024",
-    sub: "A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.",
+    sub: "Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are.",
     meta: "Milad Farazian · Charlie Floeder · Rizq Khateeb · Harshit Shah · Yash Sharma",
-    tags: ["Python", "Transformers", "NLP"],
+    tags: ["Python", "Transformers", "NLP", "Controllable Generation"],
     blocks: [
-      { t: "text", h: "Overview", html: "<p>We developed a model that can change the emotion of a particular statement without changing the context of the sentence — taking a neutral piece of text and re-rendering it as joyful, angry, or melancholic while keeping its factual meaning intact. The project explores controllable text generation and the boundary between sentiment and semantics.</p>" },
+      { t: "text", h: "The problem", html: "<p>Take a neutral sentence — “The meeting is at 3pm.” — and re-render it as joyful, angry, or melancholic, while keeping the fact intact. It sounds like style transfer, but it isn't: <strong>sentiment and semantics are entangled</strong>. Push the emotion too hard and the model starts inventing content (“the meeting I've been dreading all week”); hold the meaning too tightly and the emotion never lands. The interesting work is the tension between those two failure modes.</p>" },
+      {
+        t: "features",
+        h: "The approach",
+        items: [
+          { title: "Three architectures", desc: "GPT-2 (decoder-only), BART, and T5 (encoder-decoder) — chosen to compare how the architecture itself shapes the meaning-preservation trade-off." },
+          { title: "Three regimes", desc: "Zero-shot, few-shot, and supervised fine-tuning across all three, so the gain from actually training could be separated from what prompting alone buys." },
+          { title: "The dual objective", desc: "An output only counts if it hits the target emotion AND preserves the source's factual content — success on one axis alone is a failure." },
+        ],
+      },
+      { t: "text", h: "Why it stuck with me", html: "<p>This was a graduate coursework project at USC, and it's the earliest version of the question I still work on: <strong>how do you make a language model do the thing you asked, and only the thing you asked?</strong> Emotion translation is that question in miniature — the model must change one dimension and hold everything else still. The production version of the same instinct is <a href=\"/work/honest/\" style=\"color:var(--cyan)\">Honest</a>, where an eval harness checks that a model's answer stayed grounded in the facts it was given.</p>" },
     ],
   },
 
@@ -863,23 +934,26 @@ export const PAGES = [
     title: "StudyBuddy",
     category: "Web",
     year: "2025",
-    sub: "A USC-based tutoring and mentoring app that matches students to the help they need.",
-    tags: ["React", "Next.js", "Tailwind", "Supabase"],
+    sub: "A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team.",
+    meta: "CTO & Lead Engineer · 5-person team · Dec 2024 – Aug 2025",
+    tags: ["React", "TypeScript", "Supabase", "Stripe Connect"],
+    links: [{ label: "Source on GitHub", href: "https://github.com/MiladFarazian/study-buddy-usc" }],
     blocks: [
-      { t: "text", h: "Overview", html: "<p>StudyBuddy pairs students with tutors and mentors based on their specific needs — the courses they're taking, the topics they're stuck on, and how they like to learn. A matching layer connects the right people, so finding help on campus stops being a group-chat scavenger hunt.</p>" },
-    ],
-  },
-
-  {
-    slug: "innsaei",
-    title: "Innsæi",
-    category: "Web",
-    year: "2024",
-    sub: "A Twitter-esque social app reclaiming the original mission — give everyone the power to create and share ideas instantly, without barriers. Innsæi is Icelandic for “the sea within.”",
-    tags: ["React", "JavaScript"],
-    links: [{ label: "Live demo", href: "https://innsaei.lovable.app" }],
-    blocks: [
-      { t: "text", h: "Overview", html: "<p>Innsæi is a social web app built around broadcasting the thoughts that matter — a lightweight, fast feed for sharing ideas and information instantly. It takes its name from the Icelandic word for intuition, literally “the sea within.”</p>" },
+      { t: "text", h: "What it is", html: "<p>Finding help on campus was a group-chat scavenger hunt. StudyBuddy made it a marketplace: students post what they're stuck on, tutors get matched to it, and the whole loop — booking, scheduling, the session itself, and payment — happens in one place.</p>" },
+      {
+        t: "features",
+        h: "What got built",
+        items: [
+          { title: "Booking & scheduling", desc: "Availability, session booking, and calendar flow for both sides of the marketplace." },
+          { title: "Payments", desc: "Stripe Connect — tutors onboard as connected accounts and get paid out automatically." },
+          { title: "Sessions", desc: "Zoom integration that provisions a meeting per booking, so nobody trades links." },
+          { title: "Roles & trust", desc: "Tutor / student / admin roles, plus reviews, badges, and analytics." },
+          { title: "Comms", desc: "In-app messaging, notifications, and a referral system." },
+          { title: "USC course importer", desc: "An edge function that pulls the real USC course catalog, so tutors and requests attach to actual courses rather than free-text guesses." },
+        ],
+      },
+      { t: "text", h: "Under the hood", html: "<p>React + TypeScript (Vite, Tailwind, shadcn/ui) on <strong>Supabase</strong> — Postgres, Auth, Storage, and Deno edge functions. The shape of it: <strong>394 TypeScript source files, 86 SQL migrations, and 39 edge functions</strong>. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster.</p>" },
+      { t: "text", h: "How it ended", html: "<p>Built, functional, and wound down in 2025 — the team moved on and I went full-time on <a href=\"/work/parkzy/\" style=\"color:var(--cyan)\">Parkzy</a>. I'm not going to dress that up: the product worked, and the business didn't. What it did give me was the first end-to-end marketplace I'd ever architected — two-sided matching, payments, scheduling — which is exactly the shape of the thing I build now.</p>" },
     ],
   },
 

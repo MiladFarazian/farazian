@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Nik — Milad Farazian</title>
+    <meta name="description" content="An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken." />
+    <link rel="canonical" href="https://farazian.com/work/nik/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Nik — Milad Farazian" />
+    <meta property="og:description" content="An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken." />
+    <meta property="og:url" content="https://farazian.com/work/nik/" />
+    <meta property="og:image" content="https://farazian.com/og/nik.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nik — Milad Farazian" />
+    <meta name="twitter:description" content="An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken." />
+    <meta name="twitter:image" content="https://farazian.com/og/nik.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Nik","description":"An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken.","url":"https://farazian.com/work/nik/","image":"https://farazian.com/og/nik.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>Software · 2026</p>
+      <h1 class="proj__title" data-reveal>Nik</h1>
+      <p class="proj__sub" data-reveal>An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">Swift</span><span class="tag">AVFoundation</span><span class="tag">Metal</span><span class="tag">Vision</span><span class="tag">StoreKit 2</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://github.com/MiladFarazian/nik" target="_blank" rel="noopener" data-magnetic data-scramble>Source on GitHub ↗</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>What it is</h2><p>A short-form video templating app in the CapCut mold: browse a template, let it auto-fill from your camera roll, add text and on-device auto-captions, and export a 9:16 cut for TikTok, Reels, or Shorts. SwiftUI + AVFoundation, iOS 17+, and <strong>zero third-party dependencies</strong> — every hard part is built, not imported.</p></section>
+      <section class="proj__section" data-reveal><h2>The engineering</h2><div class="proj-features"><div class="proj-feature"><h3>A compositor, because Apple's was broken</h3><p>Apple's standard AVVideoCompositionCoreAnimationTool export path crashes in the iOS 26 Simulator. Rather than route around it, I wrote a custom AVVideoCompositing compositor on Core Image with a Metal-backed CIContext — which also unlocked filters and true crossfades the standard path never supported.</p></div><div class="proj-feature"><h3>On-device smart crop</h3><p>Vision samples three frames per template slot and runs face detection + saliency (faces weighted 3×) to choose the 9:16 pan point — with a user override and a centered fallback when it isn't confident.</p></div><div class="proj-feature"><h3>Exports you can verify</h3><p>A Maestro end-to-end flow drives launch → pick template → fill four slots → export → share, and the output is checked with ffprobe as a valid 1080×1920 H.264/AAC MP4. The test asserts the artifact, not the UI.</p></div><div class="proj-feature"><h3>Shipping surface, pre-ship</h3><p>StoreKit 2 subscriptions wired with real product IDs, on-device SFSpeechRecognizer captions, and a competitive teardown of 12+ apps done before a line of code — which set product rules like “never gate a completed export.”</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>The bug I'm proudest of finding</h2><p>Exports were failing with cryptic <code>-11800</code> / <code>-12780</code> OSStatus codes. The root cause: a two-pass build was deallocating source <code>AVURLAsset</code>s too early — the asset was gone by the time the second pass read from it. Fixed by explicitly retaining the source assets in <code>SlotInfo</code>. Chasing a lifetime bug through an opaque Apple error code is the kind of debugging that doesn't show up in a feature list.</p></section>
+      <section class="proj__section" data-reveal><h2>Status</h2><p><strong>Prototype / early v2</strong> — 27 Swift files, ~5,100 lines. StoreKit pricing is wired, but it is <em>not</em> on the App Store. I'm showing it for the compositor and the Vision crop, not as a shipped product.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

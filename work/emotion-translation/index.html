@@ -5,26 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#04060a" />
     <title>Emotion Translation with Transformers — Milad Farazian</title>
-    <meta name="description" content="A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning." />
+    <meta name="description" content="Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are." />
     <link rel="canonical" href="https://farazian.com/work/emotion-translation/" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Milad Farazian" />
     <meta property="og:title" content="Emotion Translation with Transformers — Milad Farazian" />
-    <meta property="og:description" content="A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning." />
+    <meta property="og:description" content="Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are." />
     <meta property="og:url" content="https://farazian.com/work/emotion-translation/" />
     <meta property="og:image" content="https://farazian.com/og/emotion-translation.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Emotion Translation with Transformers — Milad Farazian" />
-    <meta name="twitter:description" content="A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning." />
+    <meta name="twitter:description" content="Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are." />
     <meta name="twitter:image" content="https://farazian.com/og/emotion-translation.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icon-180.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Emotion Translation with Transformers","description":"A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.","url":"https://farazian.com/work/emotion-translation/","image":"https://farazian.com/og/emotion-translation.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Emotion Translation with Transformers","description":"Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are.","url":"https://farazian.com/work/emotion-translation/","image":"https://farazian.com/og/emotion-translation.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -39,12 +39,14 @@
       
       <p class="proj__eyebrow" data-reveal>AI / ML · 2024</p>
       <h1 class="proj__title" data-reveal>Emotion Translation with Transformers</h1>
-      <p class="proj__sub" data-reveal>A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.</p>
+      <p class="proj__sub" data-reveal>Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are.</p>
       <p class="proj__meta" data-reveal>Milad Farazian · Charlie Floeder · Rizq Khateeb · Harshit Shah · Yash Sharma</p>
-      <div class="proj__tags" data-reveal><span class="tag">Python</span><span class="tag">Transformers</span><span class="tag">NLP</span></div>
+      <div class="proj__tags" data-reveal><span class="tag">Python</span><span class="tag">Transformers</span><span class="tag">NLP</span><span class="tag">Controllable Generation</span></div>
       
     </section>
-      <section class="proj__section" data-reveal><h2>Overview</h2><p>We developed a model that can change the emotion of a particular statement without changing the context of the sentence — taking a neutral piece of text and re-rendering it as joyful, angry, or melancholic while keeping its factual meaning intact. The project explores controllable text generation and the boundary between sentiment and semantics.</p></section>
+      <section class="proj__section" data-reveal><h2>The problem</h2><p>Take a neutral sentence — “The meeting is at 3pm.” — and re-render it as joyful, angry, or melancholic, while keeping the fact intact. It sounds like style transfer, but it isn't: <strong>sentiment and semantics are entangled</strong>. Push the emotion too hard and the model starts inventing content (“the meeting I've been dreading all week”); hold the meaning too tightly and the emotion never lands. The interesting work is the tension between those two failure modes.</p></section>
+      <section class="proj__section" data-reveal><h2>The approach</h2><div class="proj-features"><div class="proj-feature"><h3>Three architectures</h3><p>GPT-2 (decoder-only), BART, and T5 (encoder-decoder) — chosen to compare how the architecture itself shapes the meaning-preservation trade-off.</p></div><div class="proj-feature"><h3>Three regimes</h3><p>Zero-shot, few-shot, and supervised fine-tuning across all three, so the gain from actually training could be separated from what prompting alone buys.</p></div><div class="proj-feature"><h3>The dual objective</h3><p>An output only counts if it hits the target emotion AND preserves the source's factual content — success on one axis alone is a failure.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>Why it stuck with me</h2><p>This was a graduate coursework project at USC, and it's the earliest version of the question I still work on: <strong>how do you make a language model do the thing you asked, and only the thing you asked?</strong> Emotion translation is that question in miniature — the model must change one dimension and hold everything else still. The production version of the same instinct is <a href="/work/honest/" style="color:var(--cyan)">Honest</a>, where an eval harness checks that a model's answer stayed grounded in the facts it was given.</p></section>
       <footer class="footer">
         <span>© <span id="year">2026</span> Milad Farazian</span>
         <a href="/#work" data-scramble>← back to work</a>

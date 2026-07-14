@@ -5,26 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#04060a" />
     <title>StudyBuddy — Milad Farazian</title>
-    <meta name="description" content="A USC-based tutoring and mentoring app that matches students to the help they need." />
+    <meta name="description" content="A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team." />
     <link rel="canonical" href="https://farazian.com/work/studybuddy/" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Milad Farazian" />
     <meta property="og:title" content="StudyBuddy — Milad Farazian" />
-    <meta property="og:description" content="A USC-based tutoring and mentoring app that matches students to the help they need." />
+    <meta property="og:description" content="A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team." />
     <meta property="og:url" content="https://farazian.com/work/studybuddy/" />
     <meta property="og:image" content="https://farazian.com/og/studybuddy.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="StudyBuddy — Milad Farazian" />
-    <meta name="twitter:description" content="A USC-based tutoring and mentoring app that matches students to the help they need." />
+    <meta name="twitter:description" content="A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team." />
     <meta name="twitter:image" content="https://farazian.com/og/studybuddy.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icon-180.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"StudyBuddy","description":"A USC-based tutoring and mentoring app that matches students to the help they need.","url":"https://farazian.com/work/studybuddy/","image":"https://farazian.com/og/studybuddy.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"StudyBuddy","description":"A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team.","url":"https://farazian.com/work/studybuddy/","image":"https://farazian.com/og/studybuddy.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -39,12 +39,15 @@
       
       <p class="proj__eyebrow" data-reveal>Web · 2025</p>
       <h1 class="proj__title" data-reveal>StudyBuddy</h1>
-      <p class="proj__sub" data-reveal>A USC-based tutoring and mentoring app that matches students to the help they need.</p>
-      
-      <div class="proj__tags" data-reveal><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Tailwind</span><span class="tag">Supabase</span></div>
-      
+      <p class="proj__sub" data-reveal>A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team.</p>
+      <p class="proj__meta" data-reveal>CTO & Lead Engineer · 5-person team · Dec 2024 – Aug 2025</p>
+      <div class="proj__tags" data-reveal><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Supabase</span><span class="tag">Stripe Connect</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="https://github.com/MiladFarazian/study-buddy-usc" target="_blank" rel="noopener" data-magnetic data-scramble>Source on GitHub ↗</a></div>
     </section>
-      <section class="proj__section" data-reveal><h2>Overview</h2><p>StudyBuddy pairs students with tutors and mentors based on their specific needs — the courses they're taking, the topics they're stuck on, and how they like to learn. A matching layer connects the right people, so finding help on campus stops being a group-chat scavenger hunt.</p></section>
+      <section class="proj__section" data-reveal><h2>What it is</h2><p>Finding help on campus was a group-chat scavenger hunt. StudyBuddy made it a marketplace: students post what they're stuck on, tutors get matched to it, and the whole loop — booking, scheduling, the session itself, and payment — happens in one place.</p></section>
+      <section class="proj__section" data-reveal><h2>What got built</h2><div class="proj-features"><div class="proj-feature"><h3>Booking & scheduling</h3><p>Availability, session booking, and calendar flow for both sides of the marketplace.</p></div><div class="proj-feature"><h3>Payments</h3><p>Stripe Connect — tutors onboard as connected accounts and get paid out automatically.</p></div><div class="proj-feature"><h3>Sessions</h3><p>Zoom integration that provisions a meeting per booking, so nobody trades links.</p></div><div class="proj-feature"><h3>Roles & trust</h3><p>Tutor / student / admin roles, plus reviews, badges, and analytics.</p></div><div class="proj-feature"><h3>Comms</h3><p>In-app messaging, notifications, and a referral system.</p></div><div class="proj-feature"><h3>USC course importer</h3><p>An edge function that pulls the real USC course catalog, so tutors and requests attach to actual courses rather than free-text guesses.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>Under the hood</h2><p>React + TypeScript (Vite, Tailwind, shadcn/ui) on <strong>Supabase</strong> — Postgres, Auth, Storage, and Deno edge functions. The shape of it: <strong>394 TypeScript source files, 86 SQL migrations, and 39 edge functions</strong>. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster.</p></section>
+      <section class="proj__section" data-reveal><h2>How it ended</h2><p>Built, functional, and wound down in 2025 — the team moved on and I went full-time on <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>. I'm not going to dress that up: the product worked, and the business didn't. What it did give me was the first end-to-end marketplace I'd ever architected — two-sided matching, payments, scheduling — which is exactly the shape of the thing I build now.</p></section>
       <footer class="footer">
         <span>© <span id="year">2026</span> Milad Farazian</span>
         <a href="/#work" data-scramble>← back to work</a>
