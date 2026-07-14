@@ -880,6 +880,24 @@ export const PAGES = [
   },
 
   {
+    slug: "how-i-build-with-ai",
+    title: "How I Build With AI",
+    category: "Writing",
+    year: "2026",
+    sub: "The question every interview asks now: how do you actually use AI in your work? Here's the real answer — the loop, the judgment, and the verification system that makes AI-accelerated development fast without making it sloppy.",
+    tags: ["AI-Paired Dev", "Verification", "Essay"],
+    links: [{ label: "Work with me", href: "/hire/", internal: true }],
+    blocks: [
+      { t: "text", h: "The honest version", html: "<p>There are two bad answers to “how do you use AI to build?” One is “I don't” — which in 2026 means leaving a force multiplier on the table. The other is “I let it write everything” — which means shipping code you don't understand. I do neither. I treat AI as the fastest junior engineer I've ever worked with: tireless, occasionally brilliant, occasionally confidently wrong — and never the one accountable for what merges. That's still me.</p>" },
+      { t: "text", h: "The proof", html: "<p>I built <a href=\"/work/parkzy/\" style=\"color:var(--cyan)\">Parkzy</a> — a live App Store marketplace (5.0★, 1,000+ downloads) — end to end as sole engineer: <strong>~3,600 commits in 10 months, 392 database migrations, 163 serverless edge functions</strong>, with production LLM features. I built <a href=\"/work/gosan/\" style=\"color:var(--cyan)\">Gosan</a>, a native macOS DAW, in about ten days. That velocity is impossible the old way — and <em>reckless</em> the naive way. The entire difference between the two is the system around the speed.</p>" },
+      { t: "text", h: "What I delegate, what I own", html: "<p>I work in a tight <strong>plan → generate → verify</strong> loop. I own every part that needs judgment: the architecture, the data model, what the product should even do, and the review of every line before it lands. I hand off the parts that are mechanical or fully specified — boilerplate, migrations, test scaffolding, wide refactors, the first draft of a function. I never merge code I haven't read and understood. The AI writes fast; I decide what's correct.</p>" },
+      { t: "text", h: "Velocity without verification is just faster bugs", html: "<p>This is the part most people skip, and it's the whole game. Speed only compounds if it's safe. So every change runs a gauntlet: <strong>Playwright end-to-end tests, Vitest, and Deno suites in CI</strong>; <strong>Sentry</strong> for what escapes into production; <strong>PostHog</strong> to check that a feature actually helped a real user. And a human reviews every merge. The tests aren't bolted on at the end — they're what lets me move this fast without breaking what's live. AI-accelerated, not AI-sloppy.</p>" },
+      { t: "text", h: "I don't just use AI — I build with it", html: "<p>The tools are one layer; the interesting work is a level up. I write <strong>agentic workflows</strong> — Claude Code automations that audit a codebase, check migrations for drift, and gate releases — so my own process improves itself. It's the same muscle I'd bring to building agentic features and automations for a client: not prompting a chatbot, but engineering a system that reasons and acts, with guardrails.</p>" },
+      { t: "text", h: "Why this is the job now", html: "<p>The multiplier was never “AI writes my code.” It's <strong>judgment about what to hand off, the discipline to verify everything, and the taste to know when the machine is wrong</strong> — applied at several times the old speed. That's senior engineering in 2026, and it's exactly what I do for teams. If that's the kind of engineer you're looking for, <a href=\"/hire/\" style=\"color:var(--cyan)\">let's talk</a>.</p>" },
+    ],
+  },
+
+  {
     slug: "how-machines-learn",
     title: "How Machines Learn to Discriminate",
     category: "Writing",

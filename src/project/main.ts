@@ -9,6 +9,7 @@ import { detectDevice } from "../core/device";
 import { initSmoothScroll } from "../core/smoothScroll";
 import { initCursor } from "../ui/cursor";
 import { initScramble } from "../ui/scramble";
+import { initAnalytics } from "../ui/analytics";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ html.classList.add("js");
 const profile = detectDevice();
 if (profile.reducedMotion) html.classList.add("reduced-motion");
 
+initAnalytics();
 initSmoothScroll(profile.reducedMotion);
 initCursor();
 initScramble();

@@ -157,6 +157,14 @@ export const PROJECTS: Project[] = [
     href: "/work/how-machines-learn/",
     category: "Writing",
   },
+  {
+    no: "17",
+    title: "How I Build With AI",
+    desc: "How I actually ship production software with AI — the plan → generate → verify loop, what I delegate vs. own, and the test suite that makes the speed safe.",
+    tags: ["AI-Paired Dev", "Verification", "Essay"],
+    href: "/work/how-i-build-with-ai/",
+    category: "Writing",
+  },
 ];
 
 export interface StackGroup {

@@ -12,9 +12,11 @@ import { initPalette, type Command } from "./ui/palette";
 import { initTerminal } from "./ui/terminal";
 import { initFps } from "./ui/fps";
 import { initKonami } from "./ui/konami";
+import { initAnalytics } from "./ui/analytics";
 
 const html = document.documentElement;
 html.classList.add("js");
+initAnalytics();
 
 const profile = detectDevice();
 if (profile.reducedMotion || !profile.supportsWebGL) {
