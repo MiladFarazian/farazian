@@ -10,6 +10,8 @@
   // Worker runs first (to enforce the canonical host), then falls through to
   // the static assets via the ASSETS binding.
   "main": "worker.js",
+  // Guestbook storage — the worker's /api/guestbook routes read/write here.
+  "kv_namespaces": [{ "binding": "GUESTBOOK", "id": "0149408e8bab428aa08392c1bce48680" }],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

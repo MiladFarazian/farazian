@@ -8,6 +8,7 @@ import type { ParticleHero } from "./webgl/ParticleHero";
 import { initCursor } from "./ui/cursor";
 import { initScramble } from "./ui/scramble";
 import { initScrollFX } from "./ui/scrollfx";
+import { initGuestbook } from "./ui/guestbook";
 import { initPalette, type Command } from "./ui/palette";
 import { initTerminal } from "./ui/terminal";
 import { applyThemeMode, THEME_WORDS } from "./ui/modes";
@@ -36,6 +37,7 @@ initWorkCards(profile.reducedMotion);
 initCursor();
 initScramble();
 initScrollFX(scroller.scrollTo);
+initGuestbook();
 
 // ----- WebGL hero (loaded as a separate chunk so the initial JS stays small) -----
 // Three.js is ~130kB gzipped; splitting it out lets the page become interactive
@@ -122,7 +124,8 @@ const commands: Command[] = [
   { id: "work", label: "Go to Work", icon: "▸", hint: "02", run: () => scroller.scrollTo("#work") },
   { id: "about", label: "Go to About", icon: "▸", hint: "01", run: () => scroller.scrollTo("#about") },
   { id: "stack", label: "Go to Stack", icon: "▸", hint: "03", run: () => scroller.scrollTo("#stack") },
-  { id: "contact", label: "Go to Contact", icon: "▸", hint: "04", run: () => scroller.scrollTo("#contact") },
+  { id: "guestbook", label: "Sign the guestbook", icon: "✍", hint: "04", run: () => scroller.scrollTo("#guestbook") },
+  { id: "contact", label: "Go to Contact", icon: "▸", hint: "05", run: () => scroller.scrollTo("#contact") },
   { id: "top", label: "Back to top", icon: "↑", run: () => scroller.scrollTo(0) },
   { id: "terminal", label: "Open terminal", icon: "›_", hint: "easter egg", run: () => terminal.open() },
   { id: "hire", label: "Hire me", icon: "◈", hint: "freelance", run: () => (window.location.href = "/hire/") },

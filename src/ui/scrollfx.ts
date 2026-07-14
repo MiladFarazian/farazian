@@ -3,7 +3,7 @@
 
 type ScrollTo = (target: string | number | HTMLElement, opts?: object) => void;
 
-const SECTIONS = ["hero", "about", "work", "stack", "contact"];
+const SECTIONS = ["hero", "about", "work", "stack", "guestbook", "contact"];
 
 export function initScrollFX(scrollTo: ScrollTo) {
   const sections = SECTIONS.map((id) => document.getElementById(id)).filter(

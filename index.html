@@ -193,9 +193,43 @@
         <div class="stack__cloud" id="stack-cloud"><!-- injected --></div>
       </section>
 
+      <!-- GUESTBOOK -->
+      <section class="section guestbook" id="guestbook">
+        <div class="section__index">04 — guestbook</div>
+        <h2 class="gb__lead" data-split>Leave a mark.</h2>
+        <p class="gb__intro" data-reveal>
+          Passing through? Sign the wall — a hello, a favorite project, a hot take.
+          No login, no email, just you.
+        </p>
+        <form class="gb__form" id="gb-form" data-reveal>
+          <input
+            class="gb__name"
+            id="gb-name"
+            type="text"
+            maxlength="40"
+            placeholder="name (or stay anonymous)"
+            autocomplete="off"
+          />
+          <input class="gb__hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <textarea
+            class="gb__msg"
+            id="gb-msg"
+            maxlength="280"
+            rows="2"
+            placeholder="say something nice…"
+            required
+          ></textarea>
+          <div class="gb__actions">
+            <span class="gb__status" id="gb-status" aria-live="polite"></span>
+            <button class="btn btn--primary" type="submit" id="gb-submit" data-magnetic>Sign ✍</button>
+          </div>
+        </form>
+        <div class="gb__wall" id="gb-wall" aria-live="polite"></div>
+      </section>
+
       <!-- CONTACT -->
       <section class="section contact" id="contact">
-        <div class="section__index">04 — contact</div>
+        <div class="section__index">05 — contact</div>
         <h2 class="contact__lead" data-split>Let's build something impossible.</h2>
         <p class="contact__avail" data-reveal>
           <span>📍 Los Angeles</span><span>Open to full-stack &amp; AI engineering roles</span><span>TypeScript · Python · LLMs</span>

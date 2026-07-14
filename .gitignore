@@ -22,3 +22,6 @@ yarn-error.log*
 .idea/
 .vscode/
 *.swp
+
+# Local wrangler dev state
+.wrangler/
