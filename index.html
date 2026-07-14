@@ -205,8 +205,23 @@
         </a>
         <div class="contact__links" id="contact-links"><!-- injected --></div>
         <footer class="footer">
-          <span>© <span id="year">2026</span> Milad Farazian</span>
-          <span class="footer__hint">type <code>help</code> anywhere · press <kbd>⌘K</kbd></span>
+          <div class="footer__sig">
+            <svg class="footer__sig-svg" viewBox="0 0 260 82" aria-label="Milad's signature" role="img">
+              <defs>
+                <linearGradient id="sig-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="var(--cyan)" />
+                  <stop offset="1" stop-color="var(--violet)" />
+                </linearGradient>
+              </defs>
+              <path d="M10 56 C 18 14, 36 14, 31 52 C 28 66, 42 66, 44 46 C 47 20, 64 24, 59 54 C 56 68, 70 62, 74 44 C 82 22, 98 30, 92 54 C 89 66, 102 62, 108 46 C 120 20, 138 28, 132 56 C 128 70, 142 64, 150 48 C 160 26, 176 32, 172 54" />
+              <path class="footer__sig-underline" d="M12 70 C 70 80, 190 80, 250 62" />
+            </svg>
+            <span class="footer__made">built by hand in <b>Los Angeles</b> — no templates, no page builders. <b>☕</b> + WebGL.</span>
+          </div>
+          <div class="footer__meta">
+            <span>© <span id="year">2026</span> Milad Farazian</span>
+            <span class="footer__hint">psst — type <code>help</code>, or a secret word like <code>vapor</code> · <kbd>⌘K</kbd></span>
+          </div>
         </footer>
       </section>
     </main>

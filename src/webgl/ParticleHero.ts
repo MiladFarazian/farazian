@@ -274,11 +274,28 @@ export class ParticleHero {
     }
   }
 
+  private nameText = "MILAD FARAZIAN";
+
+  /** Reshape the particle field into arbitrary text (an easter egg — the
+   *  terminal's `form <text>` command drives this). Empty resets to the name. */
+  setText(text: string) {
+    if (this.failed) return;
+    const clean = (text || "")
+      .toUpperCase()
+      .replace(/[^A-Z0-9 ]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 18);
+    this.nameText = clean || "MILAD FARAZIAN";
+    this.refreshFormation();
+    this.burstImpulse(0.5); // a little pop as it morphs
+  }
+
   private buildTargets(): Float32Array {
     const count = this.size * this.size;
-    const twoLines = window.innerWidth < 760;
+    const twoLines = window.innerWidth < 760 && this.nameText.length > 7;
     const positions = buildTextTargets({
-      text: "MILAD FARAZIAN",
+      text: this.nameText,
       count,
       worldWidth: this.worldWidth,
       twoLines,

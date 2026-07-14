@@ -10,6 +10,7 @@ import { initScramble } from "./ui/scramble";
 import { initScrollFX } from "./ui/scrollfx";
 import { initPalette, type Command } from "./ui/palette";
 import { initTerminal } from "./ui/terminal";
+import { applyThemeMode, THEME_WORDS } from "./ui/modes";
 import { initFps } from "./ui/fps";
 import { initKonami } from "./ui/konami";
 import { initAnalytics } from "./ui/analytics";
@@ -108,9 +109,13 @@ fps.onLowPerf(() => {
 });
 
 // ----- Terminal (easter egg) -----
-const terminal = initTerminal((sel) => {
-  scroller.scrollTo(sel, { offset: 0 });
-});
+const terminal = initTerminal(
+  (sel) => scroller.scrollTo(sel, { offset: 0 }),
+  {
+    form: (text) => hero?.setText(text),
+    theme: (name) => applyThemeMode(name),
+  }
+);
 
 // ----- Command palette -----
 const commands: Command[] = [
@@ -144,8 +149,15 @@ window.addEventListener("keydown", (e) => {
   const tag = (e.target as HTMLElement)?.tagName;
   if (tag === "INPUT" || tag === "TEXTAREA") return;
   if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
-    typed = (typed + e.key.toLowerCase()).slice(-4);
-    if (typed === "help") terminal.open();
+    typed = (typed + e.key.toLowerCase()).slice(-6);
+    if (typed.endsWith("help")) terminal.open();
+    for (const w of THEME_WORDS) {
+      if (typed.endsWith(w)) {
+        applyThemeMode(w);
+        typed = "";
+        break;
+      }
+    }
   }
   if (e.key === "Escape" && terminal.isOpen()) terminal.close();
 });
@@ -207,11 +219,12 @@ function runBoot() {
   const label = document.getElementById("boot-label")!;
 
   const stages = [
-    "initializing renderer",
-    "compiling shaders",
-    "seeding particle field",
-    "warming up the grid",
-    "ready",
+    "waking up the renderer",
+    "compiling shaders (the pretty ones)",
+    "seeding 65,536 particles",
+    "teaching them your name",
+    "aligning the stars",
+    "ready — worth the wait, promise",
   ];
 
   const completeBoot = () => {

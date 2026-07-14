@@ -8,7 +8,23 @@ export interface TerminalAPI {
   isOpen: () => boolean;
 }
 
-export function initTerminal(onScrollTo: (sel: string) => void): TerminalAPI {
+export interface TerminalActions {
+  form?: (text: string) => void;
+  theme?: (name: string) => boolean;
+}
+
+const JOKES = [
+  "there are 10 kinds of people: those who get binary, and those who don't.",
+  "i'd tell you a UDP joke, but you might not get it.",
+  "a SQL query walks into a bar, walks up to two tables and asks: can i join you?",
+  "why do programmers prefer dark mode? because light attracts bugs.",
+  "it works on my machine. shipping my machine.",
+];
+
+export function initTerminal(
+  onScrollTo: (sel: string) => void,
+  actions: TerminalActions = {}
+): TerminalAPI {
   const root = document.getElementById("term")!;
   const output = document.getElementById("term-output")!;
   const input = document.getElementById("term-input") as HTMLInputElement;
@@ -35,23 +51,57 @@ export function initTerminal(onScrollTo: (sel: string) => void): TerminalAPI {
       print(
         [
           "available commands:",
-          "  <span class='ok'>whoami</span>     who is this",
-          "  <span class='ok'>ls</span>         list sections / projects",
-          "  <span class='ok'>open</span> [x]   jump to a section (work, about, stack, contact)",
-          "  <span class='ok'>cat</span> about  read the about blurb",
-          "  <span class='ok'>skills</span>     the stack",
-          "  <span class='ok'>projects</span>   selected work",
-          "  <span class='ok'>contact</span>    how to reach me",
-          "  <span class='accent'>sudo hire-me</span>  (try it)",
-          "  <span class='ok'>matrix</span>     ☣",
-          "  <span class='ok'>clear</span>      wipe the screen",
-          "  <span class='ok'>exit</span>       close the terminal",
+          "  <span class='ok'>whoami</span>      who is this",
+          "  <span class='ok'>ls</span>          list sections / projects",
+          "  <span class='ok'>open</span> [x]    jump to a section (work, about, stack, contact)",
+          "  <span class='ok'>skills</span>      the stack &nbsp; · &nbsp; <span class='ok'>projects</span>   selected work",
+          "  <span class='ok'>now</span>         what i'm doing right now",
+          "  <span class='ok'>contact</span> · <span class='ok'>hire</span> · <span class='ok'>resume</span>",
+          "  <span class='accent'>form</span> [text]  reshape the name in the sky ✎",
+          "  <span class='accent'>theme</span> [x]  matrix · vapor · noir · gold · reset",
+          "  <span class='accent'>sudo hire-me</span>  (try it) &nbsp; · &nbsp; <span class='ok'>coffee</span> · <span class='ok'>joke</span>",
+          "  <span class='ok'>matrix</span> ☣ &nbsp; · &nbsp; <span class='ok'>clear</span> &nbsp; · &nbsp; <span class='ok'>exit</span>",
         ].join("<br>")
       ),
     whoami: () =>
       print(
-        `${NAME} — software engineer. full-stack, graphics, and the stubborn 1% that makes things feel <span class="accent">alive</span>.`
+        `${NAME} — full-stack + AI engineer. i ship production systems end-to-end, and i sweat the stubborn 1% that makes things feel <span class="accent">alive</span>. based in LA.`
       ),
+    now: () =>
+      print(
+        [
+          "<span class='accent'>currently…</span>",
+          "  🅿️  shipping <span class='ok'>Parkzy</span> — live on the App Store (5.0★)",
+          "  🤝  taking a few freelance clients → <a href='/hire/'>/hire</a>",
+          "  ☕  running on an irresponsible amount of coffee",
+        ].join("<br>")
+      ),
+    form: (args) => {
+      const text = args.join(" ");
+      if (!actions.form) return print("<span class='err'>form: the sky is busy right now.</span>");
+      if (!text) {
+        actions.form("");
+        return print("<span class='ok'>↺</span> reset the name to <span class='accent'>MILAD FARAZIAN</span>.");
+      }
+      actions.form(text);
+      print(`<span class='ok'>✎</span> reshaping the sky into “<span class='accent'>${escapeHtml(text.slice(0, 18))}</span>” — scroll up to look.`);
+    },
+    theme: (args) => {
+      const name = args[0] || "";
+      const ok = actions.theme?.(name);
+      if (ok) print(`<span class='ok'>◐</span> theme → <span class='accent'>${escapeHtml(name)}</span>. (or just type it anywhere.)`);
+      else print("<span class='err'>theme: pick one → matrix · vapor · noir · gold · reset</span>");
+    },
+    hire: () => {
+      print("<span class='ok'>→</span> opening <a href='/hire/'>/hire</a> — advisory, automation, and AI features.");
+      window.location.href = "/hire/";
+    },
+    resume: () => {
+      print("<span class='ok'>→</span> opening the <a href='/resume/'>resume</a>…");
+      window.location.href = "/resume/";
+    },
+    coffee: () => print("<span class='accent'>☕</span> brewed. this is what powers the whole operation."),
+    joke: () => print(JOKES[Math.floor(Math.random() * JOKES.length)]),
     ls: (args) => {
       if (args[0] === "projects" || args[0] === "projects/") {
         print(PROJECTS.map((p) => `<span class="ok">${p.title.toLowerCase()}/</span>`).join("&nbsp;&nbsp;"));
@@ -66,7 +116,7 @@ export function initTerminal(onScrollTo: (sel: string) => void): TerminalAPI {
     cat: (args) => {
       if (args[0]?.startsWith("about")) {
         print(
-          "i build fast, beautiful, slightly impossible things on the web — from GPU shaders to production systems. currently shipping <span class='accent'>Parkzy</span>."
+          "i ship production systems end-to-end — payments, real-time, and LLM features that survive contact with real users. currently building <span class='accent'>Parkzy</span>."
         );
       } else {
         print(`<span class="err">cat: ${escapeHtml(args[0] || "")}: no such file</span>`);
