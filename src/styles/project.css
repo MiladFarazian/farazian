@@ -548,6 +548,56 @@
 }
 .llm-col--win .llm-role { color: var(--cyan); }
 
+/* ---- Creative page ---- */
+.cr-spotify { margin-top: 1.3rem; border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); }
+.cr-spotify iframe { display: block; }
+.cr-films { display: grid; gap: 1.2rem; margin-top: 1.3rem; }
+@media (min-width: 680px) { .cr-films { grid-template-columns: 1fr 1fr; } }
+.cr-film {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  gap: 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(8, 12, 20, 0.5);
+  padding: 1rem;
+  text-decoration: none;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.cr-film:hover { border-color: rgba(42, 245, 255, 0.4); box-shadow: 0 0 30px rgba(42, 245, 255, 0.08); transform: translateY(-2px); }
+.cr-film__poster { border-radius: 10px; overflow: hidden; aspect-ratio: 3 / 4; background: #05070c; }
+.cr-film__poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cr-film__body { display: grid; gap: 0.35rem; align-content: start; min-width: 0; }
+.cr-film__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
+.cr-film__head b { color: var(--ink); font-size: 1.05rem; font-weight: 600; }
+.cr-film__head span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+.cr-film__meta { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+.cr-film__role {
+  justify-self: start;
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em;
+  color: var(--cyan); border: 1px solid rgba(42, 245, 255, 0.3); border-radius: 999px; padding: 0.25em 0.7em;
+}
+.cr-film__body p { color: var(--ink-dim); font-size: 0.85rem; line-height: 1.55; margin-top: 0.2rem; }
+.cr-film__imdb { font-family: var(--font-mono); font-size: 0.72rem; color: #ffc35e; margin-top: 0.2rem; }
+.cr-headshots {
+  display: grid;
+  gap: 1.4rem;
+  margin-top: 1.3rem;
+  align-items: center;
+}
+@media (min-width: 620px) { .cr-headshots { grid-template-columns: 260px 1fr; } }
+.cr-shot {
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 50px rgba(42, 245, 255, 0.06);
+  aspect-ratio: 1;
+}
+.cr-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cr-headshots__note { color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; max-width: 40ch; }
+.cr-headshots__note a { color: var(--cyan); }
+
 /* ---- Hire page ---- */
 .hire-grid { display: grid; gap: 1.1rem; margin-top: 1.3rem; }
 @media (min-width: 720px) { .hire-grid { grid-template-columns: 1fr 1fr; } }

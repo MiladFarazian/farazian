@@ -1145,6 +1145,98 @@ const HIRE_HTML = `<!doctype html>
 </html>
 `;
 
+// ============================================================
+// CREATIVE PAGE — /creative/  (music + film + headshots)
+// ============================================================
+const filmCard = (poster, title, year, meta, role, desc, href) =>
+  `<a class="cr-film" href="${href}" target="_blank" rel="noopener" data-reveal>
+        <div class="cr-film__poster"><img src="${poster}" alt="${title} poster" loading="lazy" /></div>
+        <div class="cr-film__body">
+          <div class="cr-film__head"><b>${title}</b><span>${year}</span></div>
+          <span class="cr-film__meta">${meta}</span>
+          <span class="cr-film__role">${role}</span>
+          <p>${desc}</p>
+          <span class="cr-film__imdb">IMDb ↗</span>
+        </div>
+      </a>`;
+
+const CREATIVE_HTML = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Creative — Milad Farazian</title>
+    <meta name="description" content="The other half of Milad Farazian — original music on Spotify, film & acting credits on IMDb, and the person behind the engineering." />
+    <link rel="canonical" href="https://farazian.com/creative/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Creative — Milad Farazian" />
+    <meta property="og:description" content="Original music, film & acting credits, and the person behind the engineering." />
+    <meta property="og:url" content="https://farazian.com/creative/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://open.spotify.com" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+        <p class="proj__eyebrow" data-reveal>off the clock</p>
+        <h1 class="proj__title" data-reveal>The Creative Side</h1>
+        <p class="proj__sub" data-reveal>I'm not only an engineer. I write and produce music, and I act in and help make films. Same instinct — build something that makes people <em>feel</em> — different medium.</p>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Music</h2>
+        <p data-reveal>Original tracks and productions. Press play.</p>
+        <div class="cr-spotify" data-reveal>
+          <iframe title="Milad Farazian on Spotify" style="border-radius:14px" src="https://open.spotify.com/embed/artist/5sIJlYqfHM3gpYwYU17HOB?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allowfullscreen loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        </div>
+        <div class="proj__links" data-reveal>
+          <a class="btn btn--ghost" href="https://open.spotify.com/artist/5sIJlYqfHM3gpYwYU17HOB" target="_blank" rel="noopener" data-magnetic data-scramble>Full artist profile ↗</a>
+        </div>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Film</h2>
+        <div class="cr-films">
+          ${filmCard("usurper.jpg", "Usurper", "2025", "Short · Thriller", "Production Assistant", "Consumed by addiction and anxiety, a withdrawn Abel faces an unsettling truth when his friend Seth intervenes. Directed by Edward Avalos.", "https://www.imdb.com/title/tt32159991/")}
+          ${filmCard("showerhead.jpg", "Showerhead", "2024", "Short Film", "Actor", "An experimental short film exploring unconventional narrative techniques.", "https://www.imdb.com/title/tt35524195/")}
+        </div>
+        <div class="proj__links" data-reveal>
+          <a class="btn btn--ghost" href="https://www.imdb.com/name/nm16942921/" target="_blank" rel="noopener" data-magnetic data-scramble>Full filmography on IMDb ↗</a>
+        </div>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Headshots</h2>
+        <div class="cr-headshots" data-reveal>
+          <figure class="cr-shot"><img src="headshot.jpg" alt="Milad Farazian headshot" loading="lazy" /></figure>
+          <p class="cr-headshots__note">The person behind the commits. For casting or press, the full-resolution set is a <a href="mailto:miladfarazian@gmail.com?subject=Headshots">quick email away</a>.</p>
+        </div>
+      </section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>
+`;
+
 // ---- write ----
 for (const p of PAGES) {
   const dir = resolve(ROOT, "work", p.slug);
@@ -1158,10 +1250,13 @@ console.log("generated resume/index.html");
 mkdirSync(resolve(ROOT, "hire"), { recursive: true });
 writeFileSync(resolve(ROOT, "hire", "index.html"), HIRE_HTML);
 console.log("generated hire/index.html");
+mkdirSync(resolve(ROOT, "creative"), { recursive: true });
+writeFileSync(resolve(ROOT, "creative", "index.html"), CREATIVE_HTML);
+console.log("generated creative/index.html");
 
 // ---- sitemap + robots (kept in sync with the generated pages) ----
 const BASE = "https://farazian.com";
-const urls = [`${BASE}/`, `${BASE}/hire/`, `${BASE}/resume/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
+const urls = [`${BASE}/`, `${BASE}/hire/`, `${BASE}/creative/`, `${BASE}/resume/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

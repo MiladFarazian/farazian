@@ -129,6 +129,7 @@ const commands: Command[] = [
   { id: "top", label: "Back to top", icon: "↑", run: () => scroller.scrollTo(0) },
   { id: "terminal", label: "Open terminal", icon: "›_", hint: "easter egg", run: () => terminal.open() },
   { id: "hire", label: "Hire me", icon: "◈", hint: "freelance", run: () => (window.location.href = "/hire/") },
+  { id: "creative", label: "Creative — music & film", icon: "♪", hint: "off the clock", run: () => (window.location.href = "/creative/") },
   { id: "book", label: "Book a call", icon: "◷", hint: "15 min", run: () => window.open("https://cal.com/milad-farazian/15min", "_blank") },
   { id: "resume", label: "View resume", icon: "▤", run: () => (window.location.href = "/resume/") },
   { id: "email", label: "Email me", icon: "@", run: () => (window.location.href = "mailto:miladfarazian@gmail.com") },

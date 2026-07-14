@@ -22,6 +22,9 @@ if (existsSync(resumeHtml)) projectInputs["resume"] = resumeHtml;
 const hireHtml = resolve(root, "hire", "index.html");
 if (existsSync(hireHtml)) projectInputs["hire"] = hireHtml;
 
+const creativeHtml = resolve(root, "creative", "index.html");
+if (existsSync(creativeHtml)) projectInputs["creative"] = creativeHtml;
+
 export default defineConfig({
   plugins: [glsl()],
   build: {
