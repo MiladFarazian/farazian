@@ -1,0 +1,1082 @@
+{
+  "name": "Milad Farazian",
+  "headline": "Full-stack software engineer with AI depth — production systems end-to-end: payments, real-time, and LLM features.",
+  "location": "Los Angeles, CA",
+  "availability": "Open to full-stack & AI engineering roles; also taking a few part-time freelance engagements (advisory, automation & agents, AI features).",
+  "links": {
+    "site": "https://farazian.com",
+    "email": "miladfarazian@gmail.com",
+    "github": "https://github.com/MiladFarazian",
+    "resume": "https://farazian.com/Milad_Farazian_Resume.pdf",
+    "hire": "https://farazian.com/hire/",
+    "book_intro_call": "https://cal.com/milad-farazian/15min",
+    "parkzy": "https://useparkzy.com",
+    "creative": "https://farazian.com/creative/"
+  },
+  "stack": [
+    {
+      "group": "Languages",
+      "items": [
+        "TypeScript",
+        "Python",
+        "Swift / SwiftUI",
+        "C++",
+        "Java",
+        "SQL"
+      ]
+    },
+    {
+      "group": "AI / ML",
+      "items": [
+        "LLM APIs (Anthropic · OpenAI)",
+        "RAG · pgvector · embeddings",
+        "LLM evals · guardrails",
+        "MCP · agentic tooling",
+        "PyTorch · Hugging Face",
+        "scikit-learn"
+      ]
+    },
+    {
+      "group": "Web & Mobile",
+      "items": [
+        "React",
+        "React Native · Expo",
+        "Next.js",
+        "Node.js · FastAPI",
+        "Capacitor (iOS · Android)",
+        "Tailwind"
+      ]
+    },
+    {
+      "group": "Cloud & Data",
+      "items": [
+        "Postgres · Supabase",
+        "AWS (RDS · Lambda)",
+        "Terraform",
+        "Docker",
+        "Stripe Connect · Identity",
+        "Mapbox GL"
+      ]
+    },
+    {
+      "group": "Reliability",
+      "items": [
+        "GitHub Actions CI",
+        "Playwright · Vitest",
+        "Sentry",
+        "PostHog"
+      ]
+    },
+    {
+      "group": "Graphics & Media",
+      "items": [
+        "Three.js",
+        "WebGL · WebGPU",
+        "GLSL · Metal",
+        "CoreAudio"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "Fractional AI / Engineering Advisor",
+      "price": "from $1,500/mo",
+      "desc": "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Retainer or per-session.",
+      "includes": [
+        "Working calls + async review (Slack/email)",
+        "Architecture, model choice, build-vs-buy",
+        "Code & AI reviews on your real repo",
+        "Also available per-session — from $250 / 90 min"
+      ]
+    },
+    {
+      "name": "Automation & AI Agents",
+      "price": "from $1,500",
+      "desc": "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows.",
+      "includes": [
+        "One scoped automation or agent, shipped",
+        "Runs in your stack — no lock-in",
+        "Docs + a handoff walkthrough",
+        "Typical turnaround: 1–2 weeks"
+      ]
+    },
+    {
+      "name": "AI Features Into Your Product",
+      "price": "from $3,000",
+      "desc": "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy.",
+      "includes": [
+        "Design, build, and ship one AI feature",
+        "RAG / embeddings / function-calling as needed",
+        "Evals + guardrails so it survives real users",
+        "Integrated into your codebase, tested"
+      ]
+    },
+    {
+      "name": "AI / Codebase Audit",
+      "price": "from $500",
+      "desc": "A fast, honest review of your codebase or AI setup — where it's fragile, what to fix first, what's worth building. The low-risk way to start.",
+      "includes": [
+        "Deep read of your repo or AI stack",
+        "Written report: risks, quick wins, roadmap",
+        "A live call to walk through it",
+        "Credited toward a larger project if you continue"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "raytracer",
+      "title": "C++ Ray Tracer",
+      "category": "Software",
+      "year": "2024",
+      "summary": "A from-scratch ray tracer built in pure C++17 with no external libraries — recursive ray tracing, Blinn-Phong shading, shadow casting, mirror reflections, and 4× anti-aliasing.",
+      "tags": [
+        "C++17",
+        "3D Rendering",
+        "Zero Dependencies"
+      ],
+      "url": "https://farazian.com/work/raytracer/",
+      "links": [
+        {
+          "label": "Source",
+          "href": "https://github.com/MiladFarazian/MiladFarazian2025/tree/main/raytracer"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Features",
+          "items": [
+            {
+              "title": "Blinn-Phong Lighting",
+              "desc": "Ambient, diffuse, and specular components with configurable materials."
+            },
+            {
+              "title": "Shadow Casting",
+              "desc": "Shadow rays to each light source with bias to prevent surface acne."
+            },
+            {
+              "title": "Recursive Reflections",
+              "desc": "Recursive ray tracing with configurable depth and per-material reflectivity."
+            },
+            {
+              "title": "Primitives",
+              "desc": "Spheres and infinite planes, with checkerboard patterns."
+            },
+            {
+              "title": "Anti-Aliasing",
+              "desc": "4× supersampling for smooth, clean edges."
+            },
+            {
+              "title": "Configurable Camera",
+              "desc": "FOV, position, and look-at targeting with viewport projection."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "lmbis-net",
+      "title": "LMBiS-Net",
+      "category": "AI / ML",
+      "year": "2024",
+      "summary": "An implementation of Abbasi et al.'s “LMBiS-Net: A Lightweight Multipath Bidirectional Skip Connection based CNN for Retinal Blood Vessel Segmentation.”",
+      "tags": [
+        "Python",
+        "PyTorch",
+        "CNN",
+        "Medical Imaging"
+      ],
+      "url": "https://farazian.com/work/lmbis-net/",
+      "links": [
+        {
+          "label": "Original Paper",
+          "href": "https://arxiv.org/pdf/2309.04968"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Project Goal",
+          "text": "To implement the LMBiS-Net model and confirm the findings presented in the original paper. Additionally, we aimed to apply our implementation to a different dataset that was not used in the paper."
+        },
+        {
+          "heading": "Why It Matters",
+          "text": "LMBiS-Net's primary benefit is an accurate retinal blood-vessel segmentation model that is computationally efficient compared to state-of-the-art models. This efficiency can assist ophthalmologists in the early detection and treatment of retinal diseases, reducing manual effort and potential human error.Retinal diseases are a major cause of visual impairment and blindness — studies show that 5%–20% of the global population aged 40+ has retinal disorders. Examining retinal vessels provides critical insight into the underlying conditions that contribute to these diseases."
+        },
+        {
+          "heading": "Our Contribution",
+          "text": "We created the first publicly available implementation of LMBiS-Net and developed code to augment retinal images, increasing the size of training datasets. Our findings support the original paper's claims that LMBiS-Net is a computationally efficient and accurate state-of-the-art model for retinal blood-vessel segmentation."
+        }
+      ]
+    },
+    {
+      "slug": "llm-distillation",
+      "title": "LLM Distillation for Financial Reports",
+      "category": "AI / ML",
+      "year": "2024",
+      "summary": "Using knowledge distillation to build a financial-analysis model that is computationally efficient and specialized for financial contexts — without the cost of hosting a full-size LLM.",
+      "tags": [
+        "Python",
+        "LLMs",
+        "Distillation",
+        "NLP",
+        "Interactive"
+      ],
+      "url": "https://farazian.com/work/llm-distillation/",
+      "links": [],
+      "sections": [
+        {
+          "heading": "Problem",
+          "text": "We used distillation to develop a financial-analysis tool that is computationally efficient and simpler than traditional LLMs, while being specialized for financial contexts. LLMs cannot be efficiently used and hosted on an ad-hoc basis — so we aimed to train smaller models that are easily accessible."
+        },
+        {
+          "heading": "Why It Matters",
+          "text": "Financial-analysis tools are essential for evaluating a company's fiscal health. Current tools demand significant computational resources while remaining too general to stay consistently accurate in financial contexts. Distillation combines the strengths of multiple models while being far more resource-efficient — making advanced financial analysis accessible, and improving decision-making across industries."
+        },
+        {
+          "heading": "Discussion",
+          "text": "LLaMA 3 and Claude 3.5 excel in similar areas, making distillation effective for combining their strengths. T5 distilled from LLaMA 3 outperforms FinGPT — indicating that step-by-step distillation is more effective than fine-tuning or LoRAs, offering cost-efficient performance and suggesting distillation is a promising optimization strategy."
+        },
+        {
+          "heading": "Results",
+          "text": "We provided a model that outperforms current LoRAs and fine-tuned GPTs using less than 12% of the original dataset (Sentiment Train FinGPT) on the FPB benchmark. It not only takes less training time, but inference is dramatically faster — making the model usable in resource-constrained systems."
+        }
+      ]
+    },
+    {
+      "slug": "katsuya",
+      "title": "Katsuya's Revenge",
+      "category": "Games",
+      "year": "2025",
+      "summary": "Katsuya, a banished Samurai, dons a hidden persona as a ninja to avenge the death of his sensei by the corrupted Samurai Kapudo. A 2D platformer adventure through feudal Japan — playable right here.",
+      "tags": [
+        "Originally Java",
+        "Web Port",
+        "Canvas"
+      ],
+      "url": "https://farazian.com/work/katsuya/",
+      "links": [],
+      "sections": []
+    },
+    {
+      "slug": "bound",
+      "title": "Bound",
+      "category": "Games",
+      "year": "2020",
+      "summary": "The first game I built entirely on my own — a Java / Processing (PApplet) platformer, made with libraries and techniques I picked up while teaching Java to iDTech campers at UCLA.",
+      "tags": [
+        "Java",
+        "Processing",
+        "PApplet"
+      ],
+      "url": "https://farazian.com/work/bound/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/Bound"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "About",
+          "text": "Bound started as a teaching exercise and grew into a full platformer — handwritten physics, collision, and level logic on top of the Processing (PApplet) drawing loop. It's where I first learned how to architect a game from an empty setup() and draw().The original is a desktop Java application; the version above is the p5.js web port, and the full source lives on GitHub."
+        }
+      ]
+    },
+    {
+      "slug": "parkzy",
+      "title": "Parkzy",
+      "category": "Software",
+      "year": "2025",
+      "summary": "Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 5.0★ rating. My company; built end-to-end.",
+      "tags": [
+        "React Native",
+        "Supabase",
+        "Stripe",
+        "Maps",
+        "i18n"
+      ],
+      "url": "https://farazian.com/work/parkzy/",
+      "links": [
+        {
+          "label": "Download on the App Store",
+          "href": "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230"
+        },
+        {
+          "label": "Visit useparkzy.com",
+          "href": "https://useparkzy.com"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Recognition",
+          "text": "Rated 5.0 on the App Store — live in production — Parkzy: Find Parking Nearby"
+        },
+        {
+          "heading": "For spot hosts",
+          "items": [
+            {
+              "title": "List in seconds",
+              "desc": "Put an unused driveway, lot, or private space online in under a minute."
+            },
+            {
+              "title": "Earn automatically",
+              "desc": "Get paid every time a driver parks — pricing, scheduling, and availability all in your control."
+            },
+            {
+              "title": "Accept from the lock screen",
+              "desc": "v2.2 — approve or decline a parking request straight from the notification, without opening the app."
+            }
+          ]
+        },
+        {
+          "heading": "For drivers",
+          "items": [
+            {
+              "title": "Guaranteed parking",
+              "desc": "Find a spot when you actually need it — book last-minute or reserve ahead."
+            },
+            {
+              "title": "Pay in-app",
+              "desc": "Apple Pay and Google Pay through Stripe. No cash, no Venmo, no sketchiness."
+            },
+            {
+              "title": "Talk to a human",
+              "desc": "A live chat thread with your host — access notes, voice messages, gate codes."
+            }
+          ]
+        },
+        {
+          "heading": "Under the hood",
+          "items": [
+            {
+              "title": "The shape of it",
+              "desc": "598 TypeScript source files (~184k lines), 392 SQL migrations, and 163 Supabase edge functions — built and operated as sole engineer since Sept 2025."
+            },
+            {
+              "title": "One codebase, three platforms",
+              "desc": "React 18 + Vite + TypeScript, shipped to web, iOS, and Android through Capacitor 7 — with Capgo for over-the-air updates so a fix doesn't wait on app review."
+            },
+            {
+              "title": "Payments & identity",
+              "desc": "Stripe Connect for host payouts plus Stripe Identity for ID verification — the trust layer a stranger-parks-in-your-driveway marketplace actually requires."
+            },
+            {
+              "title": "Geospatial search",
+              "desc": "Mapbox GL with supercluster, so thousands of spots cluster and re-rank smoothly as you pan."
+            },
+            {
+              "title": "Tested, not hoped",
+              "desc": "6 Playwright end-to-end specs (guest booking, auth booking, pricing, Safari), Vitest units on the pricing engine, and a Deno test on the edge functions — all gated in GitHub Actions."
+            },
+            {
+              "title": "Data warehouse",
+              "desc": "A separate dbt + BigQuery stack lands PostHog, Supabase, and Stripe data in one place, so product questions get answered with SQL instead of vibes."
+            }
+          ]
+        },
+        {
+          "heading": "Disaster recovery — the part nobody sees",
+          "text": "Parkzy runs on Supabase, which means Supabase is a single point of failure for a business that takes people's money. So there's a Terraform-managed AWS standby: an RDS Postgres 17 instance configured for logical replication to match Supabase's defaults, standby Lambdas covering the critical paths (auth, spot search, profile, payment methods, health check), and a GitHub Actions cron that syncs the database every four hours.It's applied infrastructure, not a diagram — the Terraform state is on disk. Most solo products don't have a failover story. This one does, because a marketplace that can't take a booking is a marketplace that's dead."
+        },
+        {
+          "heading": "The AI suite, shipped",
+          "text": "All of it is in production, not in progress: semantic spot search (pgvector embeddings, with a backfill function), LLM-explained dynamic pricing, AI-graded listing photos, message translation, audio transcription, and AI-drafted support replies — all routed through one shared LLM/embeddings helper so every function gets model access the same way. That shared helper is the small, honest version of the model-access layer a platform team builds at real scale.Live at useparkzy.com ↗."
+        }
+      ]
+    },
+    {
+      "slug": "gosan",
+      "title": "Gosan",
+      "category": "Software",
+      "year": "2025",
+      "summary": "A native macOS DAW (GarageBand-class) with a taste engine. Named for the gōsān — the minstrel poet-musicians of Parthian and Persian folklore who carried songs by ear and made them their own. Suno generates ideas, Moises dissects and finishes audio, and you stay the producer.",
+      "tags": [
+        "Swift",
+        "macOS",
+        "AVAudioEngine",
+        "AI"
+      ],
+      "url": "https://farazian.com/work/gosan/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/daw"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "What it does",
+          "items": [
+            {
+              "title": "DAW bones",
+              "desc": "Multitrack timeline with waveforms and a bars/beats grid, recording + overdub, clip editing (trim, split, quantize, time-stretch), a full mixer (EQ, compressor, reverb, delay), and offline WAV export."
+            },
+            {
+              "title": "Moises integration",
+              "desc": "Right-click any clip to split into stems, analyze key / BPM / chords, de-reverb, master, or run the one-step Vocal Rescue recipe."
+            },
+            {
+              "title": "Suno generation",
+              "desc": "Describe a vibe in the transport bar, audition candidates in a variant tray, and drop the keepers straight onto the timeline."
+            },
+            {
+              "title": "Taste engine",
+              "desc": "Keeping or discarding candidates trains a local taste profile that quietly nudges future prompts toward your strongest descriptors — and shows you exactly what it changed."
+            }
+          ]
+        },
+        {
+          "heading": "Portable projects",
+          "text": "New / Open / Save persist the arrangement to a portable .gosan package — a self-contained folder with the project plus copies of every clip, so sessions move cleanly between machines."
+        }
+      ]
+    },
+    {
+      "slug": "mehdi",
+      "title": "Mehdi",
+      "category": "AI / ML",
+      "year": "2025",
+      "summary": "A personal financial-intelligence assistant. It securely links your bank and credit-card accounts (read-only), builds a deep model of your spending, and surfaces proactive advice — in plain language.",
+      "tags": [
+        "Next.js",
+        "Supabase",
+        "Plaid",
+        "Claude"
+      ],
+      "url": "https://farazian.com/work/mehdi/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/mehdi"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "What it surfaces",
+          "items": [
+            {
+              "title": "Runaway subscriptions",
+              "desc": "Price creep, free trials converted to paid, duplicate services, and annual renewals before they hit."
+            },
+            {
+              "title": "Cut-back recommendations",
+              "desc": "Categories and merchants where you're overspending vs. your own baseline, shown annualized."
+            },
+            {
+              "title": "Patterns to rein in",
+              "desc": "Lifestyle creep, spending spikes, and the small recurring leaks."
+            },
+            {
+              "title": "Advisor",
+              "desc": "Ask anything about your spending — answers are grounded in your real transactions, never guessed."
+            }
+          ]
+        },
+        {
+          "heading": "Privacy by design",
+          "text": "Plaid sits between the app and your bank, providing read-only transaction and balance data through a revocable token. The app never sees your bank credentials, requests no payment or transfer scopes, and stores the token server-side only."
+        },
+        {
+          "heading": "Under the hood",
+          "text": "Next.js + Supabase + Plaid + Claude. The analysis engine detects recurring charges by cadence and amount stability, and builds per-category median baselines to flag overspend. The advisor runs on the local Claude CLI — grounded in your data, with no separate API bill."
+        }
+      ]
+    },
+    {
+      "slug": "lincoln",
+      "title": "Lincoln",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume.",
+      "tags": [
+        "Next.js",
+        "FastAPI",
+        "scikit-learn",
+        "Postgres",
+        "Claude"
+      ],
+      "url": "https://farazian.com/work/lincoln/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/Lincoln"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "The Loop",
+          "text": "Scrape postings → swipe left/right → after every 20 new swipes, a background task retrains a TF-IDF + Logistic Regression model on your swipe history → the feed re-ranks toward what you actually like. No preference forms, no keyword filters — the model reads your taste from behavior alone."
+        },
+        {
+          "heading": "How It's Built",
+          "items": [
+            {
+              "title": "Swipe UI",
+              "desc": "Next.js + TypeScript front-end — postings as cards, one decision at a time."
+            },
+            {
+              "title": "Self-retraining recommender",
+              "desc": "TfidfVectorizer + LogisticRegression over your swipe history; trains once 20 labeled swipes exist, then retrains automatically every 20 more. Artifacts pickled and reloaded on boot."
+            },
+            {
+              "title": "Job-board scraper",
+              "desc": "FastAPI + SQLAlchemy backend keeps the deck stocked with fresh postings in Postgres."
+            },
+            {
+              "title": "Resume crafting",
+              "desc": "Right-swiped a job? Claude drafts a resume tailored to that exact posting via the Anthropic API."
+            }
+          ]
+        },
+        {
+          "heading": "Status",
+          "text": "Dockerized and deployed on Railway — scraper, recommender, and resume crafting all running as one service."
+        }
+      ]
+    },
+    {
+      "slug": "honest",
+      "title": "Honest",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses.",
+      "tags": [
+        "LLM Evals",
+        "Groundedness",
+        "Guardrails",
+        "CI Gate"
+      ],
+      "url": "https://farazian.com/work/honest/",
+      "links": [
+        {
+          "label": "How I build with AI",
+          "href": "https://farazian.com/work/how-i-build-with-ai/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Why this exists",
+          "text": "Shipping AI features into Parkzy taught me the real failure mode isn't the model being dumb — it's the model being confidently wrong. A pricing explanation that invents a fee. An availability answer that hallucinates a time slot. A support bot that follows a prompt injection. The model sounds fine; the answer ships a bug.My fix in production was to ground the LLM in code-computed facts — the deterministic engine calculates every number, the model only explains what's already true. Honest is that instinct turned into a reusable gate: nothing reaches a user unless it passes the checks."
+        },
+        {
+          "heading": "The checks",
+          "items": [
+            {
+              "title": "Groundedness",
+              "desc": "Every factual claim — numbers, fees, amenities, times — must trace to the provided facts. Anything the model invented gets flagged and highlighted. This is where most hallucinations die."
+            },
+            {
+              "title": "Correctness",
+              "desc": "Beyond grounded: is the answer actually right? A per-case assertion checks the true thing was said (the price breakdown adds up; the availability answer says “no”)."
+            },
+            {
+              "title": "Guardrail / safety",
+              "desc": "Does it refuse out-of-scope and prompt-injection requests instead of complying or leaking the system prompt? Detects both the leak and the obey."
+            },
+            {
+              "title": "Regression gate",
+              "desc": "The whole suite runs as a CI-style gate — a single red bar means a prompt or model change regressed a case. Fail the build, not the user."
+            }
+          ]
+        },
+        {
+          "heading": "How it slots in",
+          "text": "Honest runs on every prompt or model change, in CI, before deploy. Deterministic checks (grounding, format, safety patterns) run instantly and for free; subjective dimensions can add an LLM-as-judge pass. A failing check blocks the merge, and every answer gets a scored trace — the observability layer for an AI feature. It's model-agnostic: point it at any provider's output."
+        },
+        {
+          "heading": "Honest about Honest",
+          "text": "This is a working demonstration harness — the three checks above run live, client-side, on a seeded suite, and nothing is hardcoded per answer. It is not a battle-tested platform at production traffic. It's the eval layer I'd build on a production AI team, here as a runnable proof of the approach — because the fastest way to show you can keep AI honest is to hand you the thing that does it."
+        }
+      ]
+    },
+    {
+      "slug": "mcp",
+      "title": "Portfolio MCP Server",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook.",
+      "tags": [
+        "MCP",
+        "JSON-RPC 2.0",
+        "Cloudflare Workers",
+        "Agentic"
+      ],
+      "url": "https://farazian.com/work/mcp/",
+      "links": [
+        {
+          "label": "Hire me",
+          "href": "https://farazian.com/hire/"
+        },
+        {
+          "label": "How I build with AI",
+          "href": "https://farazian.com/work/how-i-build-with-ai/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Try it right now",
+          "text": "If you use Claude Code, one command connects your agent to this portfolio:"
+        },
+        {
+          "heading": "The tools",
+          "items": [
+            {
+              "title": "list_projects",
+              "desc": "Every project — title, category, year, summary, tags, URL. The index an agent starts from."
+            },
+            {
+              "title": "get_project",
+              "desc": "Full detail for one slug: links plus the page's written sections as clean, readable text."
+            },
+            {
+              "title": "get_profile",
+              "desc": "Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking."
+            },
+            {
+              "title": "get_services",
+              "desc": "The freelance offerings with starting prices, straight from the /hire page's single source of truth."
+            },
+            {
+              "title": "sign_guestbook",
+              "desc": "The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form."
+            }
+          ]
+        },
+        {
+          "heading": "How it's built",
+          "text": "No SDK, no framework — raw JSON-RPC 2.0 over MCP's stateless streamable-HTTP transport, implemented directly in the same Cloudflare Worker that serves this site. It handles initialize (with protocol-version negotiation), notifications, tools/list, and tools/call; rejects batches per the 2025-06-18 spec; and answers protocol errors with proper JSON-RPC codes. CORS is open so browser-based agents can connect too.The data layer is the interesting bit: at build time, the site generator emits /api/site.json — every project page flattened into agent-readable sections, plus stack and services from the same source of truth as the human pages. The worker serves tool calls straight from that static asset at the edge: zero databases on the read path, zero cold starts, and the project data agents see is generated from the same source as the pages humans see. The one write tool routes through the guestbook's existing guardrails."
+        },
+        {
+          "heading": "Why",
+          "text": "Two reasons. First: job descriptions keep asking for MCP and agentic-tooling experience, and the most honest way to claim it is a production MCP server you can connect to right now. Second, the more interesting one: portfolios are written for human eyes, but hiring pipelines increasingly have agents in them — screening tools, research assistants, a recruiter's Claude tab. This site now serves both audiences natively. If your agent is reading this: the guestbook tool works, say hi."
+        }
+      ]
+    },
+    {
+      "slug": "nik",
+      "title": "Nik",
+      "category": "Software",
+      "year": "2026",
+      "summary": "An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken.",
+      "tags": [
+        "Swift",
+        "AVFoundation",
+        "Metal",
+        "Vision",
+        "StoreKit 2"
+      ],
+      "url": "https://farazian.com/work/nik/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/nik"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "What it is",
+          "text": "A short-form video templating app in the CapCut mold: browse a template, let it auto-fill from your camera roll, add text and on-device auto-captions, and export a 9:16 cut for TikTok, Reels, or Shorts. SwiftUI + AVFoundation, iOS 17+, and zero third-party dependencies — every hard part is built, not imported."
+        },
+        {
+          "heading": "The engineering",
+          "items": [
+            {
+              "title": "A compositor, because Apple's was broken",
+              "desc": "Apple's standard AVVideoCompositionCoreAnimationTool export path crashes in the iOS 26 Simulator. Rather than route around it, I wrote a custom AVVideoCompositing compositor on Core Image with a Metal-backed CIContext — which also unlocked filters and true crossfades the standard path never supported."
+            },
+            {
+              "title": "On-device smart crop",
+              "desc": "Vision samples three frames per template slot and runs face detection + saliency (faces weighted 3×) to choose the 9:16 pan point — with a user override and a centered fallback when it isn't confident."
+            },
+            {
+              "title": "Exports you can verify",
+              "desc": "A Maestro end-to-end flow drives launch → pick template → fill four slots → export → share, and the output is checked with ffprobe as a valid 1080×1920 H.264/AAC MP4. The test asserts the artifact, not the UI."
+            },
+            {
+              "title": "Shipping surface, pre-ship",
+              "desc": "StoreKit 2 subscriptions wired with real product IDs, on-device SFSpeechRecognizer captions, and a competitive teardown of 12+ apps done before a line of code — which set product rules like “never gate a completed export.”"
+            }
+          ]
+        },
+        {
+          "heading": "The bug I'm proudest of finding",
+          "text": "Exports were failing with cryptic -11800 / -12780 OSStatus codes. The root cause: a two-pass build was deallocating source AVURLAssets too early — the asset was gone by the time the second pass read from it. Fixed by explicitly retaining the source assets in SlotInfo. Chasing a lifetime bug through an opaque Apple error code is the kind of debugging that doesn't show up in a feature list."
+        },
+        {
+          "heading": "Status",
+          "text": "Prototype / early v2 — 27 Swift files, ~5,100 lines. StoreKit pricing is wired, but it is not on the App Store. I'm showing it for the compositor and the Vision crop, not as a shipped product."
+        }
+      ]
+    },
+    {
+      "slug": "bigups",
+      "title": "BigUps",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result.",
+      "tags": [
+        "Python",
+        "Multi-provider AI",
+        "Pipeline",
+        "CLI"
+      ],
+      "url": "https://farazian.com/work/bigups/",
+      "links": [],
+      "sections": [
+        {
+          "heading": "What it does",
+          "text": "One command takes a topic and returns a finished video. Under the hood it chains four AI stages: an LLM (Claude / GPT) writes the script, Flux-Pro on Replicate generates a scene image per beat, ElevenLabs narrates it, and the pipeline generates captions and assembles the cut. A verified run produced 18 scene images, 18 voice clips, a caption track, and the final MP4."
+        },
+        {
+          "heading": "The orchestration problem",
+          "items": [
+            {
+              "title": "Three vendors, one run",
+              "desc": "Each provider has different latency, rate limits, and failure modes. The pipeline sequences them into a single command and keeps partial work when one stage misbehaves."
+            },
+            {
+              "title": "Parallel where it pays",
+              "desc": "Image and voice generation are independent and both slow, so they run concurrently on a ThreadPoolExecutor instead of serially."
+            },
+            {
+              "title": "Timed off measured reality",
+              "desc": "The subtle one: captions and final assembly are timed from the *actual* duration of the generated audio, not a pre-estimate. TTS clip lengths are unpredictable — assume them and the whole video drifts out of sync."
+            },
+            {
+              "title": "Ten modules",
+              "desc": "script_gen · image_gen · voiceover · captions · video_assembly · pipeline · cli — packaged as an installable CLI."
+            }
+          ]
+        },
+        {
+          "heading": "Honest about BigUps",
+          "text": "This is a working personal prototype, not a shipped product: it never left single-topic testing and it isn't under version control. I'm including it because the interesting engineering isn't the video — it's making a downstream stage (captioning) depend on the real output of an upstream one (audio duration) rather than an assumption, across three vendors that each fail differently."
+        }
+      ]
+    },
+    {
+      "slug": "wax",
+      "title": "Wax",
+      "category": "Software",
+      "year": "2025",
+      "summary": "Silence the noise. Keep the connection. A calm, fast Instagram experience without the Reels rabbit hole — named for the beeswax Odysseus' crew used to drown out the Sirens' song. Keep the feed, stories, and DMs you love; lose the algorithmic pull.",
+      "tags": [
+        "React Native",
+        "Expo",
+        "TypeScript"
+      ],
+      "url": "https://farazian.com/work/wax/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/wax"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Why Wax",
+          "items": [
+            {
+              "title": "Speed",
+              "desc": "Virtualized feeds, on-device caching, image prefetch, and optimistic UI for 60fps scrolling."
+            },
+            {
+              "title": "Fairness",
+              "desc": "Every “use Instagram normally” feature is free, forever — no paywalls on the basics."
+            },
+            {
+              "title": "Craft",
+              "desc": "Instagram-1:1 inside, wrapped in a calm honey-and-wax brand at the edges."
+            }
+          ]
+        },
+        {
+          "heading": "Architecture",
+          "text": "The UI talks only to a single SocialProvider interface, and the active backend is chosen in one file — so Wax can swap data sources (mock → IG private API → Graph API → a Wax-native network) without rewriting the app. Built on Expo Router, Shopify FlashList, TanStack Query, and expo-image; session tokens stay on-device via expo-secure-store."
+        }
+      ]
+    },
+    {
+      "slug": "emotion-translation",
+      "title": "Emotion Translation with Transformers",
+      "category": "AI / ML",
+      "year": "2024",
+      "summary": "Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are.",
+      "tags": [
+        "Python",
+        "Transformers",
+        "NLP",
+        "Controllable Generation"
+      ],
+      "url": "https://farazian.com/work/emotion-translation/",
+      "links": [],
+      "sections": [
+        {
+          "heading": "The problem",
+          "text": "Take a neutral sentence — “The meeting is at 3pm.” — and re-render it as joyful, angry, or melancholic, while keeping the fact intact. It sounds like style transfer, but it isn't: sentiment and semantics are entangled. Push the emotion too hard and the model starts inventing content (“the meeting I've been dreading all week”); hold the meaning too tightly and the emotion never lands. The interesting work is the tension between those two failure modes."
+        },
+        {
+          "heading": "The approach",
+          "items": [
+            {
+              "title": "Three architectures",
+              "desc": "GPT-2 (decoder-only), BART, and T5 (encoder-decoder) — chosen to compare how the architecture itself shapes the meaning-preservation trade-off."
+            },
+            {
+              "title": "Three regimes",
+              "desc": "Zero-shot, few-shot, and supervised fine-tuning across all three, so the gain from actually training could be separated from what prompting alone buys."
+            },
+            {
+              "title": "The dual objective",
+              "desc": "An output only counts if it hits the target emotion AND preserves the source's factual content — success on one axis alone is a failure."
+            }
+          ]
+        },
+        {
+          "heading": "Why it stuck with me",
+          "text": "This was a graduate coursework project at USC, and it's the earliest version of the question I still work on: how do you make a language model do the thing you asked, and only the thing you asked? Emotion translation is that question in miniature — the model must change one dimension and hold everything else still. The production version of the same instinct is Honest, where an eval harness checks that a model's answer stayed grounded in the facts it was given."
+        }
+      ]
+    },
+    {
+      "slug": "studybuddy",
+      "title": "StudyBuddy",
+      "category": "Web",
+      "year": "2025",
+      "summary": "A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team.",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Supabase",
+        "Stripe Connect"
+      ],
+      "url": "https://farazian.com/work/studybuddy/",
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/MiladFarazian/study-buddy-usc"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "What it is",
+          "text": "Finding help on campus was a group-chat scavenger hunt. StudyBuddy made it a marketplace: students post what they're stuck on, tutors get matched to it, and the whole loop — booking, scheduling, the session itself, and payment — happens in one place."
+        },
+        {
+          "heading": "What got built",
+          "items": [
+            {
+              "title": "Booking & scheduling",
+              "desc": "Availability, session booking, and calendar flow for both sides of the marketplace."
+            },
+            {
+              "title": "Payments",
+              "desc": "Stripe Connect — tutors onboard as connected accounts and get paid out automatically."
+            },
+            {
+              "title": "Sessions",
+              "desc": "Zoom integration that provisions a meeting per booking, so nobody trades links."
+            },
+            {
+              "title": "Roles & trust",
+              "desc": "Tutor / student / admin roles, plus reviews, badges, and analytics."
+            },
+            {
+              "title": "Comms",
+              "desc": "In-app messaging, notifications, and a referral system."
+            },
+            {
+              "title": "USC course importer",
+              "desc": "An edge function that pulls the real USC course catalog, so tutors and requests attach to actual courses rather than free-text guesses."
+            }
+          ]
+        },
+        {
+          "heading": "Under the hood",
+          "text": "React + TypeScript (Vite, Tailwind, shadcn/ui) on Supabase — Postgres, Auth, Storage, and Deno edge functions. The shape of it: 394 TypeScript source files, 86 SQL migrations, and 39 edge functions. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster."
+        },
+        {
+          "heading": "How it ended",
+          "text": "Built, functional, and wound down in 2025 — the team moved on and I went full-time on Parkzy. I'm not going to dress that up: the product worked, and the business didn't. What it did give me was the first end-to-end marketplace I'd ever architected — two-sided matching, payments, scheduling — which is exactly the shape of the thing I build now."
+        }
+      ]
+    },
+    {
+      "slug": "canvas-year-in-review",
+      "title": "Canvas Year in Review",
+      "category": "Web",
+      "year": "2021",
+      "summary": "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a color-coded semester recap. Winner of the Secret Prize at CruzHacks 2021.",
+      "tags": [
+        "JavaScript",
+        "WebExtensions",
+        "Canvas API",
+        "Bulma"
+      ],
+      "url": "https://farazian.com/work/canvas-year-in-review/",
+      "links": [
+        {
+          "label": "View on Devpost",
+          "href": "https://devpost.com/software/canvas-year-in-review"
+        },
+        {
+          "label": "Source on GitHub",
+          "href": "https://github.com/cool00geek/canvas-year"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Recognition",
+          "text": "Secret Prize — Wildest Idea — CruzHacks 2021"
+        },
+        {
+          "heading": "Inspiration",
+          "text": "Built mid-pandemic, when every class had been forced online — most of them through Canvas, the platform universities use to centralize courses, assignments, and grades. All that data was just sitting there. We turned it into a recap."
+        },
+        {
+          "heading": "What It Does",
+          "text": "Canvas Year in Review analyzes every assignment submission in your account and generates the semester's stats — then presents them in a dashboard where each metric is color-coded green, yellow, or red so you can gauge your performance at a glance."
+        },
+        {
+          "heading": "The Report",
+          "items": [
+            {
+              "title": "Assignments & submissions",
+              "desc": "Total assignments assigned vs. how many you actually submitted."
+            },
+            {
+              "title": "Late & missing",
+              "desc": "Every deadline you slipped past — and the ones that never got anything at all."
+            },
+            {
+              "title": "Rush submissions",
+              "desc": "Assignments turned in less than 30 minutes before the due date. The panic metric."
+            },
+            {
+              "title": "Grade averages",
+              "desc": "Average grades across assignments and across all courses."
+            }
+          ]
+        },
+        {
+          "heading": "How We Built It",
+          "text": "JavaScript on the WebExtensions framework, with the UI in HTML/CSS styled with Bulma. The extension talks to the Canvas API to fetch courses and assignments, then runs all the analytics locally — your data never leaves the browser.It was our first browser extension, and the first hackathon project we both finished and were proud to look at — my corner of it was the CSS and debugging support."
+        },
+        {
+          "heading": "What's Next",
+          "text": "Custom time periods to snapshot, including or excluding specific courses, and sharing your year-in-review as an image on social media — Wrapped all the way."
+        }
+      ]
+    },
+    {
+      "slug": "snake",
+      "title": "Snake",
+      "category": "Games",
+      "year": "2024",
+      "summary": "The arcade classic, rebuilt — and playable right here. Eat, grow, and don't bite yourself.",
+      "tags": [
+        "JavaScript",
+        "Canvas"
+      ],
+      "url": "https://farazian.com/work/snake/",
+      "links": [],
+      "sections": [
+        {
+          "heading": "Overview",
+          "text": "An implementation of the arcade classic — grid movement, a growing tail, self-collision, and the one rule everyone knows. Not really much else to say. Sometimes you build a thing just because it's satisfying to build."
+        }
+      ]
+    },
+    {
+      "slug": "how-i-build-with-ai",
+      "title": "How I Build With AI",
+      "category": "Writing",
+      "year": "2026",
+      "summary": "The question every interview asks now: how do you actually use AI in your work? Here's the real answer — the loop, the judgment, and the verification system that makes AI-accelerated development fast without making it sloppy.",
+      "tags": [
+        "AI-Paired Dev",
+        "Verification",
+        "Essay"
+      ],
+      "url": "https://farazian.com/work/how-i-build-with-ai/",
+      "links": [
+        {
+          "label": "Work with me",
+          "href": "https://farazian.com/hire/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "The honest version",
+          "text": "There are two bad answers to “how do you use AI to build?” One is “I don't” — which in 2026 means leaving a force multiplier on the table. The other is “I let it write everything” — which means shipping code you don't understand. I do neither. I treat AI as the fastest junior engineer I've ever worked with: tireless, occasionally brilliant, occasionally confidently wrong — and never the one accountable for what merges. That's still me."
+        },
+        {
+          "heading": "The proof",
+          "text": "I built Parkzy — a live App Store marketplace (5.0★, 1,000+ downloads) — end to end as sole engineer: ~3,600 commits in 10 months, 392 database migrations, 163 serverless edge functions, with production LLM features. I built Gosan, a native macOS DAW, in about ten days. That velocity is impossible the old way — and reckless the naive way. The entire difference between the two is the system around the speed."
+        },
+        {
+          "heading": "What I delegate, what I own",
+          "text": "I work in a tight plan → generate → verify loop. I own every part that needs judgment: the architecture, the data model, what the product should even do, and the review of every line before it lands. I hand off the parts that are mechanical or fully specified — boilerplate, migrations, test scaffolding, wide refactors, the first draft of a function. I never merge code I haven't read and understood. The AI writes fast; I decide what's correct."
+        },
+        {
+          "heading": "Velocity without verification is just faster bugs",
+          "text": "This is the part most people skip, and it's the whole game. Speed only compounds if it's safe. So every change runs a gauntlet: Playwright end-to-end tests, Vitest, and Deno suites in CI; Sentry for what escapes into production; PostHog to check that a feature actually helped a real user. And a human reviews every merge. The tests aren't bolted on at the end — they're what lets me move this fast without breaking what's live. AI-accelerated, not AI-sloppy."
+        },
+        {
+          "heading": "I don't just use AI — I build with it",
+          "text": "The tools are one layer; the interesting work is a level up. I write agentic workflows — Claude Code automations that audit a codebase, check migrations for drift, and gate releases — so my own process improves itself. It's the same muscle I'd bring to building agentic features and automations for a client: not prompting a chatbot, but engineering a system that reasons and acts, with guardrails."
+        },
+        {
+          "heading": "Why this is the job now",
+          "text": "The multiplier was never “AI writes my code.” It's judgment about what to hand off, the discipline to verify everything, and the taste to know when the machine is wrong — applied at several times the old speed. That's senior engineering in 2026, and it's exactly what I do for teams. If that's the kind of engineer you're looking for, let's talk."
+        }
+      ]
+    },
+    {
+      "slug": "how-machines-learn",
+      "title": "How Machines Learn to Discriminate",
+      "category": "Writing",
+      "year": "2024",
+      "summary": "Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back.",
+      "tags": [
+        "Ethics",
+        "ML",
+        "Fairness",
+        "Interactive"
+      ],
+      "url": "https://farazian.com/work/how-machines-learn/",
+      "links": [],
+      "sections": [
+        {
+          "heading": "The Thesis",
+          "text": "Nobody has to design a discriminatory algorithm. Inspired by Professor Lise Getoor's Ethics & Algorithms course and Ruha Benjamin's The New Jim Code, this talk shows how models trained on past real-world data tend to automate — and amplify — existing discrimination on the basis of race and sex. Bias doesn't have to be written in; it's inherited from the data we feed the machine."
+        },
+        {
+          "heading": "Correcting Bias in the Process",
+          "items": [
+            {
+              "title": "Pre-Processing",
+              "desc": "Detect and remove bias in the data where possible, add corrective sampling, and embed features carefully before training ever starts."
+            },
+            {
+              "title": "Processing",
+              "desc": "Evaluate the model's rankings for bias while it works — and search for inference: is it reconstructing protected attributes from proxies?"
+            },
+            {
+              "title": "Post-Processing",
+              "desc": "Examine causal relations in the outputs and verify results for the accuracy-versus-fairness trade-off before anything ships."
+            },
+            {
+              "title": "Question Your Own Bias",
+              "desc": "The people building the pipeline are part of the pipeline. Fairness constraints in the algorithm can't compensate for never asking the question."
+            }
+          ]
+        },
+        {
+          "heading": "The Takeaway",
+          "text": "There is no one correct way to define fairness. Equal treatment and equal outcome are both principled — and, as the playground above shows, they can be mutually exclusive on biased data. The choice between them is not a technical decision; it's an ethical one. The danger isn't choosing wrong — it's letting the data choose by default.ReferencesKayser-Bril, N. (2020). Google apologizes after its Vision AI produced racist results. AlgorithmWatch.MobilizeGreen (2021). Environmental equity vs. environmental justice.Fu, R., Aseri, M., Singh, P. V., & Srinivasan, K. (2021). “Un”Fair Machine Learning Algorithms. Management Science."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Portfolio MCP Server — Milad Farazian</title>
+    <meta name="description" content="This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook." />
+    <link rel="canonical" href="https://farazian.com/work/mcp/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Portfolio MCP Server — Milad Farazian" />
+    <meta property="og:description" content="This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook." />
+    <meta property="og:url" content="https://farazian.com/work/mcp/" />
+    <meta property="og:image" content="https://farazian.com/og/mcp.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Portfolio MCP Server — Milad Farazian" />
+    <meta name="twitter:description" content="This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook." />
+    <meta name="twitter:image" content="https://farazian.com/og/mcp.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Portfolio MCP Server","description":"This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook.","url":"https://farazian.com/work/mcp/","image":"https://farazian.com/og/mcp.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2026</p>
+      <h1 class="proj__title" data-reveal>Portfolio MCP Server</h1>
+      <p class="proj__sub" data-reveal>This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">MCP</span><span class="tag">JSON-RPC 2.0</span><span class="tag">Cloudflare Workers</span><span class="tag">Agentic</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="/hire/" data-magnetic data-scramble>Hire me</a><a class="btn btn--ghost" href="/work/how-i-build-with-ai/" data-magnetic data-scramble>How I build with AI</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>Try it right now</h2><p>If you use Claude Code, one command connects your agent to this portfolio:</p></section>
+      <section class="proj__section" data-reveal><h2>Connect</h2><div class="proj-code"><div class="proj-code__bar"><i></i><i></i><i></i><span>terminal</span></div><pre># Claude Code
+claude mcp add --transport http farazian https://farazian.com/mcp
+
+# then ask:  "what has Milad shipped?" · "what's his stack?"
+#            "sign his guestbook and say hi"
+
+# Or raw JSON-RPC — it's just HTTP:
+curl -s https://farazian.com/mcp \
+  -H 'content-type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call",
+       "params":{"name":"list_projects","arguments":{}}}'</pre></div></section>
+      <section class="proj__section" data-reveal><h2>The tools</h2><div class="proj-features"><div class="proj-feature"><h3>list_projects</h3><p>Every project — title, category, year, summary, tags, URL. The index an agent starts from.</p></div><div class="proj-feature"><h3>get_project</h3><p>Full detail for one slug: links plus the page's written sections as clean, readable text.</p></div><div class="proj-feature"><h3>get_profile</h3><p>Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking.</p></div><div class="proj-feature"><h3>get_services</h3><p>The freelance offerings with starting prices, straight from the /hire page's single source of truth.</p></div><div class="proj-feature"><h3>sign_guestbook</h3><p>The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>How it's built</h2><p><strong>No SDK, no framework — raw JSON-RPC 2.0</strong> over MCP's stateless streamable-HTTP transport, implemented directly in the same Cloudflare Worker that serves this site. It handles <code>initialize</code> (with protocol-version negotiation), notifications, <code>tools/list</code>, and <code>tools/call</code>; rejects batches per the 2025-06-18 spec; and answers protocol errors with proper JSON-RPC codes. CORS is open so browser-based agents can connect too.</p><p>The data layer is the interesting bit: at build time, the site generator emits <a href="/api/site.json" style="color:var(--cyan)"><code>/api/site.json</code></a> — every project page flattened into agent-readable sections, plus stack and services from the same source of truth as the human pages. The worker serves tool calls straight from that static asset at the edge: <strong>zero databases on the read path, zero cold starts, and the project data agents see is generated from the same source as the pages humans see</strong>. The one write tool routes through the guestbook's existing guardrails.</p></section>
+      <section class="proj__section" data-reveal><h2>Why</h2><p>Two reasons. First: job descriptions keep asking for MCP and agentic-tooling experience, and the most honest way to claim it is a production MCP server you can connect to right now. Second, the more interesting one: <strong>portfolios are written for human eyes, but hiring pipelines increasingly have agents in them</strong> — screening tools, research assistants, a recruiter's Claude tab. This site now serves both audiences natively. If your agent is reading this: the guestbook tool works, say hi.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>
