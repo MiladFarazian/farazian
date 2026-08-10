@@ -37,6 +37,37 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script>
+      // Boot watchdog — independent of the app bundle on purpose. Hostile
+      // in-app browsers (Instagram, TikTok, …) can kill one API and take the
+      // whole module down with it; visitors must never stay locked behind the
+      // loader. If boot hasn't completed after 8s: surface the error (it was
+      // already painted onto the loader for diagnosability), drop the `js`
+      // class so the no-JS content fallback becomes visible, and let go.
+      (function () {
+        var err = "";
+        function paint() {
+          if (!err) return;
+          var b = document.getElementById("boot");
+          var l = document.getElementById("boot-label");
+          if (b && l && !b.classList.contains("is-done"))
+            l.textContent = "hiccup: " + String(err).slice(0, 90);
+        }
+        addEventListener("error", function (e) {
+          if (err) return;
+          err = (e && e.message) || (e && e.error && e.error.message) || "script error";
+          paint(); // module errors land post-parse; this paints immediately
+        });
+        addEventListener("DOMContentLoaded", paint); // head-time errors paint here
+        setTimeout(function () {
+          var b = document.getElementById("boot");
+          if (b && !b.classList.contains("is-done")) {
+            b.classList.add("is-done");
+            document.documentElement.classList.remove("js", "webgl-active");
+          }
+        }, 8000);
+      })();
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",

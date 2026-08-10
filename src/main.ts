@@ -1,8 +1,8 @@
 import "./styles/main.css";
 import { gsap } from "gsap";
 
-import { detectDevice } from "./core/device";
-import { initSmoothScroll } from "./core/smoothScroll";
+import { detectDevice, type DeviceProfile } from "./core/device";
+import { initSmoothScroll, type ScrollController } from "./core/smoothScroll";
 import { buildContent, initReveals, initWorkCards } from "./sections/sections";
 import type { ParticleHero } from "./webgl/ParticleHero";
 import { initCursor } from "./ui/cursor";
@@ -16,28 +16,59 @@ import { initFps } from "./ui/fps";
 import { initKonami } from "./ui/konami";
 import { initAnalytics } from "./ui/analytics";
 
+// CRASH ISOLATION: in-app browsers (Instagram, TikTok, …) can kill a single
+// API and would otherwise take the whole module down with it — leaving the
+// visitor locked behind the boot screen. Every init below is fenced so one
+// failure degrades that feature, not the site. (index.html carries a
+// JS-independent watchdog + CSS failsafe as the last lines of defense.)
 const html = document.documentElement;
 html.classList.add("js");
-initAnalytics();
+try {
+  initAnalytics();
+} catch {
+  /* analytics is optional */
+}
 
-const profile = detectDevice();
+let profile: DeviceProfile;
+try {
+  profile = detectDevice();
+} catch {
+  // Assume the humblest hardware — static site, no WebGL.
+  profile = { tier: "low", isTouch: true, isMobile: true, reducedMotion: true, dpr: 1, simSize: 96, supportsWebGL: false };
+}
 if (profile.reducedMotion || !profile.supportsWebGL) {
   html.classList.add("reduced-motion");
 }
 
-// ----- Build DOM content first (so cursor/scramble can bind to it) -----
-buildContent();
+// ----- Smooth scroll (native fallback if Lenis can't start) -----
+let scroller: Pick<ScrollController, "scrollTo">;
+try {
+  scroller = initSmoothScroll(profile.reducedMotion);
+} catch {
+  scroller = {
+    scrollTo: (target: string | number | HTMLElement) => {
+      if (typeof target === "number") window.scrollTo({ top: target, behavior: "smooth" });
+      else if (typeof target === "string") document.querySelector(target)?.scrollIntoView({ behavior: "smooth" });
+      else target?.scrollIntoView({ behavior: "smooth" });
+    },
+  };
+}
 
-// ----- Smooth scroll -----
-const scroller = initSmoothScroll(profile.reducedMotion);
-
-// ----- Reveals + interactions -----
-initReveals(profile.reducedMotion);
-initWorkCards(profile.reducedMotion);
-initCursor();
-initScramble();
-initScrollFX(scroller.scrollTo);
-initGuestbook();
+// ----- Content + interactions -----
+try {
+  buildContent(); // DOM first, so cursor/scramble can bind to it
+  initReveals(profile.reducedMotion);
+  initWorkCards(profile.reducedMotion);
+  initCursor();
+  initScramble();
+  initScrollFX(scroller.scrollTo);
+  initGuestbook();
+} catch (err) {
+  // If the reveal layer died, [data-reveal] content would stay invisible —
+  // drop the js class so the static no-JS fallback shows everything.
+  console.warn("[init] UI layer failed — static fallback:", err);
+  html.classList.remove("js");
+}
 
 // ----- WebGL hero (loaded as a separate chunk so the initial JS stays small) -----
 // Three.js is ~130kB gzipped; splitting it out lets the page become interactive
@@ -103,14 +134,20 @@ async function loadHero() {
 loadHero();
 
 // ----- FPS meter + auto-throttle -----
-const fps = initFps(profile.tier);
-fps.onLowPerf(() => {
-  // If we're dropping frames, dim ambition: stop the heavy hero when offscreen
-  // is already handled; here we just surface the tier.
-  console.info("[perf] sustained low fps — consider lighter tier");
-});
+let fps: { tick: (now: number) => void; show: () => void; onLowPerf: (cb: () => void) => void };
+try {
+  fps = initFps(profile.tier);
+  fps.onLowPerf(() => {
+    // If we're dropping frames, dim ambition: stop the heavy hero when offscreen
+    // is already handled; here we just surface the tier.
+    console.info("[perf] sustained low fps — consider lighter tier");
+  });
+} catch {
+  fps = { tick() {}, show() {}, onLowPerf() {} };
+}
 
-// ----- Terminal (easter egg) -----
+// ----- Enhancements (terminal, palette, konami, shortcuts) — cosmetic; never fatal -----
+try {
 const terminal = initTerminal(
   (sel) => scroller.scrollTo(sel, { offset: 0 }),
   {
@@ -188,6 +225,9 @@ if (profile.isTouch && typeof DOE.requestPermission === "function") {
   };
   window.addEventListener("pointerdown", ask, { once: true });
 }
+} catch (err) {
+  console.warn("[init] enhancement layer failed:", err);
+}
 
 // ----- Resize -----
 // Rebuild the particle formation only when the WIDTH changes (orientation /
@@ -207,7 +247,16 @@ window.addEventListener("resize", () => {
 
 // ----- Main render loop -----
 function loop(now: number) {
-  hero?.update();
+  if (hero) {
+    try {
+      hero.update();
+    } catch (err) {
+      console.warn("[hero] update crashed — disabling WebGL hero:", err);
+      hero = null;
+      html.classList.add("reduced-motion");
+      html.classList.remove("webgl-active");
+    }
+  }
   fps.tick(now);
   requestAnimationFrame(loop);
 }

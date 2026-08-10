@@ -127,6 +127,17 @@ strong {
   place-items: center;
   background: var(--bg);
   transition: opacity 0.8s var(--ease), visibility 0.8s;
+  /* Last-resort escape hatch: if every scrap of JS is dead (hostile in-app
+     browsers), CSS alone dismisses the loader. No-op when boot completed
+     normally — the element is already hidden by then. */
+  animation: boot-failsafe 0.6s ease 9.5s forwards;
+}
+@keyframes boot-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 .boot.is-done {
   opacity: 0;
