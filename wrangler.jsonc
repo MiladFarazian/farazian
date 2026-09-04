@@ -12,6 +12,10 @@
   "main": "worker.js",
   // Guestbook storage — the worker's /api/guestbook routes read/write here.
   "kv_namespaces": [{ "binding": "GUESTBOOK", "id": "0149408e8bab428aa08392c1bce48680" }],
+  // Live-site state: presence WebSockets, atomic counters, Web Vitals window.
+  // SQLite-backed so it works on every plan tier.
+  "durable_objects": { "bindings": [{ "name": "PRESENCE", "class_name": "PresenceHub" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["PresenceHub"] }],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
