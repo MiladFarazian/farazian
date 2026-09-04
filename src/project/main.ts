@@ -10,6 +10,7 @@ import { initSmoothScroll } from "../core/smoothScroll";
 import { initCursor } from "../ui/cursor";
 import { initScramble } from "../ui/scramble";
 import { initAnalytics } from "../ui/analytics";
+import { initVitals } from "../ui/vitals";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,11 @@ const profile = detectDevice();
 if (profile.reducedMotion) html.classList.add("reduced-motion");
 
 initAnalytics();
+try {
+  initVitals(); // real-user metrics → /status
+} catch {
+  /* metrics are optional */
+}
 initSmoothScroll(profile.reducedMotion);
 initCursor();
 initScramble();

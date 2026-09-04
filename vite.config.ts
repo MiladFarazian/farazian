@@ -16,14 +16,10 @@ if (existsSync(workDir)) {
   }
 }
 
-const resumeHtml = resolve(root, "resume", "index.html");
-if (existsSync(resumeHtml)) projectInputs["resume"] = resumeHtml;
-
-const hireHtml = resolve(root, "hire", "index.html");
-if (existsSync(hireHtml)) projectInputs["hire"] = hireHtml;
-
-const creativeHtml = resolve(root, "creative", "index.html");
-if (existsSync(creativeHtml)) projectInputs["creative"] = creativeHtml;
+for (const name of ["resume", "hire", "creative", "status", "engineering"]) {
+  const html = resolve(root, name, "index.html");
+  if (existsSync(html)) projectInputs[name] = html;
+}
 
 export default defineConfig({
   plugins: [glsl()],

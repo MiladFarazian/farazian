@@ -2,11 +2,32 @@
 // Run via the "prebuild" npm hook (and committed for dev). Single source of
 // truth for project-page content.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { execSync } from "node:child_process";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const BASE = "https://farazian.com";
+
+// Build fingerprint → public/api/build.json (gitignored; regenerated every
+// build). /api/status serves it so /status can show the running deploy.
+// Workers Builds exposes the SHA via env; local builds ask git. All optional —
+// a build must never fail over metadata.
+const git = (cmd) => {
+  try {
+    return execSync(cmd, { cwd: ROOT, encoding: "utf8" }).trim() || null;
+  } catch {
+    return null;
+  }
+};
+const commitCount = Number(git("git rev-list --count HEAD"));
+const BUILD_INFO = {
+  sha: process.env.WORKERS_CI_COMMIT_SHA || git("git rev-parse HEAD"),
+  // Shallow CI clones report 1 commit — suppress rather than lie.
+  commits: commitCount > 1 ? commitCount : null,
+  message: git("git log -1 --pretty=%s"),
+  builtAt: new Date().toISOString(),
+};
 
 const esc = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -851,6 +872,14 @@ curl -s https://farazian.com/mcp \\
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call",
        "params":{"name":"list_projects","arguments":{}}}'` },
       {
+        t: "raw",
+        html: `<section class="proj__section" data-reveal>
+        <h2>No terminal? Fire it from right here</h2>
+        <p>This playground runs in your browser and speaks raw JSON-RPC 2.0 to the <strong>live endpoint</strong> — the same production server agents connect to, not a mock. Pick a call and watch the actual bytes both ways. (Try <code>get_project</code> with slug <code>mcp</code> — the server describing itself.)</p>
+        <div class="mcpp" id="mcpp" data-demo="mcp"></div>
+      </section>`,
+      },
+      {
         t: "features",
         h: "The tools",
         items: [
@@ -1407,6 +1436,215 @@ const CREATIVE_HTML = `<!doctype html>
 </html>
 `;
 
+// ============================================================
+// STATUS PAGE — /status/  (live telemetry: the site taking its own pulse)
+// ============================================================
+const STATUS_HTML = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Status — Milad Farazian</title>
+    <meta name="description" content="Live telemetry for farazian.com — visitors online right now, the edge that served you, the running deploy, MCP call counters, and real-visitor Web Vitals." />
+    <link rel="canonical" href="https://farazian.com/status/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Status — farazian.com live telemetry" />
+    <meta property="og:description" content="The site taking its own pulse: presence, deploy, counters, and real-visitor Web Vitals — measured, not claimed." />
+    <meta property="og:url" content="https://farazian.com/status/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/" data-magnetic data-scramble><span class="arrow">←</span> home</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+        <p class="proj__eyebrow" data-reveal>live telemetry <span class="st-dot" aria-hidden="true"></span></p>
+        <h1 class="proj__title" data-reveal>Status</h1>
+        <p class="proj__sub" data-reveal>This page is the site taking its own pulse. Nothing below is hardcoded — presence comes from a Durable Object at the edge, performance numbers from real visitors' browsers, and the deploy stamp from the build that's serving you this very page. <a href="/engineering/" style="color:var(--cyan)">How it's built →</a></p>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <div class="st-grid">
+          <div class="st-card"><b id="st-online">—</b><span>people on the site right now<br/>(including you)</span></div>
+          <div class="st-card"><b id="st-colo">—</b><span id="st-colo-note">Cloudflare edge that served you this page</span></div>
+          <div class="st-card"><b id="st-deploy">—</b><span id="st-deploy-note">running deploy</span></div>
+          <div class="st-card"><b id="st-mcp">—</b><span>MCP tool calls served — <a href="/work/mcp/">try one</a></span></div>
+          <div class="st-card"><b id="st-gb">—</b><span>signatures on the <a href="/#guestbook">guestbook</a> wall</span></div>
+          <div class="st-card"><b id="st-conn">—</b><span>your connection to this page</span></div>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>Web Vitals — real visitors, not a lab</h2>
+        <p>Every visit reports its own <abbr title="Largest Contentful Paint">LCP</abbr>, <abbr title="Cumulative Layout Shift">CLS</abbr>, <abbr title="Interaction to Next Paint">INP</abbr>, and <abbr title="Time To First Byte">TTFB</abbr> back to the site via a tiny beacon. These are p75 values over the last <b id="st-samples">—</b> real pageviews — the same statistic Google uses for Core Web Vitals. A Lighthouse run flatters; field data doesn't.</p>
+        <div class="st-vitals">
+          <div class="st-vital" id="v-lcp"><i></i><b>LCP</b><em>—</em><span>largest contentful paint · good ≤ 2.5s</span></div>
+          <div class="st-vital" id="v-cls"><i></i><b>CLS</b><em>—</em><span>cumulative layout shift · good ≤ 0.1</span></div>
+          <div class="st-vital" id="v-inp"><i></i><b>INP</b><em>—</em><span>interaction to next paint · good ≤ 200ms</span></div>
+          <div class="st-vital" id="v-ttfb"><i></i><b>TTFB</b><em>—</em><span>time to first byte · good ≤ 800ms</span></div>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>How this works</h2>
+        <p>No status-page vendor, no cron, no origin server. The numbers live where the site lives: a single <strong>Durable Object</strong> holds the WebSocket presence room, the atomic counters, and a rolling window of vitals samples; the Worker reads your request's <code>cf</code> object to tell you which of Cloudflare's 300+ edges you hit. The page refreshes itself every 10 seconds. Full decision log in <a href="/engineering/">the engine room</a>, source on <a href="https://github.com/MiladFarazian/farazian/blob/main/worker.js" target="_blank" rel="noopener">GitHub</a>.</p>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/" data-scramble>← home</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+    <script src="/status.js" defer></script>
+  </body>
+</html>
+`;
+
+// ============================================================
+// ENGINEERING PAGE — /engineering/  (ADRs + postmortem + colophon)
+// ============================================================
+const adr = (num, title, ctx, decision, price) =>
+  `<div class="eng-adr" data-reveal>
+        <header><i>ADR-00${num}</i><b>${title}</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> ${ctx}</p>
+        <p><b>Decision.</b> ${decision}</p>
+        <p class="eng-adr__cost"><b>The price.</b> ${price}</p>
+      </div>`;
+
+const ENGINEERING_HTML = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>The Engine Room — Milad Farazian</title>
+    <meta name="description" content="How farazian.com actually works: the architecture, six ADRs with their tradeoffs, and a real production postmortem. The site is its own case study." />
+    <link rel="canonical" href="https://farazian.com/engineering/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="The Engine Room — how farazian.com works" />
+    <meta property="og:description" content="Architecture, six decision records with their tradeoffs, and a real postmortem. Most portfolios tell you what someone built — this shows you how I decide." />
+    <meta property="og:url" content="https://farazian.com/engineering/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/" data-magnetic data-scramble><span class="arrow">←</span> home</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+        <p class="proj__eyebrow" data-reveal>the engine room</p>
+        <h1 class="proj__title" data-reveal>How this site works</h1>
+        <p class="proj__sub" data-reveal>Most portfolios tell you <em>what</em> someone built. This page shows you <em>how I decide</em>: the architecture, six decision records with the tradeoffs I accepted, and one real postmortem. Everything described here is running in production right now — you're inside the case study.</p>
+        <div class="proj__links" data-reveal>
+          <a class="btn btn--primary" href="/status/" data-magnetic data-scramble>Watch it run — /status</a>
+          <a class="btn btn--ghost" href="https://github.com/MiladFarazian/farazian" target="_blank" rel="noopener" data-magnetic data-scramble>Source ↗</a>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>The system, in one screen</h2>
+        <div class="proj-code"><div class="proj-code__bar"><i></i><i></i><i></i><span>architecture</span></div><pre>
+                     ┌────────────────────────────────────────────────┐
+ you, or your agent  │        Cloudflare edge · 300+ locations        │
+ ────────────────────▶  worker.js — one file, no framework            │
+                     │   ├─ canonical host  www → apex 301            │
+                     │   ├─ /mcp            MCP server · JSON-RPC 2.0 │
+                     │   ├─ /api/guestbook  KV, metadata-only reads   │
+                     │   ├─ /api/presence ─┐                          │
+                     │   ├─ /api/vitals  ──┼─▶ PresenceHub (DO)       │
+                     │   ├─ /api/status  ──┘   sockets·counters·p75s  │
+                     │   └─ everything else ◀─ static dist/ (Vite)    │
+                     └────────────────────────────────────────────────┘
+ build time   gen-pages.mjs ─▶ 20 project pages + /api/site.json + sitemap
+              one content source — humans, agents, and Google can't drift</pre></div>
+        <p>No origin server. No database on the read path. Every request is answered from the edge — static assets, one KV list call, or one Durable Object hop. The rest of this page explains why each of those choices was made <em>on purpose</em>.</p>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Decision records</h2>
+        <p data-reveal>Written the way I'd write them for a team — context, the call, and what it costs. A decision without a stated price is a guess.</p>
+        ${adr(1, "No framework",
+          "The centerpiece is a 65,536-particle GPGPU simulation that must hold 60fps while the page scrolls. Every millisecond of main-thread work competes with it. The obvious candidates were Next.js or Astro.",
+          "Vite + vanilla TypeScript. Zero runtime framework, no hydration, no virtual DOM — Three.js and GSAP only where they earn their bytes. The initial JS stays small enough that the WebGL chunk loads as a split bundle behind the boot sequence.",
+          "None of the ecosystem's freebies. Routing, reveal orchestration, and the content pipeline are mine to maintain — which forced ADR-002 into existence.")}
+        ${adr(2, "Content is a build step, not a CMS",
+          "Twenty project pages, an MCP server, a sitemap, and JSON-LD all describe the same work. Maintained separately, they drift — and drift between what humans read and what agents read is the embarrassing kind.",
+          "One generator (<code>gen-pages.mjs</code>) emits the human pages, the agent-readable <code>/api/site.json</code>, and the sitemap from a single content literal. Where it must read a second source (the stack in <code>content.ts</code>), the build <strong>throws</strong> if the parse fails. A loud broken build beats a quiet wrong one.",
+          "Content lives in code, so editing needs an editor, not a dashboard. For a one-author site that's a discount, not a cost.")}
+        ${adr(3, "The MCP server speaks raw JSON-RPC — no SDK",
+          "This site runs a live MCP server at <code>/mcp</code> so agents can browse the portfolio. The official SDK is built for long-lived Node processes and brings a dependency tree; the worker is one file measured in kilobytes.",
+          "Implement the stateless streamable-HTTP transport directly: protocol-version negotiation, 202 notification semantics, batch rejection per the 2025-06-18 spec, correct JSON-RPC error codes. About 200 lines. Reading the spec was the point — I wanted to know what the protocol does, not what a library hides. Verified with MCP Inspector plus four adversarial review agents before shipping.",
+          "I own spec compliance as MCP evolves. Acceptable: the surface is five tools, and the <a href='/work/mcp/'>playground</a> doubles as a regression check.")}
+        ${adr(4, "The guestbook lives in KV metadata",
+          "A public guestbook needs durable writes on a site with no servers and no database. Reads vastly outnumber writes.",
+          "Each entry is one KV key — reverse-timestamp name, the entry itself in the key's <em>metadata</em> — so a single <code>list()</code> call returns the newest 200 with zero per-entry reads. Writes pass a honeypot, a per-IP rate limit, a content guard, and a 200/day global soft cap. KV can't increment atomically, so the cap races — and <em>undercounting a cap fails safe</em>, which is why it's allowed to.",
+          "Eventual consistency and a 200-entry window. For a wall of hellos, that's not a compromise — it's a fit.")}
+        ${adr(5, "Live state gets a Durable Object, not KV",
+          "Presence (“who's here right now”), counters, and visitor-reported Web Vitals need two things KV can't give: atomic writes and push fan-out. Racing last-write-wins counters lose increments; polling can't do live cursors.",
+          "One SQLite-backed Durable Object holds the WebSocket presence room (hibernation API, so idle tabs cost nothing), the atomic counters, and a rolling 500-sample vitals window. State that must not race lives where writes serialize <em>by construction</em> — that's the whole job description of a DO.",
+          "A single global instance is a coordination bottleneck at planet scale. This is a portfolio, not a planet; the day that's wrong is a good day.")}
+        ${adr(6, "Zero databases on the read path",
+          "Every layer above had a simpler, heavier alternative: a server, a Postgres, a status-page vendor, an analytics suite.",
+          "Everything a visitor or agent reads is a static asset or edge memory. Pages from <code>dist/</code>, project data from build-time JSON, the guestbook from one KV list, live numbers from one DO hop. There is no origin to cold-start, scale, or patch on a Sunday.",
+          "Anything truly dynamic must argue its way in. The boring default is build-time — and defending a boring default is most of what senior engineering is.")}
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Postmortem: the site that wouldn't boot in Instagram</h2>
+        <div class="eng-pm" data-reveal>
+          <div class="eng-pm__meta"><span class="eng-pm__chip eng-pm__chip--sev">visitor-facing</span><span class="eng-pm__chip">resolved · July 2026</span><span class="eng-pm__chip">defense in depth shipped</span></div>
+          <p><b>Impact.</b> Anyone opening farazian.com from Instagram's in-app browser hung on the boot screen at <code>00</code> — indefinitely. Every Instagram referral got the worst possible first impression: a site about shipping software, failing to ship its own first paint.</p>
+          <div class="eng-pm__timeline">
+            <div class="eng-pm__row"><i>report</i><p>A visitor screenshot: loader frozen at <code>00</code>, well past the boot animation's 6-second safety net. That detail was the tell — the safety net itself never ran.</p></div>
+            <div class="eng-pm__row"><i>diagnosis</i><p>Instagram's WKWebView kills an API the bundle touches at module scope. One dead call at import time took the <em>entire</em> module down — including the boot sequence, including the safety net that was supposed to handle exactly this. The escape hatch was welded inside the thing that crashed.</p></div>
+            <div class="eng-pm__row"><i>root cause</i><p>Single point of failure by architecture: every recovery path shipped inside the app bundle whose death was the failure mode being recovered from.</p></div>
+            <div class="eng-pm__row"><i>fix</i><p>Three <strong>independent</strong> layers, each assuming the ones above it are dead. ① An inline watchdog in the document <code>&lt;head&gt;</code> — no bundle dependency — that paints any uncaught error onto the boot label (a screenshot becomes a stack trace) and at 8s force-dismisses the loader and drops the <code>js</code> class, revealing the full static site. ② Crash isolation inside the bundle: every subsystem init individually fenced, with typed fallbacks and a render-loop kill-switch, so one hostile API degrades one feature. ③ A pure-CSS <code>@keyframes</code> failsafe that dismisses the loader at ~10s even if <em>script execution itself</em> is disabled.</p></div>
+            <div class="eng-pm__row"><i>verify</i><p>Headless Chrome, three scenarios: normal boot unchanged; a deliberately-killed bundle shows the complete site with the error message painted on the loader; a zero-JS sandbox is rescued by CSS alone. All three screenshotted before deploy.</p></div>
+          </div>
+          <p class="eng-pm__lessons"><b>What I keep from this.</b> A safety net that lives inside the thing it protects is decoration. An error nobody can see never gets fixed — the loader now <em>displays</em> the crash, so any future report carries its own diagnosis. And the floor of every failure mode should be “static but complete,” never “blank.”</p>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>Colophon</h2>
+        <p>Type is <strong>Space Grotesk</strong> and <strong>JetBrains Mono</strong>, self-hosted. Particles are a GPGPU ping-pong simulation in <strong>Three.js</strong>; motion is <strong>GSAP</strong> + <strong>Lenis</strong>. Built by <strong>Vite</strong> as ~24 static pages, served by a single-file <strong>Cloudflare Worker</strong> with KV and one Durable Object. Live numbers: <a href="/status/">/status</a>. Agents: <a href="/work/mcp/">/mcp</a>. Every line in the <a href="https://github.com/MiladFarazian/farazian" target="_blank" rel="noopener">repo</a> — no templates, no page builders.</p>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/" data-scramble>← home</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>
+`;
+
 // ---- write ----
 for (const p of PAGES) {
   const dir = resolve(ROOT, "work", p.slug);
@@ -1423,6 +1661,14 @@ console.log("generated hire/index.html");
 mkdirSync(resolve(ROOT, "creative"), { recursive: true });
 writeFileSync(resolve(ROOT, "creative", "index.html"), CREATIVE_HTML);
 console.log("generated creative/index.html");
+mkdirSync(resolve(ROOT, "status"), { recursive: true });
+writeFileSync(resolve(ROOT, "status", "index.html"), STATUS_HTML);
+console.log("generated status/index.html");
+mkdirSync(resolve(ROOT, "engineering"), { recursive: true });
+writeFileSync(resolve(ROOT, "engineering", "index.html"), ENGINEERING_HTML);
+console.log("generated engineering/index.html");
+writeFileSync(resolve(ROOT, "public", "api", "build.json"), JSON.stringify(BUILD_INFO, null, 2) + "\n");
+console.log("generated public/api/build.json");
 
 // ---- agent-readable site data → public/api/site.json ----
 // Consumed by the MCP server in worker.js (and anyone who curls it).
@@ -1469,6 +1715,8 @@ const SITE_JSON = {
     book_intro_call: "https://cal.com/milad-farazian/15min",
     parkzy: "https://useparkzy.com",
     creative: `${BASE}/creative/`,
+    engineering: `${BASE}/engineering/`,
+    status: `${BASE}/status/`,
   },
   stack: STACK.map((g) => ({ group: g.label, items: g.items })),
   services: HIRE_SERVICES.map(({ name, price, desc, includes }) => ({ name, price, desc, includes })),
@@ -1489,7 +1737,7 @@ writeFileSync(resolve(ROOT, "public", "api", "site.json"), JSON.stringify(SITE_J
 console.log("generated public/api/site.json");
 
 // ---- sitemap + robots (kept in sync with the generated pages) ----
-const urls = [`${BASE}/`, `${BASE}/hire/`, `${BASE}/creative/`, `${BASE}/resume/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
+const urls = [`${BASE}/`, `${BASE}/hire/`, `${BASE}/creative/`, `${BASE}/resume/`, `${BASE}/engineering/`, `${BASE}/status/`, ...PAGES.map((p) => `${BASE}/work/${p.slug}/`)];
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

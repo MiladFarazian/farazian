@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>The Engine Room — Milad Farazian</title>
+    <meta name="description" content="How farazian.com actually works: the architecture, six ADRs with their tradeoffs, and a real production postmortem. The site is its own case study." />
+    <link rel="canonical" href="https://farazian.com/engineering/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="The Engine Room — how farazian.com works" />
+    <meta property="og:description" content="Architecture, six decision records with their tradeoffs, and a real postmortem. Most portfolios tell you what someone built — this shows you how I decide." />
+    <meta property="og:url" content="https://farazian.com/engineering/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/" data-magnetic data-scramble><span class="arrow">←</span> home</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+        <p class="proj__eyebrow" data-reveal>the engine room</p>
+        <h1 class="proj__title" data-reveal>How this site works</h1>
+        <p class="proj__sub" data-reveal>Most portfolios tell you <em>what</em> someone built. This page shows you <em>how I decide</em>: the architecture, six decision records with the tradeoffs I accepted, and one real postmortem. Everything described here is running in production right now — you're inside the case study.</p>
+        <div class="proj__links" data-reveal>
+          <a class="btn btn--primary" href="/status/" data-magnetic data-scramble>Watch it run — /status</a>
+          <a class="btn btn--ghost" href="https://github.com/MiladFarazian/farazian" target="_blank" rel="noopener" data-magnetic data-scramble>Source ↗</a>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>The system, in one screen</h2>
+        <div class="proj-code"><div class="proj-code__bar"><i></i><i></i><i></i><span>architecture</span></div><pre>
+                     ┌────────────────────────────────────────────────┐
+ you, or your agent  │        Cloudflare edge · 300+ locations        │
+ ────────────────────▶  worker.js — one file, no framework            │
+                     │   ├─ canonical host  www → apex 301            │
+                     │   ├─ /mcp            MCP server · JSON-RPC 2.0 │
+                     │   ├─ /api/guestbook  KV, metadata-only reads   │
+                     │   ├─ /api/presence ─┐                          │
+                     │   ├─ /api/vitals  ──┼─▶ PresenceHub (DO)       │
+                     │   ├─ /api/status  ──┘   sockets·counters·p75s  │
+                     │   └─ everything else ◀─ static dist/ (Vite)    │
+                     └────────────────────────────────────────────────┘
+ build time   gen-pages.mjs ─▶ 20 project pages + /api/site.json + sitemap
+              one content source — humans, agents, and Google can't drift</pre></div>
+        <p>No origin server. No database on the read path. Every request is answered from the edge — static assets, one KV list call, or one Durable Object hop. The rest of this page explains why each of those choices was made <em>on purpose</em>.</p>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Decision records</h2>
+        <p data-reveal>Written the way I'd write them for a team — context, the call, and what it costs. A decision without a stated price is a guess.</p>
+        <div class="eng-adr" data-reveal>
+        <header><i>ADR-001</i><b>No framework</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> The centerpiece is a 65,536-particle GPGPU simulation that must hold 60fps while the page scrolls. Every millisecond of main-thread work competes with it. The obvious candidates were Next.js or Astro.</p>
+        <p><b>Decision.</b> Vite + vanilla TypeScript. Zero runtime framework, no hydration, no virtual DOM — Three.js and GSAP only where they earn their bytes. The initial JS stays small enough that the WebGL chunk loads as a split bundle behind the boot sequence.</p>
+        <p class="eng-adr__cost"><b>The price.</b> None of the ecosystem's freebies. Routing, reveal orchestration, and the content pipeline are mine to maintain — which forced ADR-002 into existence.</p>
+      </div>
+        <div class="eng-adr" data-reveal>
+        <header><i>ADR-002</i><b>Content is a build step, not a CMS</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> Twenty project pages, an MCP server, a sitemap, and JSON-LD all describe the same work. Maintained separately, they drift — and drift between what humans read and what agents read is the embarrassing kind.</p>
+        <p><b>Decision.</b> One generator (<code>gen-pages.mjs</code>) emits the human pages, the agent-readable <code>/api/site.json</code>, and the sitemap from a single content literal. Where it must read a second source (the stack in <code>content.ts</code>), the build <strong>throws</strong> if the parse fails. A loud broken build beats a quiet wrong one.</p>
+        <p class="eng-adr__cost"><b>The price.</b> Content lives in code, so editing needs an editor, not a dashboard. For a one-author site that's a discount, not a cost.</p>
+      </div>
+        <div class="eng-adr" data-reveal>
+        <header><i>ADR-003</i><b>The MCP server speaks raw JSON-RPC — no SDK</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> This site runs a live MCP server at <code>/mcp</code> so agents can browse the portfolio. The official SDK is built for long-lived Node processes and brings a dependency tree; the worker is one file measured in kilobytes.</p>
+        <p><b>Decision.</b> Implement the stateless streamable-HTTP transport directly: protocol-version negotiation, 202 notification semantics, batch rejection per the 2025-06-18 spec, correct JSON-RPC error codes. About 200 lines. Reading the spec was the point — I wanted to know what the protocol does, not what a library hides. Verified with MCP Inspector plus four adversarial review agents before shipping.</p>
+        <p class="eng-adr__cost"><b>The price.</b> I own spec compliance as MCP evolves. Acceptable: the surface is five tools, and the <a href='/work/mcp/'>playground</a> doubles as a regression check.</p>
+      </div>
+        <div class="eng-adr" data-reveal>
+        <header><i>ADR-004</i><b>The guestbook lives in KV metadata</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> A public guestbook needs durable writes on a site with no servers and no database. Reads vastly outnumber writes.</p>
+        <p><b>Decision.</b> Each entry is one KV key — reverse-timestamp name, the entry itself in the key's <em>metadata</em> — so a single <code>list()</code> call returns the newest 200 with zero per-entry reads. Writes pass a honeypot, a per-IP rate limit, a content guard, and a 200/day global soft cap. KV can't increment atomically, so the cap races — and <em>undercounting a cap fails safe</em>, which is why it's allowed to.</p>
+        <p class="eng-adr__cost"><b>The price.</b> Eventual consistency and a 200-entry window. For a wall of hellos, that's not a compromise — it's a fit.</p>
+      </div>
+        <div class="eng-adr" data-reveal>
+        <header><i>ADR-005</i><b>Live state gets a Durable Object, not KV</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> Presence (“who's here right now”), counters, and visitor-reported Web Vitals need two things KV can't give: atomic writes and push fan-out. Racing last-write-wins counters lose increments; polling can't do live cursors.</p>
+        <p><b>Decision.</b> One SQLite-backed Durable Object holds the WebSocket presence room (hibernation API, so idle tabs cost nothing), the atomic counters, and a rolling 500-sample vitals window. State that must not race lives where writes serialize <em>by construction</em> — that's the whole job description of a DO.</p>
+        <p class="eng-adr__cost"><b>The price.</b> A single global instance is a coordination bottleneck at planet scale. This is a portfolio, not a planet; the day that's wrong is a good day.</p>
+      </div>
+        <div class="eng-adr" data-reveal>
+        <header><i>ADR-006</i><b>Zero databases on the read path</b><span class="eng-adr__chip">accepted</span></header>
+        <p><b>Context.</b> Every layer above had a simpler, heavier alternative: a server, a Postgres, a status-page vendor, an analytics suite.</p>
+        <p><b>Decision.</b> Everything a visitor or agent reads is a static asset or edge memory. Pages from <code>dist/</code>, project data from build-time JSON, the guestbook from one KV list, live numbers from one DO hop. There is no origin to cold-start, scale, or patch on a Sunday.</p>
+        <p class="eng-adr__cost"><b>The price.</b> Anything truly dynamic must argue its way in. The boring default is build-time — and defending a boring default is most of what senior engineering is.</p>
+      </div>
+      </section>
+
+      <section class="proj__section">
+        <h2 data-reveal>Postmortem: the site that wouldn't boot in Instagram</h2>
+        <div class="eng-pm" data-reveal>
+          <div class="eng-pm__meta"><span class="eng-pm__chip eng-pm__chip--sev">visitor-facing</span><span class="eng-pm__chip">resolved · July 2026</span><span class="eng-pm__chip">defense in depth shipped</span></div>
+          <p><b>Impact.</b> Anyone opening farazian.com from Instagram's in-app browser hung on the boot screen at <code>00</code> — indefinitely. Every Instagram referral got the worst possible first impression: a site about shipping software, failing to ship its own first paint.</p>
+          <div class="eng-pm__timeline">
+            <div class="eng-pm__row"><i>report</i><p>A visitor screenshot: loader frozen at <code>00</code>, well past the boot animation's 6-second safety net. That detail was the tell — the safety net itself never ran.</p></div>
+            <div class="eng-pm__row"><i>diagnosis</i><p>Instagram's WKWebView kills an API the bundle touches at module scope. One dead call at import time took the <em>entire</em> module down — including the boot sequence, including the safety net that was supposed to handle exactly this. The escape hatch was welded inside the thing that crashed.</p></div>
+            <div class="eng-pm__row"><i>root cause</i><p>Single point of failure by architecture: every recovery path shipped inside the app bundle whose death was the failure mode being recovered from.</p></div>
+            <div class="eng-pm__row"><i>fix</i><p>Three <strong>independent</strong> layers, each assuming the ones above it are dead. ① An inline watchdog in the document <code>&lt;head&gt;</code> — no bundle dependency — that paints any uncaught error onto the boot label (a screenshot becomes a stack trace) and at 8s force-dismisses the loader and drops the <code>js</code> class, revealing the full static site. ② Crash isolation inside the bundle: every subsystem init individually fenced, with typed fallbacks and a render-loop kill-switch, so one hostile API degrades one feature. ③ A pure-CSS <code>@keyframes</code> failsafe that dismisses the loader at ~10s even if <em>script execution itself</em> is disabled.</p></div>
+            <div class="eng-pm__row"><i>verify</i><p>Headless Chrome, three scenarios: normal boot unchanged; a deliberately-killed bundle shows the complete site with the error message painted on the loader; a zero-JS sandbox is rescued by CSS alone. All three screenshotted before deploy.</p></div>
+          </div>
+          <p class="eng-pm__lessons"><b>What I keep from this.</b> A safety net that lives inside the thing it protects is decoration. An error nobody can see never gets fixed — the loader now <em>displays</em> the crash, so any future report carries its own diagnosis. And the floor of every failure mode should be “static but complete,” never “blank.”</p>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>Colophon</h2>
+        <p>Type is <strong>Space Grotesk</strong> and <strong>JetBrains Mono</strong>, self-hosted. Particles are a GPGPU ping-pong simulation in <strong>Three.js</strong>; motion is <strong>GSAP</strong> + <strong>Lenis</strong>. Built by <strong>Vite</strong> as ~24 static pages, served by a single-file <strong>Cloudflare Worker</strong> with KV and one Durable Object. Live numbers: <a href="/status/">/status</a>. Agents: <a href="/work/mcp/">/mcp</a>. Every line in the <a href="https://github.com/MiladFarazian/farazian" target="_blank" rel="noopener">repo</a> — no templates, no page builders.</p>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/" data-scramble>← home</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

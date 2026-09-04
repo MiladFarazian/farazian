@@ -1504,3 +1504,78 @@ main {
 .gb-entry.is-new { animation: gb-pop 0.5s var(--ease); }
 @keyframes gb-pop { from { opacity: 0; transform: translateY(-8px) scale(0.98); } }
 @media (prefers-reduced-motion: reduce) { .gb-entry.is-new { animation: none; } }
+
+/* ============================================================
+   PRESENCE — you're not browsing alone (pill + ghost cursors)
+   ============================================================ */
+.presence-pill {
+  position: fixed;
+  left: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.5em 1em;
+  border: 1px solid rgba(42, 245, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(4, 6, 10, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-dim);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.presence-pill.is-on { opacity: 1; transform: none; }
+.presence-pill i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+  animation: presence-breathe 2.4s ease-in-out infinite;
+}
+@keyframes presence-breathe { 50% { opacity: 0.4; } }
+.presence-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  overflow: hidden;
+}
+.presence-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  justify-items: start;
+  gap: 3px;
+  will-change: transform;
+  transition: opacity 0.6s;
+}
+.presence-cursor span {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: hsl(var(--hue, 180) 100% 65%);
+  box-shadow: 0 0 14px hsl(var(--hue, 180) 100% 60% / 0.9);
+}
+.presence-cursor b {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: hsl(var(--hue, 180) 90% 78% / 0.9);
+  text-shadow: 0 1px 6px rgba(4, 6, 10, 0.9);
+}
+.presence-cursor.is-gone { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .presence-layer { display: none; }
+  .presence-pill i { animation: none; }
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Status — Milad Farazian</title>
+    <meta name="description" content="Live telemetry for farazian.com — visitors online right now, the edge that served you, the running deploy, MCP call counters, and real-visitor Web Vitals." />
+    <link rel="canonical" href="https://farazian.com/status/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Status — farazian.com live telemetry" />
+    <meta property="og:description" content="The site taking its own pulse: presence, deploy, counters, and real-visitor Web Vitals — measured, not claimed." />
+    <meta property="og:url" content="https://farazian.com/status/" />
+    <meta property="og:image" content="https://farazian.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/" data-magnetic data-scramble><span class="arrow">←</span> home</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+        <p class="proj__eyebrow" data-reveal>live telemetry <span class="st-dot" aria-hidden="true"></span></p>
+        <h1 class="proj__title" data-reveal>Status</h1>
+        <p class="proj__sub" data-reveal>This page is the site taking its own pulse. Nothing below is hardcoded — presence comes from a Durable Object at the edge, performance numbers from real visitors' browsers, and the deploy stamp from the build that's serving you this very page. <a href="/engineering/" style="color:var(--cyan)">How it's built →</a></p>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <div class="st-grid">
+          <div class="st-card"><b id="st-online">—</b><span>people on the site right now<br/>(including you)</span></div>
+          <div class="st-card"><b id="st-colo">—</b><span id="st-colo-note">Cloudflare edge that served you this page</span></div>
+          <div class="st-card"><b id="st-deploy">—</b><span id="st-deploy-note">running deploy</span></div>
+          <div class="st-card"><b id="st-mcp">—</b><span>MCP tool calls served — <a href="/work/mcp/">try one</a></span></div>
+          <div class="st-card"><b id="st-gb">—</b><span>signatures on the <a href="/#guestbook">guestbook</a> wall</span></div>
+          <div class="st-card"><b id="st-conn">—</b><span>your connection to this page</span></div>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>Web Vitals — real visitors, not a lab</h2>
+        <p>Every visit reports its own <abbr title="Largest Contentful Paint">LCP</abbr>, <abbr title="Cumulative Layout Shift">CLS</abbr>, <abbr title="Interaction to Next Paint">INP</abbr>, and <abbr title="Time To First Byte">TTFB</abbr> back to the site via a tiny beacon. These are p75 values over the last <b id="st-samples">—</b> real pageviews — the same statistic Google uses for Core Web Vitals. A Lighthouse run flatters; field data doesn't.</p>
+        <div class="st-vitals">
+          <div class="st-vital" id="v-lcp"><i></i><b>LCP</b><em>—</em><span>largest contentful paint · good ≤ 2.5s</span></div>
+          <div class="st-vital" id="v-cls"><i></i><b>CLS</b><em>—</em><span>cumulative layout shift · good ≤ 0.1</span></div>
+          <div class="st-vital" id="v-inp"><i></i><b>INP</b><em>—</em><span>interaction to next paint · good ≤ 200ms</span></div>
+          <div class="st-vital" id="v-ttfb"><i></i><b>TTFB</b><em>—</em><span>time to first byte · good ≤ 800ms</span></div>
+        </div>
+      </section>
+
+      <section class="proj__section" data-reveal>
+        <h2>How this works</h2>
+        <p>No status-page vendor, no cron, no origin server. The numbers live where the site lives: a single <strong>Durable Object</strong> holds the WebSocket presence room, the atomic counters, and a rolling window of vitals samples; the Worker reads your request's <code>cf</code> object to tell you which of Cloudflare's 300+ edges you hit. The page refreshes itself every 10 seconds. Full decision log in <a href="/engineering/">the engine room</a>, source on <a href="https://github.com/MiladFarazian/farazian/blob/main/worker.js" target="_blank" rel="noopener">GitHub</a>.</p>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/" data-scramble>← home</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+    <script src="/status.js" defer></script>
+  </body>
+</html>

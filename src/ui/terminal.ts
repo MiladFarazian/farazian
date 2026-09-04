@@ -56,6 +56,7 @@ export function initTerminal(
           "  <span class='ok'>open</span> [x]    jump to a section (work, about, stack, contact)",
           "  <span class='ok'>skills</span>      the stack &nbsp; · &nbsp; <span class='ok'>projects</span>   selected work",
           "  <span class='ok'>now</span>         what i'm doing right now",
+          "  <span class='ok'>status</span>      live site telemetry (who's here, deploy, vitals)",
           "  <span class='ok'>contact</span> · <span class='ok'>hire</span> · <span class='ok'>resume</span>",
           "  <span class='accent'>form</span> [text]  reshape the name in the sky ✎",
           "  <span class='accent'>theme</span> [x]  matrix · vapor · noir · gold · reset",
@@ -99,6 +100,25 @@ export function initTerminal(
     resume: () => {
       print("<span class='ok'>→</span> opening the <a href='/resume/'>resume</a>…");
       window.location.href = "/resume/";
+    },
+    status: async () => {
+      print("<span class='ok'>→</span> polling /api/status …");
+      try {
+        const d = await (await fetch("/api/status", { cache: "no-store" })).json();
+        const v = d.vitals || {};
+        print(
+          [
+            `  <span class='ok'>online</span>   ${d.online ?? "?"} visitor${d.online === 1 ? "" : "s"} (you included)`,
+            `  <span class='ok'>edge</span>     ${d.served?.colo ?? "?"}${d.served?.city ? " · " + d.served.city : ""}`,
+            `  <span class='ok'>deploy</span>   ${d.build?.sha ? d.build.sha.slice(0, 7) : "?"}`,
+            `  <span class='ok'>mcp</span>      ${d.counters?.mcp_calls ?? "?"} tool calls served`,
+            `  <span class='ok'>vitals</span>   lcp ${v.lcp_p75 ? (v.lcp_p75 / 1000).toFixed(2) + "s" : "…"} · cls ${v.cls_p75 ?? "…"} (p75, real visitors)`,
+            `  full dashboard → <a href='/status/'>/status</a>`,
+          ].join("<br>")
+        );
+      } catch {
+        print("<span class='err'>status: telemetry unreachable</span>");
+      }
     },
     coffee: () => print("<span class='accent'>☕</span> brewed. this is what powers the whole operation."),
     joke: () => print(JOKES[Math.floor(Math.random() * JOKES.length)]),

@@ -15,6 +15,8 @@ import { applyThemeMode, THEME_WORDS } from "./ui/modes";
 import { initFps } from "./ui/fps";
 import { initKonami } from "./ui/konami";
 import { initAnalytics } from "./ui/analytics";
+import { initVitals } from "./ui/vitals";
+import { initPresence } from "./ui/presence";
 
 // CRASH ISOLATION: in-app browsers (Instagram, TikTok, …) can kill a single
 // API and would otherwise take the whole module down with it — leaving the
@@ -27,6 +29,11 @@ try {
   initAnalytics();
 } catch {
   /* analytics is optional */
+}
+try {
+  initVitals(); // real-user metrics → /status
+} catch {
+  /* metrics are optional */
 }
 
 let profile: DeviceProfile;
@@ -148,6 +155,11 @@ try {
 
 // ----- Enhancements (terminal, palette, konami, shortcuts) — cosmetic; never fatal -----
 try {
+  initPresence(); // you're not browsing alone
+} catch {
+  /* ambience is optional */
+}
+try {
 const terminal = initTerminal(
   (sel) => scroller.scrollTo(sel, { offset: 0 }),
   {
@@ -167,6 +179,8 @@ const commands: Command[] = [
   { id: "terminal", label: "Open terminal", icon: "›_", hint: "easter egg", run: () => terminal.open() },
   { id: "hire", label: "Hire me", icon: "◈", hint: "freelance", run: () => (window.location.href = "/hire/") },
   { id: "creative", label: "Creative — music & film", icon: "♪", hint: "off the clock", run: () => (window.location.href = "/creative/") },
+  { id: "engineering", label: "The engine room — how this site works", icon: "⚙", hint: "ADRs + postmortem", run: () => (window.location.href = "/engineering/") },
+  { id: "status", label: "Live status — site telemetry", icon: "▦", hint: "who's here now", run: () => (window.location.href = "/status/") },
   { id: "book", label: "Book a call", icon: "◷", hint: "15 min", run: () => window.open("https://cal.com/milad-farazian/15min", "_blank") },
   { id: "resume", label: "View resume", icon: "▤", run: () => (window.location.href = "/resume/") },
   { id: "email", label: "Email me", icon: "@", run: () => (window.location.href = "mailto:miladfarazian@gmail.com") },

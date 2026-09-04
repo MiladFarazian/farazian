@@ -1,6 +1,8 @@
 // Edge entry point. Enforces farazian.com as the single canonical host
 // (www + the workers.dev origin 301-redirect to the apex), serves the static
-// site, and backs the guestbook (/api/guestbook) with the GUESTBOOK KV store.
+// site, backs the guestbook (/api/guestbook) with the GUESTBOOK KV store, and
+// keeps the site's live state (presence, counters, visitor Web Vitals) in the
+// PresenceHub Durable Object behind /api/presence, /api/vitals, /api/status.
 
 const NAME_MAX = 40;
 const MSG_MAX = 280;
@@ -189,7 +191,7 @@ const rpcError = (id, code, message) =>
 
 const rpcResult = (id, result) => mcpJson({ jsonrpc: "2.0", id, result });
 
-async function handleMcp(request, env, url) {
+async function handleMcp(request, env, url, ctx) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: MCP_CORS });
   if (request.method !== "POST") {
     return new Response("MCP endpoint — POST JSON-RPC here. Docs: https://farazian.com/work/mcp/", {
@@ -248,6 +250,10 @@ async function handleMcp(request, env, url) {
       case "tools/call": {
         const name = msg.params?.name;
         const ip = request.headers.get("cf-connecting-ip") || "0.0.0.0";
+        // Count the call off the hot path — /status renders this number live.
+        if (env.PRESENCE && ctx) {
+          ctx.waitUntil(hub(env).fetch(new Request("https://hub/bump", { method: "POST" })).catch(() => {}));
+        }
         const out = await mcpToolCall(env, url.origin, ip, name, msg.params?.arguments || {});
         if (out === null) return rpcError(msg.id, -32602, `Unknown tool: ${String(name)}`);
         const isError = Boolean(out && typeof out === "object" && !Array.isArray(out) && out.error);
@@ -264,8 +270,194 @@ async function handleMcp(request, env, url) {
   }
 }
 
+// ============================================================
+// PresenceHub — one Durable Object instance ("v1") holding the site's live
+// state: who's on the site right now (hibernating WebSockets), atomic
+// counters (KV can't increment atomically — a DO can), and a rolling window
+// of Web Vitals samples reported by real visitors. /engineering has the ADR.
+// ============================================================
+export class PresenceHub {
+  constructor(state) {
+    this.state = state;
+  }
+
+  who(ws) {
+    try {
+      return ws.deserializeAttachment();
+    } catch {
+      return null;
+    }
+  }
+
+  broadcast(msg, exclude) {
+    const str = JSON.stringify(msg);
+    for (const ws of this.state.getWebSockets()) {
+      if (ws === exclude) continue;
+      try {
+        ws.send(str);
+      } catch {
+        /* peer already gone */
+      }
+    }
+  }
+
+  async fetch(request) {
+    const url = new URL(request.url);
+
+    // Live-visitor socket. Hibernation API: the DO sleeps between messages
+    // instead of billing wall-clock for every idle tab left open.
+    if (url.pathname === "/ws") {
+      if ((request.headers.get("upgrade") || "").toLowerCase() !== "websocket") {
+        return new Response("Expected a WebSocket upgrade.", { status: 426 });
+      }
+      const existing = this.state.getWebSockets();
+      if (existing.length >= 64) return new Response("Room is full.", { status: 503 });
+      const pair = new WebSocketPair();
+      const [client, server] = Object.values(pair);
+      const me = { id: crypto.randomUUID().slice(0, 6), hue: Math.floor(Math.random() * 360) };
+      server.serializeAttachment(me); // identity survives hibernation
+      this.state.acceptWebSocket(server);
+      const peers = existing.map((w) => this.who(w)).filter(Boolean);
+      server.send(JSON.stringify({ t: "hello", ...me, count: existing.length + 1, peers }));
+      this.broadcast({ t: "join", ...me, count: existing.length + 1 }, server);
+      return new Response(null, { status: 101, webSocket: client });
+    }
+
+    if (url.pathname === "/bump" && request.method === "POST") {
+      const n = ((await this.state.storage.get("count:mcp")) || 0) + 1;
+      await this.state.storage.put("count:mcp", n);
+      return new Response(null, { status: 204 });
+    }
+
+    if (url.pathname === "/vitals" && request.method === "POST") {
+      let v;
+      try {
+        v = await request.json();
+      } catch {
+        return new Response(null, { status: 400 });
+      }
+      // Only accept plausible numbers — this is an open endpoint.
+      const sample = {};
+      for (const k of ["lcp", "cls", "inp", "ttfb"]) {
+        const n = Number(v?.[k]);
+        if (Number.isFinite(n) && n >= 0 && n < 120000) sample[k] = Math.round(n * 1000) / 1000;
+      }
+      if (!Object.keys(sample).length) return new Response(null, { status: 400 });
+      const arr = (await this.state.storage.get("vitals")) || [];
+      arr.push(sample);
+      if (arr.length > 500) arr.splice(0, arr.length - 500); // rolling window
+      await this.state.storage.put("vitals", arr);
+      return new Response(null, { status: 204 });
+    }
+
+    if (url.pathname === "/snapshot") {
+      const [mcp, vitals] = await Promise.all([
+        this.state.storage.get("count:mcp"),
+        this.state.storage.get("vitals"),
+      ]);
+      const p75 = (key) => {
+        const xs = (vitals || [])
+          .map((s) => s[key])
+          .filter((n) => typeof n === "number")
+          .sort((a, b) => a - b);
+        return xs.length ? xs[Math.min(xs.length - 1, Math.floor(xs.length * 0.75))] : null;
+      };
+      return new Response(
+        JSON.stringify({
+          online: this.state.getWebSockets().length,
+          mcp_calls: mcp || 0,
+          vitals: {
+            samples: (vitals || []).length,
+            lcp_p75: p75("lcp"),
+            cls_p75: p75("cls"),
+            inp_p75: p75("inp"),
+            ttfb_p75: p75("ttfb"),
+          },
+        }),
+        { headers: { "content-type": "application/json" } }
+      );
+    }
+
+    return new Response(null, { status: 404 });
+  }
+
+  webSocketMessage(ws, raw) {
+    if (typeof raw !== "string" || raw.length > 200) return;
+    let msg;
+    try {
+      msg = JSON.parse(raw);
+    } catch {
+      return;
+    }
+    const me = this.who(ws);
+    if (!me) return;
+    if (msg.t === "m") {
+      const x = Number(msg.x);
+      const y = Number(msg.y);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+      this.broadcast(
+        { t: "m", id: me.id, hue: me.hue, x: Math.min(1, Math.max(0, x)), y: Math.min(1, Math.max(0, y)) },
+        ws
+      );
+    }
+  }
+
+  webSocketClose(ws) {
+    const me = this.who(ws);
+    const count = this.state.getWebSockets().filter((w) => w !== ws).length;
+    this.broadcast({ t: "leave", id: me?.id, count }, ws);
+  }
+
+  webSocketError(ws) {
+    this.webSocketClose(ws);
+  }
+}
+
+const hub = (env) => env.PRESENCE.get(env.PRESENCE.idFromName("v1"));
+
+async function handleStatus(request, env, url) {
+  const cf = request.cf || {};
+  let build = null;
+  try {
+    const r = await env.ASSETS.fetch(new Request(`${url.origin}/api/build.json`));
+    if (r.ok) build = await r.json();
+  } catch {
+    /* build info is best-effort */
+  }
+  let live = null;
+  if (env.PRESENCE) {
+    try {
+      live = await (await hub(env).fetch("https://hub/snapshot")).json();
+    } catch {
+      /* DO unavailable → nulls below */
+    }
+  }
+  let guestbook = null;
+  if (env.GUESTBOOK) {
+    try {
+      guestbook = (await env.GUESTBOOK.list({ prefix: "gb:", limit: LIST_MAX })).keys.length;
+    } catch {
+      /* best-effort */
+    }
+  }
+  return json({
+    ok: true,
+    served: {
+      colo: cf.colo || null,
+      city: cf.city || null,
+      country: cf.country || null,
+      http: cf.httpProtocol || null,
+      tls: cf.tlsVersion || null,
+    },
+    build,
+    online: live ? live.online : null,
+    counters: { mcp_calls: live ? live.mcp_calls : null, guestbook_entries: guestbook },
+    vitals: live ? live.vitals : null,
+  });
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const host = url.hostname;
 
@@ -277,7 +469,37 @@ export default {
     }
 
     if (url.pathname === "/mcp") {
-      return handleMcp(request, env, url);
+      return handleMcp(request, env, url, ctx);
+    }
+
+    if (url.pathname === "/api/status" && request.method === "GET") {
+      return handleStatus(request, env, url);
+    }
+
+    if (url.pathname === "/api/presence") {
+      if (!env.PRESENCE) return json({ error: "Presence offline." }, 503);
+      if ((request.headers.get("upgrade") || "").toLowerCase() === "websocket") {
+        return hub(env).fetch(new Request("https://hub/ws", request));
+      }
+      try {
+        const snap = await (await hub(env).fetch("https://hub/snapshot")).json();
+        return json({ online: snap.online });
+      } catch {
+        return json({ error: "Presence offline." }, 503);
+      }
+    }
+
+    if (url.pathname === "/api/vitals" && request.method === "POST") {
+      if (!env.PRESENCE) return new Response(null, { status: 204 }); // silently drop
+      const len = parseInt(request.headers.get("content-length") || "0", 10);
+      if (len > 1024) return new Response(null, { status: 413 });
+      const body = await request.text();
+      ctx.waitUntil(
+        hub(env)
+          .fetch(new Request("https://hub/vitals", { method: "POST", body }))
+          .catch(() => {})
+      );
+      return new Response(null, { status: 204 });
     }
 
     if (url.pathname === "/api/guestbook") {
