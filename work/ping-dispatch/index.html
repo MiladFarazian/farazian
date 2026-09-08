@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>The Pings Nobody Answered — Milad Farazian</title>
+    <meta name="description" content="A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing." />
+    <link rel="canonical" href="https://farazian.com/work/ping-dispatch/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="The Pings Nobody Answered — Milad Farazian" />
+    <meta property="og:description" content="A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing." />
+    <meta property="og:url" content="https://farazian.com/work/ping-dispatch/" />
+    <meta property="og:image" content="https://farazian.com/og/ping-dispatch.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Pings Nobody Answered — Milad Farazian" />
+    <meta name="twitter:description" content="A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing." />
+    <meta name="twitter:image" content="https://farazian.com/og/ping-dispatch.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"The Pings Nobody Answered","description":"A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing.","url":"https://farazian.com/work/ping-dispatch/","image":"https://farazian.com/og/ping-dispatch.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>Writing · 2026</p>
+      <h1 class="proj__title" data-reveal>The Pings Nobody Answered</h1>
+      <p class="proj__sub" data-reveal>A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">Product Engineering</span><span class="tag">Analytics</span><span class="tag">Case Study</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="/work/parkzy/" data-magnetic data-scramble>Parkzy — the marketplace</a><a class="btn btn--ghost" href="/work/money-correctness/" data-magnetic data-scramble>Getting Money Right</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>The symptom</h2><p>Parkzy's core loop is the <em>ping</em>: a driver taps once, every nearby host gets a 60-minute offer, first accept wins. Over one 21-day window, 21 requests went out, <strong>17 expired untouched (81%)</strong> and exactly one was accepted. In the two weeks before the fix, <strong>$655 of offers died on the table</strong> — an average of $40.94 each. For an early marketplace, that's not a leak; that's the boat filling with water.</p></section>
+      <section class="proj__section" data-reveal><h2>The investigation</h2><p>Instinct said push notifications were failing. The data said otherwise: <strong>six of the eight hosts</strong> who let a ping expire were demonstrably <em>inside the app</em> during the 60-minute window. Meanwhile the event funnel showed only ~36% of recipient rows ever produced an in-app “ping received” event. Hosts weren't ignoring the offers — the product was hiding them.</p></section>
+      <section class="proj__section" data-reveal><h2>Three root causes, none of them the obvious one</h2><div class="proj-features"><div class="proj-feature"><h3>Dismissal was a no-op</h3><p>Swiping away the ping sheet did nothing to the underlying offer — the row stayed pending and silently expired 60 minutes later. And once dismissed, the only ways back in were the notification bell or a push deep link.</p></div><div class="proj-feature"><h3>A self-inflicted TTL bug</h3><p>A fix from the week before set the push notification's APNs expiration to 300 seconds — for an offer that lives 60 minutes. Any phone offline for five minutes simply never received the push.</p></div><div class="proj-feature"><h3>No standing surface</h3><p>The driver's side had a persistent banner for the active request. The host's home screen — the side being asked to act — had none.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>The fix</h2><p>Three changes shipped together: a <strong>pending-ping banner on the host's home screen</strong> with a live countdown and the payout amount, one tap from anywhere back into the offer; dismissal copy that tells the host the offer is still live; and push TTL derived from the offer's actual expiry instead of a constant. The diagnosis and fix went from first data pull to production in the same week.</p></section>
+      <section class="proj__section" data-reveal><h2>What the data says now</h2><p>Two structural findings guide what's next. <strong>Speed compounds:</strong> pings accepted within five minutes go on to complete ~69% of the time, versus ~58% for slower accepts — every minute of visibility is worth real conversion. And <strong>dispatch is the next lever, not notifications:</strong> sixteen hosts who never accepted a single ping absorbed 56% of all offers ever sent, while two-thirds of active hosts had never been pinged at all. The lesson I keep: instrument the funnel before believing your own hypothesis — the obvious suspect was innocent, and the fix was product surface area, not infrastructure.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

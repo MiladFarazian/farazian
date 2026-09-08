@@ -179,6 +179,7 @@ const commands: Command[] = [
   { id: "terminal", label: "Open terminal", icon: "›_", hint: "easter egg", run: () => terminal.open() },
   { id: "hire", label: "Hire me", icon: "◈", hint: "freelance", run: () => (window.location.href = "/hire/") },
   { id: "creative", label: "Creative — music & film", icon: "♪", hint: "off the clock", run: () => (window.location.href = "/creative/") },
+  { id: "ask", label: "Ask this site about my work", icon: "?", hint: "RAG + abstention", run: () => (window.location.href = "/work/ask/") },
   { id: "engineering", label: "The engine room — how this site works", icon: "⚙", hint: "ADRs + postmortem", run: () => (window.location.href = "/engineering/") },
   { id: "status", label: "Live status — site telemetry", icon: "▦", hint: "who's here now", run: () => (window.location.href = "/status/") },
   { id: "book", label: "Book a call", icon: "◷", hint: "15 min", run: () => window.open("https://cal.com/milad-farazian/15min", "_blank") },

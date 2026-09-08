@@ -60,6 +60,7 @@
     }
     if (d.counters) {
       set("st-mcp", d.counters.mcp_calls == null ? "—" : d.counters.mcp_calls.toLocaleString());
+      set("st-ask", d.counters.ask_count == null ? "—" : d.counters.ask_count.toLocaleString());
       set("st-gb", d.counters.guestbook_entries == null ? "—" : String(d.counters.guestbook_entries));
     }
     if (d.vitals) {

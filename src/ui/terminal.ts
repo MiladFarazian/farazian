@@ -56,6 +56,7 @@ export function initTerminal(
           "  <span class='ok'>open</span> [x]    jump to a section (work, about, stack, contact)",
           "  <span class='ok'>skills</span>      the stack &nbsp; · &nbsp; <span class='ok'>projects</span>   selected work",
           "  <span class='ok'>now</span>         what i'm doing right now",
+          "  <span class='ok'>ask</span> [q]     ask about my work — cited answers, or honest silence",
           "  <span class='ok'>status</span>      live site telemetry (who's here, deploy, vitals)",
           "  <span class='ok'>contact</span> · <span class='ok'>hire</span> · <span class='ok'>resume</span>",
           "  <span class='accent'>form</span> [text]  reshape the name in the sky ✎",
@@ -100,6 +101,24 @@ export function initTerminal(
     resume: () => {
       print("<span class='ok'>→</span> opening the <a href='/resume/'>resume</a>…");
       window.location.href = "/resume/";
+    },
+    ask: async (args) => {
+      const q = args.join(" ");
+      if (!q) return print("<span class='err'>ask: give me a question — e.g. <span class='ok'>ask how does parkzy handle payments</span></span>");
+      print(`<span class='ok'>→</span> retrieving…`);
+      try {
+        const d = await (await fetch(`/api/ask?q=${encodeURIComponent(q)}`)).json();
+        if (d.abstained) {
+          print(`<span class='accent'>∅ abstained</span> — the corpus doesn't support an answer. (that's a feature: <a href='/work/ask/'>/work/ask</a>)`);
+        } else {
+          print(escapeHtml(d.answer || ""));
+          (d.sources || []).slice(0, 3).forEach((s: { title: string; url: string }, i: number) =>
+            print(`  <span class='ok'>[${i + 1}]</span> <a href='${s.url}'>${escapeHtml(s.title)}</a>`)
+          );
+        }
+      } catch {
+        print("<span class='err'>ask: retrieval unreachable</span>");
+      }
     },
     status: async () => {
       print("<span class='ok'>→</span> polling /api/status …");

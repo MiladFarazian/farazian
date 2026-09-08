@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>The Parkzy Ops Console — Milad Farazian</title>
+    <meta name="description" content="~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable." />
+    <link rel="canonical" href="https://farazian.com/work/ops-console/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="The Parkzy Ops Console — Milad Farazian" />
+    <meta property="og:description" content="~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable." />
+    <meta property="og:url" content="https://farazian.com/work/ops-console/" />
+    <meta property="og:image" content="https://farazian.com/og/ops-console.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Parkzy Ops Console — Milad Farazian" />
+    <meta name="twitter:description" content="~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable." />
+    <meta name="twitter:image" content="https://farazian.com/og/ops-console.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"The Parkzy Ops Console","description":"~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable.","url":"https://farazian.com/work/ops-console/","image":"https://farazian.com/og/ops-console.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>Software · 2026</p>
+      <h1 class="proj__title" data-reveal>The Parkzy Ops Console</h1>
+      <p class="proj__sub" data-reveal>~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Internal Tools</span><span class="tag">Ops</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="/work/parkzy/" data-magnetic data-scramble>Parkzy — the marketplace</a><a class="btn btn--ghost" href="/work/ai-company/" data-magnetic data-scramble>A 23-Agent AI Company</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>Why it exists</h2><p>A two-person company operating a live marketplace can't hire an ops team — it has to <em>build</em> one. Every recurring question became a page: Why did this ping die? Does the dashboard match Stripe? Which hosts are hurting the funnel? Is the edge healthy? The console is where a marketplace stops being a demo and starts being a business you can actually run.</p></section>
+      <section class="proj__section" data-reveal><h2>Representative surfaces (of ~78)</h2><div class="proj-features"><div class="proj-feature"><h3>Dispatch forensics</h3><p>A sent→accepted→booked ping funnel, plus a per-ping forensic timeline that reconstructs exactly what each host saw and when — the tooling behind the ping-dispatch case study.</p></div><div class="proj-feature"><h3>Money ops</h3><p>Revenue, disputes with per-case detail, tax export, and the reconciliation tooling from the money-correctness work.</p></div><div class="proj-feature"><h3>Risk & trust</h3><p>Account risk, listing risk, behavioral signals, overstays and tows — the surfaces that keep a peer-to-peer marketplace safe to transact in.</p></div><div class="proj-feature"><h3>Growth</h3><p>Retention cohorts, attribution, unmet-demand mapping, SEO, host outreach and broadcast messaging.</p></div><div class="proj-feature"><h3>Platform health</h3><p>Feature flags, edge-function health, mobile bundle deploys, and a live AI-spend meter.</p></div><div class="proj-feature"><h3>Pricing Lab</h3><p>A shadow-mode sandbox for the ML pricing engine — compare the model's price against the live price on real inventory before letting it near production.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>AI in the loop, humans on the trigger</h2><p>Support runs AI-assisted, not AI-automated: edge functions triage inbound messages, draft suggested replies, and recommend dispute outcomes — an operator reviews and decides. The console is also where the <a href='/work/ai-company/' style='color:var(--cyan)'>23-agent organization's</a> output lands as concrete dashboards and queues.</p></section>
+      <section class="proj__section" data-reveal><h2>The boring parts, done properly</h2><p>The whole console sits behind <strong>TOTP multi-factor auth</strong> (step-up to AAL2 before any support surface renders), on top of row-level-security boundaries where user-facing roles can't touch money tables at all. Internal tools handle the most sensitive data in the company — they deserve production-grade security more than the marketing site does, not less.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

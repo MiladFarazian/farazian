@@ -72,6 +72,55 @@ export const PROJECTS: Project[] = [
   },
   {
     no: "07",
+    title: "Ask This Site",
+    extra: "interactive",
+    desc: "A question box over this entire portfolio â real retrieval with citations back to sources, and it abstains rather than guesses. Try to make it hallucinate.",
+    tags: ["RAG", "BM25", "Abstention"],
+    href: "/work/ask/",
+    category: "AI / ML",
+  },
+  {
+    no: "08",
+    title: "When Models Won’t Say “I Don’t Know”",
+    desc: "A pre-registered study across four frontier models: force a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An escape hatch is only a partial fix.",
+    tags: ["Research", "LLMs", "Evals"],
+    href: "/work/schema-abstention/",
+    category: "AI / ML",
+  },
+  {
+    no: "09",
+    title: "A 23-Agent AI Company",
+    desc: "Parkzy is operated with a 23-seat AI organization — a board with a duty to dissent, standing adversaries, a dissent ledger. 233 versioned PRDs so far. Agents propose; I decide.",
+    tags: ["Agents", "Claude", "Ops"],
+    href: "/work/ai-company/",
+    category: "AI / ML",
+  },
+  {
+    no: "10",
+    title: "Getting Money Right",
+    desc: "An IOU ledger, a two-phase commit against the double-pay race, refund clawbacks that survive webhook replays, and code that screams instead of lying. How Parkzy moves real money.",
+    tags: ["Stripe", "Postgres", "Correctness"],
+    href: "/work/money-correctness/",
+    category: "Writing",
+  },
+  {
+    no: "11",
+    title: "The Pings Nobody Answered",
+    desc: "81% of dispatch offers were dying untouched — $655 of demand in two weeks — and the root cause wasn’t notifications. A case study in instrumenting before guessing.",
+    tags: ["Product Eng", "Analytics", "Case Study"],
+    href: "/work/ping-dispatch/",
+    category: "Writing",
+  },
+  {
+    no: "12",
+    title: "The Parkzy Ops Console",
+    desc: "~78 internal pages, ~36,000 lines: funnels, forensics, disputes, pricing lab, edge health — behind TOTP MFA. The unglamorous software that makes a marketplace operable.",
+    tags: ["React", "Ops", "Internal Tools"],
+    href: "/work/ops-console/",
+    category: "Software",
+  },
+  {
+    no: "13",
     title: "Nik",
     desc: "An iOS short-form video app built on a custom Core Image/Metal compositor — written after Apple's standard export path turned out to crash. On-device Vision smart-crop picks the 9:16 framing.",
     tags: ["Swift", "AVFoundation", "Metal", "Vision"],
@@ -79,7 +128,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "08",
+    no: "14",
     title: "BigUps",
     desc: "One topic string in, a fully narrated and captioned video out — a Python pipeline orchestrating three AI providers: an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice.",
     tags: ["Python", "Multi-provider AI", "Pipeline"],
@@ -87,7 +136,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "09",
+    no: "15",
     title: "Wax",
     desc: "Instagram without the Reels rabbit hole — a calm, fast client that keeps the feed, stories, and DMs you love while silencing the algorithmic pull.",
     tags: ["TypeScript", "Mobile", "API"],
@@ -95,7 +144,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "10",
+    no: "16",
     title: "C++ Ray Tracer",
     extra: "interactive",
     desc: "A from-scratch ray tracer in pure C++17, no external libraries — recursive ray tracing, Blinn-Phong lighting, shadows, mirror reflections, and 4× anti-aliasing.",
@@ -104,7 +153,7 @@ export const PROJECTS: Project[] = [
     category: "Software",
   },
   {
-    no: "11",
+    no: "17",
     title: "LMBiS-Net",
     extra: "interactive",
     desc: "The first public implementation of Abbasi et al.'s LMBiS-Net — a lightweight bidirectional-skip-connection CNN for retinal blood-vessel segmentation.",
@@ -113,7 +162,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "12",
+    no: "18",
     title: "LLM Distillation for Financial Reports",
     extra: "interactive",
     desc: "Distilling large language models into compact, specialized models tuned for analyzing financial reports.",
@@ -122,7 +171,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "13",
+    no: "19",
     title: "Emotion Translation with Transformers",
     desc: "A transformer model that rewrites the emotion of a sentence while preserving its underlying meaning.",
     tags: ["Python", "Transformers", "NLP"],
@@ -130,7 +179,7 @@ export const PROJECTS: Project[] = [
     category: "AI / ML",
   },
   {
-    no: "14",
+    no: "20",
     title: "StudyBuddy",
     desc: "A USC-based tutoring and mentoring app that matches students to the help they need.",
     tags: ["React", "Next.js", "Tailwind", "Supabase"],
@@ -138,7 +187,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "15",
+    no: "21",
     title: "Canvas Year in Review",
     extra: "winner",
     desc: "A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a semester recap. CruzHacks 2021 Secret Prize winner.",
@@ -147,7 +196,7 @@ export const PROJECTS: Project[] = [
     category: "Web",
   },
   {
-    no: "16",
+    no: "22",
     title: "Katsuya's Revenge",
     extra: "playable",
     desc: "A 2D samurai-turned-ninja revenge platformer — restored, re-presented, and playable in the browser.",
@@ -156,7 +205,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "17",
+    no: "23",
     title: "Bound",
     extra: "playable",
     desc: "The first game I built solo — a Java/Processing platformer, with a playable p5.js web port.",
@@ -165,7 +214,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "18",
+    no: "24",
     title: "Snake",
     extra: "playable",
     desc: "The arcade classic, rebuilt and playable right in the browser.",
@@ -174,7 +223,7 @@ export const PROJECTS: Project[] = [
     category: "Games",
   },
   {
-    no: "19",
+    no: "25",
     title: "How Machines Learn to Discriminate",
     extra: "interactive",
     desc: "A talk on how algorithms trained on real-world data automate existing bias along race and sex — even absent any ill intent.",
@@ -183,7 +232,7 @@ export const PROJECTS: Project[] = [
     category: "Writing",
   },
   {
-    no: "20",
+    no: "26",
     title: "How I Build With AI",
     desc: "How I actually ship production software with AI — the plan → generate → verify loop, what I delegate vs. own, and the test suite that makes the speed safe.",
     tags: ["AI-Paired Dev", "Verification", "Essay"],

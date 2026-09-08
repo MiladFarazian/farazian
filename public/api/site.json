@@ -383,6 +383,14 @@
         {
           "heading": "The AI suite, shipped",
           "text": "All of it is in production, not in progress: semantic spot search (pgvector embeddings, with a backfill function), LLM-explained dynamic pricing, AI-graded listing photos, message translation, audio transcription, and AI-drafted support replies — all routed through one shared LLM/embeddings helper so every function gets model access the same way. That shared helper is the small, honest version of the model-access layer a platform team builds at real scale.Live at useparkzy.com ↗."
+        },
+        {
+          "heading": "A real ML pricing engine — not an API call",
+          "text": "Dynamic pricing runs on a separately deployed Python service: a scikit-learn GradientBoostingRegressor behind FastAPI, Dockerized, with Prometheus metrics, health/readiness probes, and endpoints for pricing, hourly curves, retraining, and a booking-outcome feedback loop. It runs in shadow mode first — an operator sandbox compares the model's price against the live price on real inventory — and rollout is gated behind a master switch plus a per-host allowlist. An LLM explains the price to users; the number comes from the model."
+        },
+        {
+          "heading": "Deep dives",
+          "text": "Two engineering case studies come straight out of this product: Getting Money Right — the IOU ledger, the two-phase commit against the double-pay race, and refund clawbacks that survive webhook replays — and The Pings Nobody Answered — diagnosing why 81% of dispatch offers were expiring, with the fix and the funnel data. The operational side lives in the ~78-page ops console, and the company itself is run with a 23-agent AI organization."
         }
       ]
     },
@@ -651,6 +659,361 @@
         {
           "heading": "Why",
           "text": "Two reasons. First: job descriptions keep asking for MCP and agentic-tooling experience, and the most honest way to claim it is a production MCP server you can connect to right now. Second, the more interesting one: portfolios are written for human eyes, but hiring pipelines increasingly have agents in them — screening tools, research assistants, a recruiter's Claude tab. This site now serves both audiences natively. If your agent is reading this: the guestbook tool works, say hi."
+        }
+      ]
+    },
+    {
+      "slug": "ask",
+      "title": "Ask This Site",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess.",
+      "tags": [
+        "RAG",
+        "Retrieval",
+        "BM25",
+        "Abstention",
+        "Evals"
+      ],
+      "url": "https://farazian.com/work/ask/",
+      "links": [
+        {
+          "label": "Honest — the eval harness",
+          "href": "https://farazian.com/work/honest/"
+        },
+        {
+          "label": "The abstention study",
+          "href": "https://farazian.com/work/schema-abstention/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "How it answers",
+          "text": "At build time, the same generator that renders these pages flattens every project, essay, decision record, and resume entry into a passage corpus — one source of truth, so the answers can never drift from the pages you're reading. At query time the Cloudflare Worker runs BM25 retrieval over that corpus at the edge, pulls the top passages, and extracts the sentences that actually carry the answer — so every response is verbatim from a cited source, linked back to the page it came from.When a model key is configured, a generative tier hands the retrieved passages to Claude to synthesize a cited answer — with a mandatory ABSTAIN escape hatch, and per-IP plus daily spend caps so an open endpoint can't run up a bill. Without a key, the same pipeline answers extractively. Either way: the retrieval, the citations, and the refusal behavior don't depend on an LLM being present."
+        },
+        {
+          "heading": "Abstention is the feature, not a fallback",
+          "text": "Most RAG demos are built to always answer — which is exactly how you get confident nonsense. This one scores retrieval confidence and refuses below threshold. That design choice comes from research: I ran a pre-registered study on what happens to honesty when you force models to produce an answer — abstention collapses in every model tested. The fix there is the design here: give the system a first-class way to say “I don't know,” and test that it uses it. The eval suite above runs live against production and asserts both sides: right citations on answerable questions, silence on unanswerable ones."
+        },
+        {
+          "heading": "What makes it trustworthy",
+          "items": [
+            {
+              "title": "One corpus, zero drift",
+              "desc": "Passages are generated from the same content literals as the human pages and the MCP server — the build regenerates all three together."
+            },
+            {
+              "title": "Citations are mandatory",
+              "desc": "Every answer carries its sources: title, section, URL, and the verbatim snippet the answer came from. No source, no answer."
+            },
+            {
+              "title": "Calibrated refusal",
+              "desc": "A BM25 score floor plus a matched-term requirement decide when to abstain — and the on-page eval suite pins that threshold in place."
+            },
+            {
+              "title": "Agents get it too",
+              "desc": "The same pipeline is exposed as an ask tool on the MCP server — retrieval-only, since the caller is a model that can synthesize for itself."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "schema-abstention",
+      "title": "When Models Won’t Say “I Don’t Know”",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it.",
+      "tags": [
+        "Research",
+        "Pre-registered",
+        "LLMs",
+        "Structured Output",
+        "Evals"
+      ],
+      "url": "https://farazian.com/work/schema-abstention/",
+      "links": [
+        {
+          "label": "Ask This Site — abstention in production",
+          "href": "https://farazian.com/work/ask/"
+        },
+        {
+          "label": "Honest — the eval harness",
+          "href": "https://farazian.com/work/honest/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "The question",
+          "text": "Structured output is everywhere — APIs now let you force a model's response into a JSON schema, and production systems increasingly demand it. But a schema with a required answer field leaves no room for the most important thing a model can say: “I don't know.” Does enforced structure suppress epistemic honesty? And if you explicitly provide an abstain affordance — a nullable answer plus a status field — do models actually use it?"
+        },
+        {
+          "heading": "The design",
+          "items": [
+            {
+              "title": "Pre-registered",
+              "desc": "Hypotheses, arms, exclusion rules, and the analysis plan were written and frozen before headline data collection — the way you keep yourself honest about your own honesty study."
+            },
+            {
+              "title": "Five arms, within-item",
+              "desc": "Free-form text → prompted JSON (no enforcement) → API-native strict schema with a required answer → strict schema with a nullable answer + status enum → the same with the status field ordered first."
+            },
+            {
+              "title": "600 items, contamination-resistant",
+              "desc": "300 epistemically unanswerable questions (false premises, fabricated entities, missing context, genuinely unknown answers) + 300 matched answerable controls — mixing legacy anchors with freshly minted items verified to have zero search hits, shipped with a canary GUID."
+            },
+            {
+              "title": "Four pinned models, three judges",
+              "desc": "Four frontier models across three closed families plus a grammar-constrained open model; 12,000 graded responses; a three-judge panel from three model families with Fleiss κ = 0.93 — all three disagreed on just 7 of 2,400 responses."
+            }
+          ]
+        },
+        {
+          "heading": "What it found",
+          "text": "Enforced required-answer schemas collapse abstention in every model tested — risk differences from +0.37 to +0.74, all p&nbsp;<&nbsp;10−24. The starkest case: Claude Haiku abstains on 76% of unanswerable questions in free-form text, and 2% under a required schema. Providing an explicit abstain option (nullable answer + status enum) recovers much of the behavior — but restores parity with free-form honesty for only one of four models. Putting the status field first shows a marginal pooled benefit (+2.8 points, p = .06).The one-sentence version: a required answer field is a hallucination machine, an escape hatch is a partial fix, and the size of “partial” is a property of the model."
+        },
+        {
+          "heading": "Status, honestly",
+          "text": "The study is complete: data collected, analysis run, paper drafted, artifact bundle (items, graded responses, judge panel outputs) prepared for release. It is not yet peer-reviewed — the preprint upload is the next step. I'm publishing the findings here the same way the study was run: pre-committed, with the caveats attached.And it isn't just a paper to me — the finding is baked into things I ship. Ask This Site abstains by design and is eval-tested for it; Honest treats “refuses when it should” as a first-class check."
+        }
+      ]
+    },
+    {
+      "slug": "ai-company",
+      "title": "A 23-Agent AI Company",
+      "category": "AI / ML",
+      "year": "2026",
+      "summary": "Parkzy is operated with a 23-seat AI organization: engineering seats, a board with a duty to dissent, and rituals engineered against sycophancy. It has produced 233 versioned PRDs. The agents propose — I decide.",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Multi-agent",
+        "Ops"
+      ],
+      "url": "https://farazian.com/work/ai-company/",
+      "links": [
+        {
+          "label": "Parkzy — the product it runs",
+          "href": "https://farazian.com/work/parkzy/"
+        },
+        {
+          "label": "How I build with AI",
+          "href": "https://farazian.com/work/how-i-build-with-ai/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "The org chart",
+          "text": "Twenty-three agent seats, each a written role definition with standing responsibilities: leadership (a chief-of-staff CEO seat that synthesizes into decision memos, plus a program manager), a five-seat board (market strategist, legal & risk, CFO, a wildcard — and a customer advocate, because the voice of drivers and hosts holds a board seat on purpose), eleven technical seats (frontend, backend, iOS, Android, UX, AI, DevOps, QA, data, security, and a collector whose whole job is making sure concerns never evaporate), trust & safety, and four marketing seats. Premium models take the judgment lanes; cheaper models take the scan-and-draft lanes."
+        },
+        {
+          "heading": "The rituals",
+          "items": [
+            {
+              "title": "Weekly board meeting",
+              "desc": "Metrics get refreshed first, then six seats write positions independently — before a clash round where each seat must attack the most dangerous claim on the table. The CEO seat compresses it into a memo of at most three decisions, with dissent preserved verbatim."
+            },
+            {
+              "title": "Weekly engineering cycle",
+              "desc": "Twelve seats report evidence-backed concerns plus one mandatory challenge to another seat's work. A collector triages everything into a task board with a hard WIP cap of 10."
+            },
+            {
+              "title": "Marketing sprint",
+              "desc": "Every one to two weeks, the four marketing seats run the same propose-clash-decide loop on growth work."
+            }
+          ]
+        },
+        {
+          "heading": "The hard problem is sycophancy",
+          "text": "A room full of agreeable AI agents is worse than useless — it launders your own biases back to you with confidence. So the mechanisms are the product: a duty to dissent written into the charter (“silence is a failed contribution”); independent-then-adversarial structure so positions form before they can converge; standing adversaries built into the seat definitions — the wildcard generates, the CFO finds the cheapest falsifying test; QA blocks, the CEO seat pushes ship-speed; trust & safety adds friction, the market strategist defends supply; evidence rules — no number without a source, and “unknown” is an acceptable answer, which kills the failure mode where confident agents out-argue correct ones; a dissent ledger where every decision carries a review-by date and seats earn credibility retroactively for dissents that proved right; and the collector guarantee — every raised concern lands on the board, in the backlog, or gets rejected in writing."
+        },
+        {
+          "heading": "What it produces — and who decides",
+          "text": "To date: 233 versioned PRDs, 35 dated decision memos, and shared state files (decision log, experiment queue, risk register, task board) that persist across sessions — the organization has memory. The boundary is explicit in the charter: no agent makes irreversible business decisions, spends money, or deploys to production on its own. Every seat advises, drafts, builds, or critiques; my cofounder and I make the calls. That's not a limitation of the system — it's the design. The interesting discovery after months of running it: the value isn't automation, it's structured disagreement on tap."
+        }
+      ]
+    },
+    {
+      "slug": "money-correctness",
+      "title": "Getting Money Right",
+      "category": "Writing",
+      "year": "2026",
+      "summary": "How Parkzy moves real money without losing a cent: an IOU ledger, a two-phase commit against the double-pay race, refund clawbacks that survive webhook replays — and code that screams instead of lying.",
+      "tags": [
+        "Stripe",
+        "Postgres",
+        "Idempotency",
+        "Case Study"
+      ],
+      "url": "https://farazian.com/work/money-correctness/",
+      "links": [
+        {
+          "label": "Parkzy — the marketplace",
+          "href": "https://farazian.com/work/parkzy/"
+        },
+        {
+          "label": "The Pings Nobody Answered",
+          "href": "https://farazian.com/work/ping-dispatch/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "The problem",
+          "text": "A marketplace takes a driver's money and later pays the host — with cancellations, partial refunds, disputed charges, and Stripe webhooks that can arrive late, twice, or out of order in between. Money bugs are the worst kind: silent, compounding, and trust-destroying. Parkzy defers host payouts (hosts shouldn't have to clear full KYC before their first booking), which means the platform holds debts — and debts need a ledger, not a boolean."
+        },
+        {
+          "heading": "The machinery",
+          "items": [
+            {
+              "title": "An IOU ledger, not a flag",
+              "desc": "Every deferred payout is a row: amount (checked positive), the payment intent it came from, the transfer that settles it, a settled-at stamp. A unique index per booking makes backfills idempotent, and row-level security allows no user writes at all — money rows are written only by service-role code."
+            },
+            {
+              "title": "Two-phase commit vs. the double-pay race",
+              "desc": "Phase 1 reserves the row by writing a placeholder transfer id, guarded on “transfer id is null, not settled, amount positive” — so two concurrent workers can't both claim it and a clawed-back row can't transfer. Phase 2 creates the Stripe transfer with a deterministic idempotency key. Phase 3 swaps in the real transfer id. Crash at any point and the retry reuses the same key — Stripe returns the original transfer instead of a second one."
+            },
+            {
+              "title": "Refund clawbacks that survive replays",
+              "desc": "When a refund lands out-of-band, the webhook atomically claims the clawback (a null-guarded stamp, so the webhook and the cancellation path can race and exactly one wins) and clamps the IOU to an absolute target — computed from what was refunded, not multiplied by a ratio — so Stripe redelivering the same webhook is a no-op instead of a double-clamp."
+            },
+            {
+              "title": "Scream, don't fabricate",
+              "desc": "If a transfer succeeds but the ledger update reports zero rows affected, the code refuses to count it as a settle: it logs “money moved with no ledger record” and demands manual reconciliation. The old code counted a fabricated success. The new code's comment says it plainly: if it ever happens, scream instead of lying."
+            }
+          ]
+        },
+        {
+          "heading": "Did it work?",
+          "text": "An August 2026 audit reconciled every paid booking and cancellation directly against Stripe. After the fixes and backfills, a clean re-run reported zero dashboard-vs-Stripe mismatches on the pending set; 15 payouts totalling $803 settled within 48 hours of maturity; and of the IOUs still unsettled, every matured one was correctly unpayable (canceled booking, demo host, Connect not yet enabled). Honest caveat: that was a one-time audit, not yet a standing monitor — three reconciliation tools (charges, refunds, customers) run on demand, and a repeatable transfers-vs-dashboard report is on the backlog."
+        },
+        {
+          "heading": "What I keep",
+          "text": "Nothing here is exotic — it's the boring discipline applied everywhere at once: make illegal states unrepresentable, make every retry idempotent, make race winners explicit, and when reality and the ledger disagree, prefer the loud failure. Correctness with money isn't a feature; it's a posture."
+        }
+      ]
+    },
+    {
+      "slug": "ping-dispatch",
+      "title": "The Pings Nobody Answered",
+      "category": "Writing",
+      "year": "2026",
+      "summary": "A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing.",
+      "tags": [
+        "Product Engineering",
+        "Analytics",
+        "Case Study"
+      ],
+      "url": "https://farazian.com/work/ping-dispatch/",
+      "links": [
+        {
+          "label": "Parkzy — the marketplace",
+          "href": "https://farazian.com/work/parkzy/"
+        },
+        {
+          "label": "Getting Money Right",
+          "href": "https://farazian.com/work/money-correctness/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "The symptom",
+          "text": "Parkzy's core loop is the ping: a driver taps once, every nearby host gets a 60-minute offer, first accept wins. Over one 21-day window, 21 requests went out, 17 expired untouched (81%) and exactly one was accepted. In the two weeks before the fix, $655 of offers died on the table — an average of $40.94 each. For an early marketplace, that's not a leak; that's the boat filling with water."
+        },
+        {
+          "heading": "The investigation",
+          "text": "Instinct said push notifications were failing. The data said otherwise: six of the eight hosts who let a ping expire were demonstrably inside the app during the 60-minute window. Meanwhile the event funnel showed only ~36% of recipient rows ever produced an in-app “ping received” event. Hosts weren't ignoring the offers — the product was hiding them."
+        },
+        {
+          "heading": "Three root causes, none of them the obvious one",
+          "items": [
+            {
+              "title": "Dismissal was a no-op",
+              "desc": "Swiping away the ping sheet did nothing to the underlying offer — the row stayed pending and silently expired 60 minutes later. And once dismissed, the only ways back in were the notification bell or a push deep link."
+            },
+            {
+              "title": "A self-inflicted TTL bug",
+              "desc": "A fix from the week before set the push notification's APNs expiration to 300 seconds — for an offer that lives 60 minutes. Any phone offline for five minutes simply never received the push."
+            },
+            {
+              "title": "No standing surface",
+              "desc": "The driver's side had a persistent banner for the active request. The host's home screen — the side being asked to act — had none."
+            }
+          ]
+        },
+        {
+          "heading": "The fix",
+          "text": "Three changes shipped together: a pending-ping banner on the host's home screen with a live countdown and the payout amount, one tap from anywhere back into the offer; dismissal copy that tells the host the offer is still live; and push TTL derived from the offer's actual expiry instead of a constant. The diagnosis and fix went from first data pull to production in the same week."
+        },
+        {
+          "heading": "What the data says now",
+          "text": "Two structural findings guide what's next. Speed compounds: pings accepted within five minutes go on to complete ~69% of the time, versus ~58% for slower accepts — every minute of visibility is worth real conversion. And dispatch is the next lever, not notifications: sixteen hosts who never accepted a single ping absorbed 56% of all offers ever sent, while two-thirds of active hosts had never been pinged at all. The lesson I keep: instrument the funnel before believing your own hypothesis — the obvious suspect was innocent, and the fix was product surface area, not infrastructure."
+        }
+      ]
+    },
+    {
+      "slug": "ops-console",
+      "title": "The Parkzy Ops Console",
+      "category": "Software",
+      "year": "2026",
+      "summary": "~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable.",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Internal Tools",
+        "Ops"
+      ],
+      "url": "https://farazian.com/work/ops-console/",
+      "links": [
+        {
+          "label": "Parkzy — the marketplace",
+          "href": "https://farazian.com/work/parkzy/"
+        },
+        {
+          "label": "A 23-Agent AI Company",
+          "href": "https://farazian.com/work/ai-company/"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Why it exists",
+          "text": "A two-person company operating a live marketplace can't hire an ops team — it has to build one. Every recurring question became a page: Why did this ping die? Does the dashboard match Stripe? Which hosts are hurting the funnel? Is the edge healthy? The console is where a marketplace stops being a demo and starts being a business you can actually run."
+        },
+        {
+          "heading": "Representative surfaces (of ~78)",
+          "items": [
+            {
+              "title": "Dispatch forensics",
+              "desc": "A sent→accepted→booked ping funnel, plus a per-ping forensic timeline that reconstructs exactly what each host saw and when — the tooling behind the ping-dispatch case study."
+            },
+            {
+              "title": "Money ops",
+              "desc": "Revenue, disputes with per-case detail, tax export, and the reconciliation tooling from the money-correctness work."
+            },
+            {
+              "title": "Risk & trust",
+              "desc": "Account risk, listing risk, behavioral signals, overstays and tows — the surfaces that keep a peer-to-peer marketplace safe to transact in."
+            },
+            {
+              "title": "Growth",
+              "desc": "Retention cohorts, attribution, unmet-demand mapping, SEO, host outreach and broadcast messaging."
+            },
+            {
+              "title": "Platform health",
+              "desc": "Feature flags, edge-function health, mobile bundle deploys, and a live AI-spend meter."
+            },
+            {
+              "title": "Pricing Lab",
+              "desc": "A shadow-mode sandbox for the ML pricing engine — compare the model's price against the live price on real inventory before letting it near production."
+            }
+          ]
+        },
+        {
+          "heading": "AI in the loop, humans on the trigger",
+          "text": "Support runs AI-assisted, not AI-automated: edge functions triage inbound messages, draft suggested replies, and recommend dispute outcomes — an operator reviews and decides. The console is also where the 23-agent organization's output lands as concrete dashboards and queues."
+        },
+        {
+          "heading": "The boring parts, done properly",
+          "text": "The whole console sits behind TOTP multi-factor auth (step-up to AAL2 before any support surface renders), on top of row-level-security boundaries where user-facing roles can't touch money tables at all. Internal tools handle the most sensitive data in the company — they deserve production-grade security more than the marketing site does, not less."
         }
       ]
     },

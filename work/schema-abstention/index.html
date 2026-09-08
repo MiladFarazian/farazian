@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>When Models Won’t Say “I Don’t Know” — Milad Farazian</title>
+    <meta name="description" content="A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it." />
+    <link rel="canonical" href="https://farazian.com/work/schema-abstention/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="When Models Won’t Say “I Don’t Know” — Milad Farazian" />
+    <meta property="og:description" content="A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it." />
+    <meta property="og:url" content="https://farazian.com/work/schema-abstention/" />
+    <meta property="og:image" content="https://farazian.com/og/schema-abstention.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="When Models Won’t Say “I Don’t Know” — Milad Farazian" />
+    <meta name="twitter:description" content="A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it." />
+    <meta name="twitter:image" content="https://farazian.com/og/schema-abstention.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"When Models Won’t Say “I Don’t Know”","description":"A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it.","url":"https://farazian.com/work/schema-abstention/","image":"https://farazian.com/og/schema-abstention.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2026</p>
+      <h1 class="proj__title" data-reveal>When Models Won’t Say “I Don’t Know”</h1>
+      <p class="proj__sub" data-reveal>A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">Research</span><span class="tag">Pre-registered</span><span class="tag">LLMs</span><span class="tag">Structured Output</span><span class="tag">Evals</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="/work/ask/" data-magnetic data-scramble>Ask This Site — abstention in production</a><a class="btn btn--ghost" href="/work/honest/" data-magnetic data-scramble>Honest — the eval harness</a></div>
+    </section>
+      <section class="proj__section" data-reveal><h2>The question</h2><p>Structured output is everywhere — APIs now let you force a model's response into a JSON schema, and production systems increasingly demand it. But a schema with a <em>required</em> answer field leaves no room for the most important thing a model can say: <strong>“I don't know.”</strong> Does enforced structure suppress epistemic honesty? And if you explicitly provide an abstain affordance — a nullable answer plus a status field — do models actually use it?</p></section>
+      <section class="proj__section" data-reveal><h2>The design</h2><div class="proj-features"><div class="proj-feature"><h3>Pre-registered</h3><p>Hypotheses, arms, exclusion rules, and the analysis plan were written and frozen before headline data collection — the way you keep yourself honest about your own honesty study.</p></div><div class="proj-feature"><h3>Five arms, within-item</h3><p>Free-form text → prompted JSON (no enforcement) → API-native strict schema with a required answer → strict schema with a nullable answer + status enum → the same with the status field ordered first.</p></div><div class="proj-feature"><h3>600 items, contamination-resistant</h3><p>300 epistemically unanswerable questions (false premises, fabricated entities, missing context, genuinely unknown answers) + 300 matched answerable controls — mixing legacy anchors with freshly minted items verified to have zero search hits, shipped with a canary GUID.</p></div><div class="proj-feature"><h3>Four pinned models, three judges</h3><p>Four frontier models across three closed families plus a grammar-constrained open model; 12,000 graded responses; a three-judge panel from three model families with Fleiss κ = 0.93 — all three disagreed on just 7 of 2,400 responses.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>What it found</h2><p><strong>Enforced required-answer schemas collapse abstention in every model tested</strong> — risk differences from +0.37 to +0.74, all p&nbsp;&lt;&nbsp;10<sup>−24</sup>. The starkest case: Claude Haiku abstains on 76% of unanswerable questions in free-form text, and <strong>2%</strong> under a required schema. Providing an explicit abstain option (nullable answer + status enum) recovers much of the behavior — but restores parity with free-form honesty for only <em>one of four</em> models. Putting the status field first shows a marginal pooled benefit (+2.8 points, p = .06).</p><p>The one-sentence version: <strong>a required answer field is a hallucination machine, an escape hatch is a partial fix, and the size of “partial” is a property of the model.</strong></p></section>
+      <section class="proj__section" data-reveal><h2>Status, honestly</h2><p>The study is complete: data collected, analysis run, paper drafted, artifact bundle (items, graded responses, judge panel outputs) prepared for release. It is <em>not</em> yet peer-reviewed — the preprint upload is the next step. I'm publishing the findings here the same way the study was run: pre-committed, with the caveats attached.</p><p>And it isn't just a paper to me — the finding is baked into things I ship. <a href='/work/ask/' style='color:var(--cyan)'>Ask This Site</a> abstains by design and is eval-tested for it; <a href='/work/honest/' style='color:var(--cyan)'>Honest</a> treats “refuses when it should” as a first-class check.</p></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>

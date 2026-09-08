@@ -118,6 +118,17 @@ const MCP_TOOLS = [
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
   },
   {
+    name: "ask",
+    description:
+      "Ask a question about Milad's work in natural language. Answers are retrieved from the site's own project docs with citations (title + URL + verbatim snippet), and the tool abstains rather than guess when the corpus doesn't support an answer.",
+    inputSchema: {
+      type: "object",
+      properties: { question: { type: "string", description: "The question, e.g. 'How does Parkzy handle payments?'" } },
+      required: ["question"],
+      additionalProperties: false,
+    },
+  },
+  {
     name: "sign_guestbook",
     description:
       "Sign the guestbook on farazian.com — leaves a public, persistent note on the site. Agents welcome; say who sent you. Rate-limited to one signature per minute per IP.",
@@ -163,6 +174,13 @@ async function mcpToolCall(env, origin, ip, name, args) {
     }
     case "get_services":
       return { services: site.services, book_intro_call: site.links.book_intro_call, hire_page: site.links.hire };
+    case "ask": {
+      // Retrieval-only for agents: passages + citations, no LLM in the middle
+      // (the caller IS a model — it can synthesize from sources itself).
+      const r = await askAnswer(env, origin, ip, args?.question, null, false);
+      if (r.status !== 200) return { error: r.body.error || "Bad question." };
+      return r.body;
+    }
     case "sign_guestbook": {
       if (!env.GUESTBOOK) return { error: "Guestbook offline." };
       const r = await guestbookAdd(env, ip, args?.name, args?.message);
@@ -324,9 +342,32 @@ export class PresenceHub {
     }
 
     if (url.pathname === "/bump" && request.method === "POST") {
-      const n = ((await this.state.storage.get("count:mcp")) || 0) + 1;
-      await this.state.storage.put("count:mcp", n);
+      const k = url.searchParams.get("k") === "ask" ? "count:ask" : "count:mcp";
+      const n = ((await this.state.storage.get(k)) || 0) + 1;
+      await this.state.storage.put(k, n);
       return new Response(null, { status: 204 });
+    }
+
+    // Gate for the paid LLM tier of /api/ask: per-IP burst limit + a daily
+    // global cap so an open endpoint can never run up a surprise bill.
+    // DO storage writes serialize by construction — the counts can't race.
+    if (url.pathname === "/llmgate" && request.method === "POST") {
+      const ip = url.searchParams.get("ip") || "0.0.0.0";
+      const now = Date.now();
+      const day = new Date().toISOString().slice(0, 10);
+      const dayKey = `llmday:${day}`;
+      const dayCount = (await this.state.storage.get(dayKey)) || 0;
+      if (dayCount >= 300) return new Response(JSON.stringify({ ok: false, why: "daily-cap" }));
+      let ipMap = (await this.state.storage.get("llmip")) || {};
+      const rec = ipMap[ip];
+      if (rec && now - rec.t < 60000 && rec.n >= 6) {
+        return new Response(JSON.stringify({ ok: false, why: "ip-burst" }));
+      }
+      ipMap[ip] = rec && now - rec.t < 60000 ? { t: rec.t, n: rec.n + 1 } : { t: now, n: 1 };
+      if (Object.keys(ipMap).length > 500) ipMap = { [ip]: ipMap[ip] }; // prune
+      await this.state.storage.put("llmip", ipMap);
+      await this.state.storage.put(dayKey, dayCount + 1);
+      return new Response(JSON.stringify({ ok: true }));
     }
 
     if (url.pathname === "/vitals" && request.method === "POST") {
@@ -351,8 +392,9 @@ export class PresenceHub {
     }
 
     if (url.pathname === "/snapshot") {
-      const [mcp, vitals] = await Promise.all([
+      const [mcp, ask, vitals] = await Promise.all([
         this.state.storage.get("count:mcp"),
+        this.state.storage.get("count:ask"),
         this.state.storage.get("vitals"),
       ]);
       const p75 = (key) => {
@@ -366,6 +408,7 @@ export class PresenceHub {
         JSON.stringify({
           online: this.state.getWebSockets().length,
           mcp_calls: mcp || 0,
+          ask_count: ask || 0,
           vitals: {
             samples: (vitals || []).length,
             lcp_p75: p75("lcp"),
@@ -415,6 +458,188 @@ export class PresenceHub {
 
 const hub = (env) => env.PRESENCE.get(env.PRESENCE.idFromName("v1"));
 
+// ============================================================
+// /api/ask — "Ask this site about my work."
+// Retrieval-first RAG over the build-time corpus (/api/corpus.json):
+// BM25 at the edge, citations back to source pages, and ABSTENTION when the
+// corpus doesn't support an answer. When an ANTHROPIC_API_KEY secret exists,
+// a generative tier synthesizes the answer with Claude (gated by per-IP and
+// daily caps in the DO); without one, the same pipeline answers extractively.
+// Citations or silence — never a guess.
+// ============================================================
+// Note: the subject's own name is a stopword — on a single-subject corpus
+// "milad" matches everything equally, so it carries zero retrieval signal.
+const ASK_STOP = new Set(
+  "a an and are as at be but by for from has have he his how i in is it its me my of on or she that the their they this to was we what when where which who why will with you your does did do milad milads farazian farazians".split(" ")
+);
+const askTokens = (s) =>
+  String(s)
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 1 && !ASK_STOP.has(w));
+
+let askIndex = null;
+async function getAskIndex(env, origin) {
+  if (askIndex) return askIndex;
+  const res = await env.ASSETS.fetch(new Request(`${origin}/api/corpus.json`));
+  if (!res.ok) throw new Error("corpus unavailable");
+  const { passages } = await res.json();
+  const docs = passages.map((p) => ({
+    ...p,
+    terms: askTokens(`${p.title} ${p.heading || ""} ${p.text}`),
+  }));
+  const df = new Map();
+  for (const d of docs) for (const t of new Set(d.terms)) df.set(t, (df.get(t) || 0) + 1);
+  const avgLen = docs.reduce((a, d) => a + d.terms.length, 0) / (docs.length || 1);
+  askIndex = { docs, df, N: docs.length, avgLen };
+  return askIndex;
+}
+
+function askRank(index, q) {
+  const qTerms = [...new Set(askTokens(q))];
+  const k1 = 1.4;
+  const b = 0.6;
+  const scored = index.docs.map((d) => {
+    let score = 0;
+    let matched = 0;
+    for (const t of qTerms) {
+      const tf = d.terms.reduce((n, x) => n + (x === t ? 1 : 0), 0);
+      if (!tf) continue;
+      matched++;
+      const df = index.df.get(t);
+      const idf = Math.log(1 + (index.N - df + 0.5) / (df + 0.5));
+      score += (idf * tf * (k1 + 1)) / (tf + k1 * (1 - b + (b * d.terms.length) / index.avgLen));
+    }
+    return { d, score, matched };
+  });
+  scored.sort((a, b2) => b2.score - a.score);
+  return { qTerms, top: scored.slice(0, 5).filter((s) => s.score > 0) };
+}
+
+// The abstention line: an informative term must match, and the best passage
+// must clear a score floor. Calibrated against the on-page eval suite.
+const ASK_MIN_SCORE = 3.2;
+const askAbstains = (qTerms, top) =>
+  !top.length || top[0].score < ASK_MIN_SCORE || top[0].matched < Math.min(2, qTerms.length);
+
+// Extractive answer: the sentences of the top passage that carry the most
+// query terms, verbatim, so the "answer" is always literally in the source.
+function askSnippet(text, qTerms) {
+  const sentences = String(text).split(/(?<=[.!?])\s+/);
+  const scored = sentences.map((s, i) => {
+    const toks = new Set(askTokens(s));
+    return { s, i, hits: qTerms.reduce((n, t) => n + (toks.has(t) ? 1 : 0), 0) };
+  });
+  scored.sort((a, b) => b.hits - a.hits || a.i - b.i);
+  const picked = scored.slice(0, 2).sort((a, b) => a.i - b.i).map((x) => x.s);
+  const out = picked.join(" ");
+  return out.length > 420 ? out.slice(0, 417) + "…" : out;
+}
+
+async function askGenerative(env, question, sources) {
+  const context = sources
+    .map((s, i) => `[${i + 1}] ${s.title}${s.heading ? " — " + s.heading : ""} (${s.url})\n${s.text}`)
+    .join("\n\n");
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      model: env.ASK_MODEL || "claude-opus-5",
+      max_tokens: 600,
+      output_config: { effort: "low" },
+      system:
+        "You answer questions about Milad Farazian's work using ONLY the numbered context passages provided. Cite every claim with [n] markers matching the passages you used. If the passages do not contain the answer, reply with exactly: ABSTAIN. Never use outside knowledge, never speculate. Be concise (2-4 sentences), specific, and warm.",
+      messages: [{ role: "user", content: `Context passages:\n\n${context}\n\nQuestion: ${question}` }],
+    }),
+  });
+  if (!res.ok) throw new Error(`api ${res.status}`);
+  const data = await res.json();
+  if (data.stop_reason === "refusal") throw new Error("refusal");
+  const text = (data.content || [])
+    .filter((b) => b.type === "text")
+    .map((b) => b.text)
+    .join("")
+    .trim();
+  if (!text || /^ABSTAIN\b/.test(text)) return null; // model-level abstention
+  return text;
+}
+
+async function askAnswer(env, origin, ip, rawQ, ctx, allowLLM = true) {
+  const q = String(rawQ == null ? "" : rawQ).slice(0, 300).trim();
+  if (!q) return { status: 400, body: { error: "Ask something first." } };
+  const index = await getAskIndex(env, origin);
+  const { qTerms, top } = askRank(index, q);
+  if (env.PRESENCE && ctx) {
+    ctx.waitUntil(hub(env).fetch(new Request("https://hub/bump?k=ask", { method: "POST" })).catch(() => {}));
+  }
+  if (askAbstains(qTerms, top)) {
+    return {
+      status: 200,
+      body: {
+        abstained: true,
+        answer: null,
+        note: "The corpus doesn't support an answer to that, so I'd rather say nothing than make something up. Try asking about the projects, the stack, or how this site works.",
+        sources: [],
+        mode: "retrieval",
+      },
+    };
+  }
+  const sources = top.map(({ d, score }) => ({
+    title: d.title,
+    heading: d.heading || null,
+    url: d.url,
+    text: d.text,
+    score: Math.round(score * 100) / 100,
+  }));
+  const cited = sources.map(({ text, ...s }, i) => ({ n: i + 1, ...s, snippet: askSnippet(text, qTerms) }));
+
+  // Generative tier — only if a key is configured AND the spend gate agrees.
+  if (allowLLM && env.ANTHROPIC_API_KEY && env.PRESENCE) {
+    try {
+      const gate = await (
+        await hub(env).fetch(new Request(`https://hub/llmgate?ip=${encodeURIComponent(ip)}`, { method: "POST" }))
+      ).json();
+      if (gate.ok) {
+        const answer = await askGenerative(env, q, sources);
+        if (answer === null) {
+          return {
+            status: 200,
+            body: { abstained: true, answer: null, note: "The model looked at the retrieved passages and declined to answer — the corpus doesn't support it.", sources: cited, mode: "generative" },
+          };
+        }
+        return { status: 200, body: { abstained: false, answer, sources: cited, mode: "generative" } };
+      }
+    } catch {
+      /* fall through to extractive — retrieval never depends on the LLM */
+    }
+  }
+  return { status: 200, body: { abstained: false, answer: cited[0].snippet, sources: cited, mode: "extractive" } };
+}
+
+async function handleAsk(request, env, url, ctx) {
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: MCP_CORS });
+  let q = url.searchParams.get("q");
+  if (request.method === "POST") {
+    try {
+      q = (await request.json()).q;
+    } catch {
+      /* keep query-param q */
+    }
+  }
+  const ip = request.headers.get("cf-connecting-ip") || "0.0.0.0";
+  const r = await askAnswer(env, url.origin, ip, q, ctx);
+  return new Response(JSON.stringify(r.body), {
+    status: r.status,
+    headers: { "content-type": "application/json", "cache-control": "no-store", ...MCP_CORS },
+  });
+}
+
 async function handleStatus(request, env, url) {
   const cf = request.cf || {};
   let build = null;
@@ -451,7 +676,7 @@ async function handleStatus(request, env, url) {
     },
     build,
     online: live ? live.online : null,
-    counters: { mcp_calls: live ? live.mcp_calls : null, guestbook_entries: guestbook },
+    counters: { mcp_calls: live ? live.mcp_calls : null, ask_count: live ? live.ask_count : null, guestbook_entries: guestbook },
     vitals: live ? live.vitals : null,
   });
 }
@@ -474,6 +699,19 @@ export default {
 
     if (url.pathname === "/api/status" && request.method === "GET") {
       return handleStatus(request, env, url);
+    }
+
+    if (url.pathname === "/api/ask") {
+      try {
+        return await handleAsk(request, env, url, ctx);
+      } catch {
+        return json({ error: "Ask is offline — try again in a moment." }, 500);
+      }
+    }
+
+    if (url.pathname === "/ask" || url.pathname === "/ask/") {
+      url.pathname = "/work/ask/";
+      return Response.redirect(url.toString(), 302);
     }
 
     if (url.pathname === "/api/presence") {

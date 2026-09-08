@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060a" />
+    <title>Ask This Site — Milad Farazian</title>
+    <meta name="description" content="A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess." />
+    <link rel="canonical" href="https://farazian.com/work/ask/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Milad Farazian" />
+    <meta property="og:title" content="Ask This Site — Milad Farazian" />
+    <meta property="og:description" content="A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess." />
+    <meta property="og:url" content="https://farazian.com/work/ask/" />
+    <meta property="og:image" content="https://farazian.com/og/ask.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ask This Site — Milad Farazian" />
+    <meta name="twitter:description" content="A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess." />
+    <meta name="twitter:image" content="https://farazian.com/og/ask.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Ask This Site","description":"A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess.","url":"https://farazian.com/work/ask/","image":"https://farazian.com/og/ask.png","author":{"@type":"Person","name":"Milad Farazian","url":"https://farazian.com/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <div class="fx-overlay" aria-hidden="true"></div>
+    <header class="nav">
+      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
+    </header>
+    <main class="proj" id="content" tabindex="-1">
+      <section class="proj__hero">
+      
+      <p class="proj__eyebrow" data-reveal>AI / ML · 2026</p>
+      <h1 class="proj__title" data-reveal>Ask This Site</h1>
+      <p class="proj__sub" data-reveal>A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess.</p>
+      
+      <div class="proj__tags" data-reveal><span class="tag">RAG</span><span class="tag">Retrieval</span><span class="tag">BM25</span><span class="tag">Abstention</span><span class="tag">Evals</span></div>
+      <div class="proj__links" data-reveal><a class="btn btn--ghost" href="/work/honest/" data-magnetic data-scramble>Honest — the eval harness</a><a class="btn btn--ghost" href="/work/schema-abstention/" data-magnetic data-scramble>The abstention study</a></div>
+    </section>
+      <section class="proj__section" data-reveal>
+        <div class="askd" id="askd" data-demo="ask"></div>
+      </section>
+      <section class="proj__section" data-reveal><h2>How it answers</h2><p>At build time, the same generator that renders these pages flattens every project, essay, decision record, and resume entry into a passage corpus — one source of truth, so the answers can never drift from the pages you're reading. At query time the Cloudflare Worker runs <strong>BM25 retrieval</strong> over that corpus at the edge, pulls the top passages, and extracts the sentences that actually carry the answer — so every response is <em>verbatim from a cited source</em>, linked back to the page it came from.</p><p>When a model key is configured, a generative tier hands the retrieved passages to Claude to synthesize a cited answer — with a mandatory <code>ABSTAIN</code> escape hatch, and per-IP plus daily spend caps so an open endpoint can't run up a bill. Without a key, the same pipeline answers extractively. Either way: the retrieval, the citations, and the refusal behavior don't depend on an LLM being present.</p></section>
+      <section class="proj__section" data-reveal><h2>Abstention is the feature, not a fallback</h2><p>Most RAG demos are built to always answer — which is exactly how you get confident nonsense. This one scores retrieval confidence and <strong>refuses below threshold</strong>. That design choice comes from research: I ran a <a href='/work/schema-abstention/' style='color:var(--cyan)'>pre-registered study</a> on what happens to honesty when you force models to produce an answer — abstention collapses in every model tested. The fix there is the design here: give the system a first-class way to say “I don't know,” and test that it uses it. The eval suite above runs live against production and asserts both sides: right citations on answerable questions, silence on unanswerable ones.</p></section>
+      <section class="proj__section" data-reveal><h2>What makes it trustworthy</h2><div class="proj-features"><div class="proj-feature"><h3>One corpus, zero drift</h3><p>Passages are generated from the same content literals as the human pages and the MCP server — the build regenerates all three together.</p></div><div class="proj-feature"><h3>Citations are mandatory</h3><p>Every answer carries its sources: title, section, URL, and the verbatim snippet the answer came from. No source, no answer.</p></div><div class="proj-feature"><h3>Calibrated refusal</h3><p>A BM25 score floor plus a matched-term requirement decide when to abstain — and the on-page eval suite pins that threshold in place.</p></div><div class="proj-feature"><h3>Agents get it too</h3><p>The same pipeline is exposed as an <code>ask</code> tool on the MCP server — retrieval-only, since the caller is a model that can synthesize for itself.</p></div></div></section>
+      <section class="proj__section" data-reveal><h2>It's just HTTP</h2><div class="proj-code"><div class="proj-code__bar"><i></i><i></i><i></i><span>terminal</span></div><pre>curl 'https://farazian.com/api/ask?q=how+does+parkzy+handle+payments'
+
+# → { "answer": "...", "sources": [{ "title": "Getting Money Right",
+#      "url": "...", "snippet": "..." }], "mode": "...", "abstained": false }
+
+# or connect an agent and use the 'ask' tool:
+claude mcp add --transport http farazian https://farazian.com/mcp</pre></div></section>
+      <footer class="footer">
+        <span>© <span id="year">2026</span> Milad Farazian</span>
+        <a href="/#work" data-scramble>← back to work</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/project/main.ts"></script>
+  </body>
+</html>
