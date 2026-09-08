@@ -1278,3 +1278,20 @@
   padding-top: 0.2em;
 }
 .eng-pm__lessons { border-top: 1px dashed rgba(255, 95, 87, 0.25); padding-top: 1rem; }
+
+/* /hire: full-time-search status banner (recruiter-facing, above the fold) */
+.hire-status {
+  border: 1px solid rgba(42, 245, 255, 0.3);
+  border-left: 3px solid var(--cyan);
+  border-radius: 12px;
+  background: rgba(42, 245, 255, 0.05);
+  padding: 0.85rem 1.1rem;
+  margin: 0.4rem 0 1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  max-width: 46em;
+}
+.hire-status strong { color: #fff; }
+.hire-status a { color: var(--cyan); text-decoration: none; }
+.hire-status a:hover { text-decoration: underline; }

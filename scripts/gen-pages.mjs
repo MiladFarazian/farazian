@@ -1269,7 +1269,7 @@ const HIRE_HTML = `<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#04060a" />
     <title>Hire Me — Milad Farazian</title>
-    <meta name="description" content="Work with Milad Farazian — fractional AI/engineering advisor, automation & AI agents, and production LLM features. Part-time, Los Angeles, remote-friendly." />
+    <meta name="description" content="Work with Milad Farazian — fractional AI/engineering advisor, automation & AI agents, and production LLM features. A small side practice while he interviews for full-time engineering roles. Los Angeles, remote-friendly." />
     <link rel="canonical" href="https://farazian.com/hire/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Milad Farazian" />
@@ -1295,6 +1295,7 @@ const HIRE_HTML = `<!doctype html>
     <main class="proj" id="content" tabindex="-1">
       <section class="proj__hero">
         <p class="proj__eyebrow" data-reveal>work with me</p>
+        <p class="hire-status" data-reveal><strong>Currently interviewing for full-time engineering roles.</strong> Recruiters and hiring managers: start with the <a href="/resume/">resume</a> — this page is the small freelance side lane that runs alongside that search.</p>
         <h1 class="proj__title" data-reveal>Ship AI features that survive real users.</h1>
         <p class="proj__sub" data-reveal>I'm a full-stack engineer with real AI depth — I built <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>, a live App Store marketplace (5.0★, 1,000+ downloads), end to end as sole engineer, LLM features and all. Now I take on a few focused engagements at a time: <strong>advisory, automation, and production AI</strong>.</p>
         <div class="proj__links" data-reveal>
@@ -1327,7 +1328,7 @@ const HIRE_HTML = `<!doctype html>
           <div class="pk-step"><i>02</i><b>Scoped proposal</b><p>A fixed scope, price, and timeline in writing. 50% deposit to start — no open-ended hourly surprises.</p></div>
           <div class="pk-step"><i>03</i><b>Build &amp; ship</b><p>I build in your stack with regular check-ins, hand it off with docs, and it's yours. Balance due on delivery.</p></div>
         </div>
-        <p class="proj-note">Part-time and selective — I take a few engagements at a time, so the ones I take get real focus. Los Angeles · remote-friendly.</p>
+        <p class="proj-note">A deliberately small side lane — one or two engagements at a time alongside my full-time search, so the ones I take get real focus. Los Angeles · remote-friendly.</p>
         <div class="proj__links" data-reveal style="margin-top:1.6rem">
           <a class="btn btn--primary" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call →</a>
           <a class="btn btn--ghost" href="mailto:miladfarazian@gmail.com?subject=Project%20inquiry" data-magnetic data-scramble>Email me</a>
@@ -1705,7 +1706,7 @@ const SITE_JSON = {
   headline: "Full-stack software engineer with AI depth — production systems end-to-end: payments, real-time, and LLM features.",
   location: "Los Angeles, CA",
   availability:
-    "Open to full-stack & AI engineering roles; also taking a few part-time freelance engagements (advisory, automation & agents, AI features).",
+    "Actively interviewing for full-time software engineering roles (full-stack & AI). A small freelance side lane (advisory, automation & agents, AI features) runs alongside the search.",
   links: {
     site: BASE,
     email: "miladfarazian@gmail.com",
