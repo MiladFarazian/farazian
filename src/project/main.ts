@@ -47,6 +47,33 @@ if (!profile.reducedMotion) {
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+// Deep-dive tabs (Parkzy). Supports #tab-<id> deep links — including the
+// 301s from the tabs' former standalone URLs.
+const tabRoot = document.getElementById("pk-tabs");
+if (tabRoot) {
+  const tabs = Array.from(tabRoot.querySelectorAll<HTMLButtonElement>(".pk-tabs__tab"));
+  const panels = Array.from(tabRoot.querySelectorAll<HTMLElement>(".pk-tabs__panel"));
+  const activate = (id: string, scroll = false) => {
+    const panel = document.getElementById(`tab-${id}`);
+    if (!panel) return;
+    tabs.forEach((t) => {
+      const on = t.dataset.tab === id;
+      t.classList.toggle("is-on", on);
+      t.setAttribute("aria-selected", String(on));
+    });
+    panels.forEach((p) => (p.hidden = p !== panel));
+    ScrollTrigger.refresh(); // page height changed under the triggers
+    if (scroll) tabRoot.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  tabs.forEach((t) => t.addEventListener("click", () => activate(t.dataset.tab || "")));
+  const fromHash = () => {
+    const m = location.hash.match(/^#tab-([a-z0-9-]+)$/);
+    if (m) activate(m[1], true);
+  };
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+}
+
 // Interactive per-project demos: any element with data-demo="<slug>" pulls in
 // its self-contained /work/<slug>/demo.js, loaded only on the page that needs
 // it (each script self-boots on its own container, regardless of timing).

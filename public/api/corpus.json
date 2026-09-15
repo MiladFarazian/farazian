@@ -156,790 +156,783 @@
     },
     {
       "id": "p22",
-      "title": "Parkzy",
-      "heading": "Deep dives",
-      "url": "https://farazian.com/work/parkzy/",
-      "text": "Two engineering case studies come straight out of this product: Getting Money Right — the IOU ledger, the two-phase commit against the double-pay race, and refund clawbacks that survive webhook replays — and The Pings Nobody Answered — diagnosing why 81% of dispatch offers were expiring, with the fix and the funnel data. The operational side lives in the ~78-page ops console, and the company itself is run with a 23-agent AI organization."
+      "title": "A 23-Agent AI Company",
+      "heading": "Overview",
+      "url": "https://farazian.com/work/parkzy/#tab-ai-company",
+      "text": "A 23-Agent AI Company (part of Parkzy). Parkzy is operated with a 23-seat AI organization: engineering seats, a board with a duty to dissent, and rituals engineered against sycophancy. It has produced 233 versioned PRDs. The agents propose — I decide."
     },
     {
       "id": "p23",
+      "title": "A 23-Agent AI Company",
+      "heading": "The org chart",
+      "url": "https://farazian.com/work/parkzy/#tab-ai-company",
+      "text": "Twenty-three agent seats, each a written role definition with standing responsibilities: leadership (a chief-of-staff CEO seat that synthesizes into decision memos, plus a program manager), a five-seat board (market strategist, legal & risk, CFO, a wildcard — and a customer advocate, because the voice of drivers and hosts holds a board seat on purpose), eleven technical seats (frontend, backend, iOS, Android, UX, AI, DevOps, QA, data, security, and a collector whose whole job is making sure concerns never evaporate), trust & safety, and four marketing seats. Premium models take the judgment lanes; cheaper models take the scan-and-draft lanes."
+    },
+    {
+      "id": "p24",
+      "title": "A 23-Agent AI Company",
+      "heading": "The rituals",
+      "url": "https://farazian.com/work/parkzy/#tab-ai-company",
+      "text": "Weekly board meeting: Metrics get refreshed first, then six seats write positions independently — before a clash round where each seat must attack the most dangerous claim on the table. The CEO seat compresses it into a memo of at most three decisions, with dissent preserved verbatim. Weekly engineering cycle: Twelve seats report evidence-backed concerns plus one mandatory challenge to another seat's work. A collector triages everything into a task board with a hard WIP cap of 10. Marketing sprint: Every one to two weeks, the four marketing seats run the same propose-clash-decide loop on growth work."
+    },
+    {
+      "id": "p25",
+      "title": "A 23-Agent AI Company",
+      "heading": "The hard problem is sycophancy",
+      "url": "https://farazian.com/work/parkzy/#tab-ai-company",
+      "text": "A room full of agreeable AI agents is worse than useless — it launders your own biases back to you with confidence. So the mechanisms are the product: a duty to dissent written into the charter (“silence is a failed contribution”); independent-then-adversarial structure so positions form before they can converge; standing adversaries built into the seat definitions — the wildcard generates, the CFO finds the cheapest falsifying test; QA blocks, the CEO seat pushes ship-speed; trust & safety adds friction, the market strategist defends supply; evidence rules — no number without a source, and “unknown” is an acceptable answer, which kills the failure mode where confident agents out-argue correct ones; a dissent ledger where every decision carries a review-by date and seats earn credibility retroactively for dissents that proved right; and the collector guarantee — every raised concern lands on the board, in the backlog, or gets rejected in writing."
+    },
+    {
+      "id": "p26",
+      "title": "A 23-Agent AI Company",
+      "heading": "What it produces — and who decides",
+      "url": "https://farazian.com/work/parkzy/#tab-ai-company",
+      "text": "To date: 233 versioned PRDs, 35 dated decision memos, and shared state files (decision log, experiment queue, risk register, task board) that persist across sessions — the organization has memory. The boundary is explicit in the charter: no agent makes irreversible business decisions, spends money, or deploys to production on its own. Every seat advises, drafts, builds, or critiques; my cofounder and I make the calls. That's not a limitation of the system — it's the design. The interesting discovery after months of running it: the value isn't automation, it's structured disagreement on tap."
+    },
+    {
+      "id": "p27",
+      "title": "Getting Money Right",
+      "heading": "Overview",
+      "url": "https://farazian.com/work/parkzy/#tab-money-correctness",
+      "text": "Getting Money Right (part of Parkzy). How Parkzy moves real money without losing a cent: an IOU ledger, a two-phase commit against the double-pay race, refund clawbacks that survive webhook replays — and code that screams instead of lying."
+    },
+    {
+      "id": "p28",
+      "title": "Getting Money Right",
+      "heading": "The problem",
+      "url": "https://farazian.com/work/parkzy/#tab-money-correctness",
+      "text": "A marketplace takes a driver's money and later pays the host — with cancellations, partial refunds, disputed charges, and Stripe webhooks that can arrive late, twice, or out of order in between. Money bugs are the worst kind: silent, compounding, and trust-destroying. Parkzy defers host payouts (hosts shouldn't have to clear full KYC before their first booking), which means the platform holds debts — and debts need a ledger, not a boolean."
+    },
+    {
+      "id": "p29",
+      "title": "Getting Money Right",
+      "heading": "The machinery",
+      "url": "https://farazian.com/work/parkzy/#tab-money-correctness",
+      "text": "An IOU ledger, not a flag: Every deferred payout is a row: amount (checked positive), the payment intent it came from, the transfer that settles it, a settled-at stamp. A unique index per booking makes backfills idempotent, and row-level security allows no user writes at all — money rows are written only by service-role code. Two-phase commit vs. the double-pay race: Phase 1 reserves the row by writing a placeholder transfer id, guarded on “transfer id is null, not settled, amount positive” — so two concurrent workers can't both claim it and a clawed-back row can't transfer. Phase 2 creates the Stripe transfer with a deterministic idempotency key. Phase 3 swaps in the real transfer id. Crash at any point and the retry reuses the same key — Stripe returns the original transfer instead of a second one. Refund clawbacks that survive replays: When a refund lands out-of-band, the webhook atomically claims the clawback (a null-guarded stamp, so the webhook and the cancellation path can race and exactly one wins) and clamps the IOU to an absolute target — computed from what was refunded, not multiplied by a ratio — so Stripe redelivering the same webhook is a no-op instead of a double-clamp. Scream, don't fabricate: If a transfer succeeds but the ledger update reports zero rows affected, the code refuses to count it as a settle: it logs “money moved with no ledger record” and demands manual reconciliation. The old code counted a fabricated success. The new code's comment says it plainly: if it ever happens, scream instead of lying."
+    },
+    {
+      "id": "p30",
+      "title": "Getting Money Right",
+      "heading": "Did it work?",
+      "url": "https://farazian.com/work/parkzy/#tab-money-correctness",
+      "text": "An August 2026 audit reconciled every paid booking and cancellation directly against Stripe. After the fixes and backfills, a clean re-run reported zero dashboard-vs-Stripe mismatches on the pending set; 15 payouts totalling $803 settled within 48 hours of maturity; and of the IOUs still unsettled, every matured one was correctly unpayable (canceled booking, demo host, Connect not yet enabled). Honest caveat: that was a one-time audit, not yet a standing monitor — three reconciliation tools (charges, refunds, customers) run on demand, and a repeatable transfers-vs-dashboard report is on the backlog."
+    },
+    {
+      "id": "p31",
+      "title": "Getting Money Right",
+      "heading": "What I keep",
+      "url": "https://farazian.com/work/parkzy/#tab-money-correctness",
+      "text": "Nothing here is exotic — it's the boring discipline applied everywhere at once: make illegal states unrepresentable, make every retry idempotent, make race winners explicit, and when reality and the ledger disagree, prefer the loud failure. Correctness with money isn't a feature; it's a posture."
+    },
+    {
+      "id": "p32",
+      "title": "The Pings Nobody Answered",
+      "heading": "Overview",
+      "url": "https://farazian.com/work/parkzy/#tab-ping-dispatch",
+      "text": "The Pings Nobody Answered (part of Parkzy). A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing."
+    },
+    {
+      "id": "p33",
+      "title": "The Pings Nobody Answered",
+      "heading": "The symptom",
+      "url": "https://farazian.com/work/parkzy/#tab-ping-dispatch",
+      "text": "Parkzy's core loop is the ping: a driver taps once, every nearby host gets a 60-minute offer, first accept wins. Over one 21-day window, 21 requests went out, 17 expired untouched (81%) and exactly one was accepted. In the two weeks before the fix, $655 of offers died on the table — an average of $40.94 each. For an early marketplace, that's not a leak; that's the boat filling with water."
+    },
+    {
+      "id": "p34",
+      "title": "The Pings Nobody Answered",
+      "heading": "The investigation",
+      "url": "https://farazian.com/work/parkzy/#tab-ping-dispatch",
+      "text": "Instinct said push notifications were failing. The data said otherwise: six of the eight hosts who let a ping expire were demonstrably inside the app during the 60-minute window. Meanwhile the event funnel showed only ~36% of recipient rows ever produced an in-app “ping received” event. Hosts weren't ignoring the offers — the product was hiding them."
+    },
+    {
+      "id": "p35",
+      "title": "The Pings Nobody Answered",
+      "heading": "Three root causes, none of them the obvious one",
+      "url": "https://farazian.com/work/parkzy/#tab-ping-dispatch",
+      "text": "Dismissal was a no-op: Swiping away the ping sheet did nothing to the underlying offer — the row stayed pending and silently expired 60 minutes later. And once dismissed, the only ways back in were the notification bell or a push deep link. A self-inflicted TTL bug: A fix from the week before set the push notification's APNs expiration to 300 seconds — for an offer that lives 60 minutes. Any phone offline for five minutes simply never received the push. No standing surface: The driver's side had a persistent banner for the active request. The host's home screen — the side being asked to act — had none."
+    },
+    {
+      "id": "p36",
+      "title": "The Pings Nobody Answered",
+      "heading": "The fix",
+      "url": "https://farazian.com/work/parkzy/#tab-ping-dispatch",
+      "text": "Three changes shipped together: a pending-ping banner on the host's home screen with a live countdown and the payout amount, one tap from anywhere back into the offer; dismissal copy that tells the host the offer is still live; and push TTL derived from the offer's actual expiry instead of a constant. The diagnosis and fix went from first data pull to production in the same week."
+    },
+    {
+      "id": "p37",
+      "title": "The Pings Nobody Answered",
+      "heading": "What the data says now",
+      "url": "https://farazian.com/work/parkzy/#tab-ping-dispatch",
+      "text": "Two structural findings guide what's next. Speed compounds: pings accepted within five minutes go on to complete ~69% of the time, versus ~58% for slower accepts — every minute of visibility is worth real conversion. And dispatch is the next lever, not notifications: sixteen hosts who never accepted a single ping absorbed 56% of all offers ever sent, while two-thirds of active hosts had never been pinged at all. The lesson I keep: instrument the funnel before believing your own hypothesis — the obvious suspect was innocent, and the fix was product surface area, not infrastructure."
+    },
+    {
+      "id": "p38",
+      "title": "The Parkzy Ops Console",
+      "heading": "Overview",
+      "url": "https://farazian.com/work/parkzy/#tab-ops-console",
+      "text": "The Parkzy Ops Console (part of Parkzy). ~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable."
+    },
+    {
+      "id": "p39",
+      "title": "The Parkzy Ops Console",
+      "heading": "Why it exists",
+      "url": "https://farazian.com/work/parkzy/#tab-ops-console",
+      "text": "A two-person company operating a live marketplace can't hire an ops team — it has to build one. Every recurring question became a page: Why did this ping die? Does the dashboard match Stripe? Which hosts are hurting the funnel? Is the edge healthy? The console is where a marketplace stops being a demo and starts being a business you can actually run."
+    },
+    {
+      "id": "p40",
+      "title": "The Parkzy Ops Console",
+      "heading": "Representative surfaces (of ~78)",
+      "url": "https://farazian.com/work/parkzy/#tab-ops-console",
+      "text": "Dispatch forensics: A sent→accepted→booked ping funnel, plus a per-ping forensic timeline that reconstructs exactly what each host saw and when — the tooling behind the ping-dispatch case study. Money ops: Revenue, disputes with per-case detail, tax export, and the reconciliation tooling from the money-correctness work. Risk & trust: Account risk, listing risk, behavioral signals, overstays and tows — the surfaces that keep a peer-to-peer marketplace safe to transact in. Growth: Retention cohorts, attribution, unmet-demand mapping, SEO, host outreach and broadcast messaging. Platform health: Feature flags, edge-function health, mobile bundle deploys, and a live AI-spend meter. Pricing Lab: A shadow-mode sandbox for the ML pricing engine — compare the model's price against the live price on real inventory before letting it near production."
+    },
+    {
+      "id": "p41",
+      "title": "The Parkzy Ops Console",
+      "heading": "AI in the loop, humans on the trigger",
+      "url": "https://farazian.com/work/parkzy/#tab-ops-console",
+      "text": "Support runs AI-assisted, not AI-automated: edge functions triage inbound messages, draft suggested replies, and recommend dispute outcomes — an operator reviews and decides. The console is also where the 23-agent organization's output lands as concrete dashboards and queues."
+    },
+    {
+      "id": "p42",
+      "title": "The Parkzy Ops Console",
+      "heading": "The boring parts, done properly",
+      "url": "https://farazian.com/work/parkzy/#tab-ops-console",
+      "text": "The whole console sits behind TOTP multi-factor auth (step-up to AAL2 before any support surface renders), on top of row-level-security boundaries where user-facing roles can't touch money tables at all. Internal tools handle the most sensitive data in the company — they deserve production-grade security more than the marketing site does, not less."
+    },
+    {
+      "id": "p43",
       "title": "Gosan",
       "heading": "Overview",
       "url": "https://farazian.com/work/gosan/",
       "text": "Gosan (Software, 2025). A native macOS DAW (GarageBand-class) with a taste engine. Named for the gōsān — the minstrel poet-musicians of Parthian and Persian folklore who carried songs by ear and made them their own. Suno generates ideas, Moises dissects and finishes audio, and you stay the producer."
     },
     {
-      "id": "p24",
+      "id": "p44",
       "title": "Gosan",
       "heading": "What it does",
       "url": "https://farazian.com/work/gosan/",
       "text": "DAW bones: Multitrack timeline with waveforms and a bars/beats grid, recording + overdub, clip editing (trim, split, quantize, time-stretch), a full mixer (EQ, compressor, reverb, delay), and offline WAV export. Moises integration: Right-click any clip to split into stems, analyze key / BPM / chords, de-reverb, master, or run the one-step Vocal Rescue recipe. Suno generation: Describe a vibe in the transport bar, audition candidates in a variant tray, and drop the keepers straight onto the timeline. Taste engine: Keeping or discarding candidates trains a local taste profile that quietly nudges future prompts toward your strongest descriptors — and shows you exactly what it changed."
     },
     {
-      "id": "p25",
+      "id": "p45",
       "title": "Gosan",
       "heading": "Portable projects",
       "url": "https://farazian.com/work/gosan/",
       "text": "New / Open / Save persist the arrangement to a portable .gosan package — a self-contained folder with the project plus copies of every clip, so sessions move cleanly between machines."
     },
     {
-      "id": "p26",
+      "id": "p46",
       "title": "Mehdi",
       "heading": "Overview",
       "url": "https://farazian.com/work/mehdi/",
       "text": "Mehdi (AI / ML, 2025). A personal financial-intelligence assistant. It securely links your bank and credit-card accounts (read-only), builds a deep model of your spending, and surfaces proactive advice — in plain language."
     },
     {
-      "id": "p27",
+      "id": "p47",
       "title": "Mehdi",
       "heading": "What it surfaces",
       "url": "https://farazian.com/work/mehdi/",
       "text": "Runaway subscriptions: Price creep, free trials converted to paid, duplicate services, and annual renewals before they hit. Cut-back recommendations: Categories and merchants where you're overspending vs. your own baseline, shown annualized. Patterns to rein in: Lifestyle creep, spending spikes, and the small recurring leaks. Advisor: Ask anything about your spending — answers are grounded in your real transactions, never guessed."
     },
     {
-      "id": "p28",
+      "id": "p48",
       "title": "Mehdi",
       "heading": "Privacy by design",
       "url": "https://farazian.com/work/mehdi/",
       "text": "Plaid sits between the app and your bank, providing read-only transaction and balance data through a revocable token. The app never sees your bank credentials, requests no payment or transfer scopes, and stores the token server-side only."
     },
     {
-      "id": "p29",
+      "id": "p49",
       "title": "Mehdi",
       "heading": "Under the hood",
       "url": "https://farazian.com/work/mehdi/",
       "text": "Next.js + Supabase + Plaid + Claude. The analysis engine detects recurring charges by cadence and amount stability, and builds per-category median baselines to flag overspend. The advisor runs on the local Claude CLI — grounded in your data, with no separate API bill."
     },
     {
-      "id": "p30",
+      "id": "p50",
       "title": "Lincoln",
       "heading": "Overview",
       "url": "https://farazian.com/work/lincoln/",
       "text": "Lincoln (AI / ML, 2026). Tinder for jobs. Swipe through scraped postings and a recommender learns your taste from every swipe — no forms, no filters, just implicit feedback. Swipe right, and it drafts you a tailored resume."
     },
     {
-      "id": "p31",
+      "id": "p51",
       "title": "Lincoln",
       "heading": "The Loop",
       "url": "https://farazian.com/work/lincoln/",
       "text": "Scrape postings → swipe left/right → after every 20 new swipes, a background task retrains a TF-IDF + Logistic Regression model on your swipe history → the feed re-ranks toward what you actually like. No preference forms, no keyword filters — the model reads your taste from behavior alone."
     },
     {
-      "id": "p32",
+      "id": "p52",
       "title": "Lincoln",
       "heading": "How It's Built",
       "url": "https://farazian.com/work/lincoln/",
       "text": "Swipe UI: Next.js + TypeScript front-end — postings as cards, one decision at a time. Self-retraining recommender: TfidfVectorizer + LogisticRegression over your swipe history; trains once 20 labeled swipes exist, then retrains automatically every 20 more. Artifacts pickled and reloaded on boot. Job-board scraper: FastAPI + SQLAlchemy backend keeps the deck stocked with fresh postings in Postgres. Resume crafting: Right-swiped a job? Claude drafts a resume tailored to that exact posting via the Anthropic API."
     },
     {
-      "id": "p33",
+      "id": "p53",
       "title": "Lincoln",
       "heading": "Status",
       "url": "https://farazian.com/work/lincoln/",
       "text": "Dockerized and deployed on Railway — scraper, recommender, and resume crafting all running as one service."
     },
     {
-      "id": "p34",
+      "id": "p54",
       "title": "Honest",
       "heading": "Overview",
       "url": "https://farazian.com/work/honest/",
       "text": "Honest (AI / ML, 2026). A production LLM feature is only trustworthy if something grades every answer before a user sees it. Honest is that layer — a working evaluation harness that catches hallucinations, ungrounded claims, and broken guardrails, and fails the build when a prompt change regresses."
     },
     {
-      "id": "p35",
+      "id": "p55",
       "title": "Honest",
       "heading": "Why this exists",
       "url": "https://farazian.com/work/honest/",
       "text": "Shipping AI features into Parkzy taught me the real failure mode isn't the model being dumb — it's the model being confidently wrong. A pricing explanation that invents a fee. An availability answer that hallucinates a time slot. A support bot that follows a prompt injection. The model sounds fine; the answer ships a bug.My fix in production was to ground the LLM in code-computed facts — the deterministic engine calculates every number, the model only explains what's already true. Honest is that instinct turned into a reusable gate: nothing reaches a user unless it passes the checks."
     },
     {
-      "id": "p36",
+      "id": "p56",
       "title": "Honest",
       "heading": "The checks",
       "url": "https://farazian.com/work/honest/",
       "text": "Groundedness: Every factual claim — numbers, fees, amenities, times — must trace to the provided facts. Anything the model invented gets flagged and highlighted. This is where most hallucinations die. Correctness: Beyond grounded: is the answer actually right? A per-case assertion checks the true thing was said (the price breakdown adds up; the availability answer says “no”). Guardrail / safety: Does it refuse out-of-scope and prompt-injection requests instead of complying or leaking the system prompt? Detects both the leak and the obey. Regression gate: The whole suite runs as a CI-style gate — a single red bar means a prompt or model change regressed a case. Fail the build, not the user."
     },
     {
-      "id": "p37",
+      "id": "p57",
       "title": "Honest",
       "heading": "How it slots in",
       "url": "https://farazian.com/work/honest/",
       "text": "Honest runs on every prompt or model change, in CI, before deploy. Deterministic checks (grounding, format, safety patterns) run instantly and for free; subjective dimensions can add an LLM-as-judge pass. A failing check blocks the merge, and every answer gets a scored trace — the observability layer for an AI feature. It's model-agnostic: point it at any provider's output."
     },
     {
-      "id": "p38",
+      "id": "p58",
       "title": "Honest",
       "heading": "Honest about Honest",
       "url": "https://farazian.com/work/honest/",
       "text": "This is a working demonstration harness — the three checks above run live, client-side, on a seeded suite, and nothing is hardcoded per answer. It is not a battle-tested platform at production traffic. It's the eval layer I'd build on a production AI team, here as a runnable proof of the approach — because the fastest way to show you can keep AI honest is to hand you the thing that does it."
     },
     {
-      "id": "p39",
+      "id": "p59",
       "title": "Portfolio MCP Server",
       "heading": "Overview",
       "url": "https://farazian.com/work/mcp/",
       "text": "Portfolio MCP Server (AI / ML, 2026). This site doesn't just describe my work — it serves it over Model Context Protocol. A live MCP server at farazian.com/mcp, running on the same edge worker as the site: connect an agent and it can browse my projects, read my stack and services, and sign the guestbook."
     },
     {
-      "id": "p40",
+      "id": "p60",
       "title": "Portfolio MCP Server",
       "heading": "Try it right now",
       "url": "https://farazian.com/work/mcp/",
       "text": "If you use Claude Code, one command connects your agent to this portfolio:"
     },
     {
-      "id": "p41",
+      "id": "p61",
       "title": "Portfolio MCP Server",
       "heading": "The tools",
       "url": "https://farazian.com/work/mcp/",
       "text": "list_projects: Every project — title, category, year, summary, tags, URL. The index an agent starts from. get_project: Full detail for one slug: links plus the page's written sections as clean, readable text. get_profile: Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking. get_services: The freelance offerings with starting prices, straight from the /hire page's single source of truth. sign_guestbook: The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form."
     },
     {
-      "id": "p42",
+      "id": "p62",
       "title": "Portfolio MCP Server",
       "heading": "How it's built",
       "url": "https://farazian.com/work/mcp/",
       "text": "No SDK, no framework — raw JSON-RPC 2.0 over MCP's stateless streamable-HTTP transport, implemented directly in the same Cloudflare Worker that serves this site. It handles initialize (with protocol-version negotiation), notifications, tools/list, and tools/call; rejects batches per the 2025-06-18 spec; and answers protocol errors with proper JSON-RPC codes. CORS is open so browser-based agents can connect too.The data layer is the interesting bit: at build time, the site generator emits /api/site.json — every project page flattened into agent-readable sections, plus stack and services from the same source of truth as the human pages. The worker serves tool calls straight from that static asset at the edge: zero databases on the read path, zero cold starts, and the project data agents see is generated from the same source as the pages humans see. The one write tool routes through the guestbook's existing guardrails."
     },
     {
-      "id": "p43",
+      "id": "p63",
       "title": "Portfolio MCP Server",
       "heading": "Why",
       "url": "https://farazian.com/work/mcp/",
       "text": "Two reasons. First: job descriptions keep asking for MCP and agentic-tooling experience, and the most honest way to claim it is a production MCP server you can connect to right now. Second, the more interesting one: portfolios are written for human eyes, but hiring pipelines increasingly have agents in them — screening tools, research assistants, a recruiter's Claude tab. This site now serves both audiences natively. If your agent is reading this: the guestbook tool works, say hi."
     },
     {
-      "id": "p44",
+      "id": "p64",
       "title": "Ask This Site",
       "heading": "Overview",
       "url": "https://farazian.com/work/ask/",
       "text": "Ask This Site (AI / ML, 2026). A question box wired to a real retrieval pipeline over every page on this site: BM25 at the edge, citations back to the source, and — the part that matters — abstention when the corpus can't support an answer. Citations or silence, never a guess."
     },
     {
-      "id": "p45",
+      "id": "p65",
       "title": "Ask This Site",
       "heading": "How it answers",
       "url": "https://farazian.com/work/ask/",
       "text": "At build time, the same generator that renders these pages flattens every project, essay, decision record, and resume entry into a passage corpus — one source of truth, so the answers can never drift from the pages you're reading. At query time the Cloudflare Worker runs BM25 retrieval over that corpus at the edge, pulls the top passages, and extracts the sentences that actually carry the answer — so every response is verbatim from a cited source, linked back to the page it came from.When a model key is configured, a generative tier hands the retrieved passages to Claude to synthesize a cited answer — with a mandatory ABSTAIN escape hatch, and per-IP plus daily spend caps so an open endpoint can't run up a bill. Without a key, the same pipeline answers extractively. Either way: the retrieval, the citations, and the refusal behavior don't depend on an LLM being present."
     },
     {
-      "id": "p46",
+      "id": "p66",
       "title": "Ask This Site",
       "heading": "Abstention is the feature, not a fallback",
       "url": "https://farazian.com/work/ask/",
       "text": "Most RAG demos are built to always answer — which is exactly how you get confident nonsense. This one scores retrieval confidence and refuses below threshold. That design choice comes from research: I ran a pre-registered study on what happens to honesty when you force models to produce an answer — abstention collapses in every model tested. The fix there is the design here: give the system a first-class way to say “I don't know,” and test that it uses it. The eval suite above runs live against production and asserts both sides: right citations on answerable questions, silence on unanswerable ones."
     },
     {
-      "id": "p47",
+      "id": "p67",
       "title": "Ask This Site",
       "heading": "What makes it trustworthy",
       "url": "https://farazian.com/work/ask/",
       "text": "One corpus, zero drift: Passages are generated from the same content literals as the human pages and the MCP server — the build regenerates all three together. Citations are mandatory: Every answer carries its sources: title, section, URL, and the verbatim snippet the answer came from. No source, no answer. Calibrated refusal: A BM25 score floor plus a matched-term requirement decide when to abstain — and the on-page eval suite pins that threshold in place. Agents get it too: The same pipeline is exposed as an ask tool on the MCP server — retrieval-only, since the caller is a model that can synthesize for itself."
     },
     {
-      "id": "p48",
+      "id": "p68",
       "title": "When Models Won’t Say “I Don’t Know”",
       "heading": "Overview",
       "url": "https://farazian.com/work/schema-abstention/",
       "text": "When Models Won’t Say “I Don’t Know” (AI / ML, 2026). A completed, pre-registered study of epistemic abstention under structured output. Force a frontier model to fill a required answer field and honesty collapses — Claude Haiku’s abstention falls from 76% to 2%. An explicit escape hatch only partially repairs it."
     },
     {
-      "id": "p49",
+      "id": "p69",
       "title": "When Models Won’t Say “I Don’t Know”",
       "heading": "The question",
       "url": "https://farazian.com/work/schema-abstention/",
       "text": "Structured output is everywhere — APIs now let you force a model's response into a JSON schema, and production systems increasingly demand it. But a schema with a required answer field leaves no room for the most important thing a model can say: “I don't know.” Does enforced structure suppress epistemic honesty? And if you explicitly provide an abstain affordance — a nullable answer plus a status field — do models actually use it?"
     },
     {
-      "id": "p50",
+      "id": "p70",
       "title": "When Models Won’t Say “I Don’t Know”",
       "heading": "The design",
       "url": "https://farazian.com/work/schema-abstention/",
       "text": "Pre-registered: Hypotheses, arms, exclusion rules, and the analysis plan were written and frozen before headline data collection — the way you keep yourself honest about your own honesty study. Five arms, within-item: Free-form text → prompted JSON (no enforcement) → API-native strict schema with a required answer → strict schema with a nullable answer + status enum → the same with the status field ordered first. 600 items, contamination-resistant: 300 epistemically unanswerable questions (false premises, fabricated entities, missing context, genuinely unknown answers) + 300 matched answerable controls — mixing legacy anchors with freshly minted items verified to have zero search hits, shipped with a canary GUID. Four pinned models, three judges: Four frontier models across three closed families plus a grammar-constrained open model; 12,000 graded responses; a three-judge panel from three model families with Fleiss κ = 0.93 — all three disagreed on just 7 of 2,400 responses."
     },
     {
-      "id": "p51",
+      "id": "p71",
       "title": "When Models Won’t Say “I Don’t Know”",
       "heading": "What it found",
       "url": "https://farazian.com/work/schema-abstention/",
       "text": "Enforced required-answer schemas collapse abstention in every model tested — risk differences from +0.37 to +0.74, all p&nbsp;<&nbsp;10−24. The starkest case: Claude Haiku abstains on 76% of unanswerable questions in free-form text, and 2% under a required schema. Providing an explicit abstain option (nullable answer + status enum) recovers much of the behavior — but restores parity with free-form honesty for only one of four models. Putting the status field first shows a marginal pooled benefit (+2.8 points, p = .06).The one-sentence version: a required answer field is a hallucination machine, an escape hatch is a partial fix, and the size of “partial” is a property of the model."
     },
     {
-      "id": "p52",
+      "id": "p72",
       "title": "When Models Won’t Say “I Don’t Know”",
       "heading": "Status, honestly",
       "url": "https://farazian.com/work/schema-abstention/",
       "text": "The study is complete: data collected, analysis run, paper drafted, artifact bundle (items, graded responses, judge panel outputs) prepared for release. It is not yet peer-reviewed — the preprint upload is the next step. I'm publishing the findings here the same way the study was run: pre-committed, with the caveats attached.And it isn't just a paper to me — the finding is baked into things I ship. Ask This Site abstains by design and is eval-tested for it; Honest treats “refuses when it should” as a first-class check."
     },
     {
-      "id": "p53",
-      "title": "A 23-Agent AI Company",
-      "heading": "Overview",
-      "url": "https://farazian.com/work/ai-company/",
-      "text": "A 23-Agent AI Company (AI / ML, 2026). Parkzy is operated with a 23-seat AI organization: engineering seats, a board with a duty to dissent, and rituals engineered against sycophancy. It has produced 233 versioned PRDs. The agents propose — I decide."
-    },
-    {
-      "id": "p54",
-      "title": "A 23-Agent AI Company",
-      "heading": "The org chart",
-      "url": "https://farazian.com/work/ai-company/",
-      "text": "Twenty-three agent seats, each a written role definition with standing responsibilities: leadership (a chief-of-staff CEO seat that synthesizes into decision memos, plus a program manager), a five-seat board (market strategist, legal & risk, CFO, a wildcard — and a customer advocate, because the voice of drivers and hosts holds a board seat on purpose), eleven technical seats (frontend, backend, iOS, Android, UX, AI, DevOps, QA, data, security, and a collector whose whole job is making sure concerns never evaporate), trust & safety, and four marketing seats. Premium models take the judgment lanes; cheaper models take the scan-and-draft lanes."
-    },
-    {
-      "id": "p55",
-      "title": "A 23-Agent AI Company",
-      "heading": "The rituals",
-      "url": "https://farazian.com/work/ai-company/",
-      "text": "Weekly board meeting: Metrics get refreshed first, then six seats write positions independently — before a clash round where each seat must attack the most dangerous claim on the table. The CEO seat compresses it into a memo of at most three decisions, with dissent preserved verbatim. Weekly engineering cycle: Twelve seats report evidence-backed concerns plus one mandatory challenge to another seat's work. A collector triages everything into a task board with a hard WIP cap of 10. Marketing sprint: Every one to two weeks, the four marketing seats run the same propose-clash-decide loop on growth work."
-    },
-    {
-      "id": "p56",
-      "title": "A 23-Agent AI Company",
-      "heading": "The hard problem is sycophancy",
-      "url": "https://farazian.com/work/ai-company/",
-      "text": "A room full of agreeable AI agents is worse than useless — it launders your own biases back to you with confidence. So the mechanisms are the product: a duty to dissent written into the charter (“silence is a failed contribution”); independent-then-adversarial structure so positions form before they can converge; standing adversaries built into the seat definitions — the wildcard generates, the CFO finds the cheapest falsifying test; QA blocks, the CEO seat pushes ship-speed; trust & safety adds friction, the market strategist defends supply; evidence rules — no number without a source, and “unknown” is an acceptable answer, which kills the failure mode where confident agents out-argue correct ones; a dissent ledger where every decision carries a review-by date and seats earn credibility retroactively for dissents that proved right; and the collector guarantee — every raised concern lands on the board, in the backlog, or gets rejected in writing."
-    },
-    {
-      "id": "p57",
-      "title": "A 23-Agent AI Company",
-      "heading": "What it produces — and who decides",
-      "url": "https://farazian.com/work/ai-company/",
-      "text": "To date: 233 versioned PRDs, 35 dated decision memos, and shared state files (decision log, experiment queue, risk register, task board) that persist across sessions — the organization has memory. The boundary is explicit in the charter: no agent makes irreversible business decisions, spends money, or deploys to production on its own. Every seat advises, drafts, builds, or critiques; my cofounder and I make the calls. That's not a limitation of the system — it's the design. The interesting discovery after months of running it: the value isn't automation, it's structured disagreement on tap."
-    },
-    {
-      "id": "p58",
-      "title": "Getting Money Right",
-      "heading": "Overview",
-      "url": "https://farazian.com/work/money-correctness/",
-      "text": "Getting Money Right (Writing, 2026). How Parkzy moves real money without losing a cent: an IOU ledger, a two-phase commit against the double-pay race, refund clawbacks that survive webhook replays — and code that screams instead of lying."
-    },
-    {
-      "id": "p59",
-      "title": "Getting Money Right",
-      "heading": "The problem",
-      "url": "https://farazian.com/work/money-correctness/",
-      "text": "A marketplace takes a driver's money and later pays the host — with cancellations, partial refunds, disputed charges, and Stripe webhooks that can arrive late, twice, or out of order in between. Money bugs are the worst kind: silent, compounding, and trust-destroying. Parkzy defers host payouts (hosts shouldn't have to clear full KYC before their first booking), which means the platform holds debts — and debts need a ledger, not a boolean."
-    },
-    {
-      "id": "p60",
-      "title": "Getting Money Right",
-      "heading": "The machinery",
-      "url": "https://farazian.com/work/money-correctness/",
-      "text": "An IOU ledger, not a flag: Every deferred payout is a row: amount (checked positive), the payment intent it came from, the transfer that settles it, a settled-at stamp. A unique index per booking makes backfills idempotent, and row-level security allows no user writes at all — money rows are written only by service-role code. Two-phase commit vs. the double-pay race: Phase 1 reserves the row by writing a placeholder transfer id, guarded on “transfer id is null, not settled, amount positive” — so two concurrent workers can't both claim it and a clawed-back row can't transfer. Phase 2 creates the Stripe transfer with a deterministic idempotency key. Phase 3 swaps in the real transfer id. Crash at any point and the retry reuses the same key — Stripe returns the original transfer instead of a second one. Refund clawbacks that survive replays: When a refund lands out-of-band, the webhook atomically claims the clawback (a null-guarded stamp, so the webhook and the cancellation path can race and exactly one wins) and clamps the IOU to an absolute target — computed from what was refunded, not multiplied by a ratio — so Stripe redelivering the same webhook is a no-op instead of a double-clamp. Scream, don't fabricate: If a transfer succeeds but the ledger update reports zero rows affected, the code refuses to count it as a settle: it logs “money moved with no ledger record” and demands manual reconciliation. The old code counted a fabricated success. The new code's comment says it plainly: if it ever happens, scream instead of lying."
-    },
-    {
-      "id": "p61",
-      "title": "Getting Money Right",
-      "heading": "Did it work?",
-      "url": "https://farazian.com/work/money-correctness/",
-      "text": "An August 2026 audit reconciled every paid booking and cancellation directly against Stripe. After the fixes and backfills, a clean re-run reported zero dashboard-vs-Stripe mismatches on the pending set; 15 payouts totalling $803 settled within 48 hours of maturity; and of the IOUs still unsettled, every matured one was correctly unpayable (canceled booking, demo host, Connect not yet enabled). Honest caveat: that was a one-time audit, not yet a standing monitor — three reconciliation tools (charges, refunds, customers) run on demand, and a repeatable transfers-vs-dashboard report is on the backlog."
-    },
-    {
-      "id": "p62",
-      "title": "Getting Money Right",
-      "heading": "What I keep",
-      "url": "https://farazian.com/work/money-correctness/",
-      "text": "Nothing here is exotic — it's the boring discipline applied everywhere at once: make illegal states unrepresentable, make every retry idempotent, make race winners explicit, and when reality and the ledger disagree, prefer the loud failure. Correctness with money isn't a feature; it's a posture."
-    },
-    {
-      "id": "p63",
-      "title": "The Pings Nobody Answered",
-      "heading": "Overview",
-      "url": "https://farazian.com/work/ping-dispatch/",
-      "text": "The Pings Nobody Answered (Writing, 2026). A real marketplace diagnosis: 81% of dispatch offers were expiring untouched — $655 of demand in two weeks — and the root cause wasn't notifications. A case study in instrumenting before guessing."
-    },
-    {
-      "id": "p64",
-      "title": "The Pings Nobody Answered",
-      "heading": "The symptom",
-      "url": "https://farazian.com/work/ping-dispatch/",
-      "text": "Parkzy's core loop is the ping: a driver taps once, every nearby host gets a 60-minute offer, first accept wins. Over one 21-day window, 21 requests went out, 17 expired untouched (81%) and exactly one was accepted. In the two weeks before the fix, $655 of offers died on the table — an average of $40.94 each. For an early marketplace, that's not a leak; that's the boat filling with water."
-    },
-    {
-      "id": "p65",
-      "title": "The Pings Nobody Answered",
-      "heading": "The investigation",
-      "url": "https://farazian.com/work/ping-dispatch/",
-      "text": "Instinct said push notifications were failing. The data said otherwise: six of the eight hosts who let a ping expire were demonstrably inside the app during the 60-minute window. Meanwhile the event funnel showed only ~36% of recipient rows ever produced an in-app “ping received” event. Hosts weren't ignoring the offers — the product was hiding them."
-    },
-    {
-      "id": "p66",
-      "title": "The Pings Nobody Answered",
-      "heading": "Three root causes, none of them the obvious one",
-      "url": "https://farazian.com/work/ping-dispatch/",
-      "text": "Dismissal was a no-op: Swiping away the ping sheet did nothing to the underlying offer — the row stayed pending and silently expired 60 minutes later. And once dismissed, the only ways back in were the notification bell or a push deep link. A self-inflicted TTL bug: A fix from the week before set the push notification's APNs expiration to 300 seconds — for an offer that lives 60 minutes. Any phone offline for five minutes simply never received the push. No standing surface: The driver's side had a persistent banner for the active request. The host's home screen — the side being asked to act — had none."
-    },
-    {
-      "id": "p67",
-      "title": "The Pings Nobody Answered",
-      "heading": "The fix",
-      "url": "https://farazian.com/work/ping-dispatch/",
-      "text": "Three changes shipped together: a pending-ping banner on the host's home screen with a live countdown and the payout amount, one tap from anywhere back into the offer; dismissal copy that tells the host the offer is still live; and push TTL derived from the offer's actual expiry instead of a constant. The diagnosis and fix went from first data pull to production in the same week."
-    },
-    {
-      "id": "p68",
-      "title": "The Pings Nobody Answered",
-      "heading": "What the data says now",
-      "url": "https://farazian.com/work/ping-dispatch/",
-      "text": "Two structural findings guide what's next. Speed compounds: pings accepted within five minutes go on to complete ~69% of the time, versus ~58% for slower accepts — every minute of visibility is worth real conversion. And dispatch is the next lever, not notifications: sixteen hosts who never accepted a single ping absorbed 56% of all offers ever sent, while two-thirds of active hosts had never been pinged at all. The lesson I keep: instrument the funnel before believing your own hypothesis — the obvious suspect was innocent, and the fix was product surface area, not infrastructure."
-    },
-    {
-      "id": "p69",
-      "title": "The Parkzy Ops Console",
-      "heading": "Overview",
-      "url": "https://farazian.com/work/ops-console/",
-      "text": "The Parkzy Ops Console (Software, 2026). ~78 internal pages, ~36,000 lines of TypeScript: the support and operations platform inside Parkzy — funnels, forensics, risk, disputes, a pricing lab, edge health — gated behind TOTP MFA. The unglamorous software that makes a marketplace operable."
-    },
-    {
-      "id": "p70",
-      "title": "The Parkzy Ops Console",
-      "heading": "Why it exists",
-      "url": "https://farazian.com/work/ops-console/",
-      "text": "A two-person company operating a live marketplace can't hire an ops team — it has to build one. Every recurring question became a page: Why did this ping die? Does the dashboard match Stripe? Which hosts are hurting the funnel? Is the edge healthy? The console is where a marketplace stops being a demo and starts being a business you can actually run."
-    },
-    {
-      "id": "p71",
-      "title": "The Parkzy Ops Console",
-      "heading": "Representative surfaces (of ~78)",
-      "url": "https://farazian.com/work/ops-console/",
-      "text": "Dispatch forensics: A sent→accepted→booked ping funnel, plus a per-ping forensic timeline that reconstructs exactly what each host saw and when — the tooling behind the ping-dispatch case study. Money ops: Revenue, disputes with per-case detail, tax export, and the reconciliation tooling from the money-correctness work. Risk & trust: Account risk, listing risk, behavioral signals, overstays and tows — the surfaces that keep a peer-to-peer marketplace safe to transact in. Growth: Retention cohorts, attribution, unmet-demand mapping, SEO, host outreach and broadcast messaging. Platform health: Feature flags, edge-function health, mobile bundle deploys, and a live AI-spend meter. Pricing Lab: A shadow-mode sandbox for the ML pricing engine — compare the model's price against the live price on real inventory before letting it near production."
-    },
-    {
-      "id": "p72",
-      "title": "The Parkzy Ops Console",
-      "heading": "AI in the loop, humans on the trigger",
-      "url": "https://farazian.com/work/ops-console/",
-      "text": "Support runs AI-assisted, not AI-automated: edge functions triage inbound messages, draft suggested replies, and recommend dispute outcomes — an operator reviews and decides. The console is also where the 23-agent organization's output lands as concrete dashboards and queues."
-    },
-    {
       "id": "p73",
-      "title": "The Parkzy Ops Console",
-      "heading": "The boring parts, done properly",
-      "url": "https://farazian.com/work/ops-console/",
-      "text": "The whole console sits behind TOTP multi-factor auth (step-up to AAL2 before any support surface renders), on top of row-level-security boundaries where user-facing roles can't touch money tables at all. Internal tools handle the most sensitive data in the company — they deserve production-grade security more than the marketing site does, not less."
-    },
-    {
-      "id": "p74",
       "title": "Nik",
       "heading": "Overview",
       "url": "https://farazian.com/work/nik/",
       "text": "Nik (Software, 2026). An iOS short-form video app — pick a template, auto-fill it from your camera roll, export a 9:16 cut. It runs on a custom Core Image/Metal video compositor I wrote after Apple's standard export path turned out to be broken."
     },
     {
-      "id": "p75",
+      "id": "p74",
       "title": "Nik",
       "heading": "What it is",
       "url": "https://farazian.com/work/nik/",
       "text": "A short-form video templating app in the CapCut mold: browse a template, let it auto-fill from your camera roll, add text and on-device auto-captions, and export a 9:16 cut for TikTok, Reels, or Shorts. SwiftUI + AVFoundation, iOS 17+, and zero third-party dependencies — every hard part is built, not imported."
     },
     {
-      "id": "p76",
+      "id": "p75",
       "title": "Nik",
       "heading": "The engineering",
       "url": "https://farazian.com/work/nik/",
       "text": "A compositor, because Apple's was broken: Apple's standard AVVideoCompositionCoreAnimationTool export path crashes in the iOS 26 Simulator. Rather than route around it, I wrote a custom AVVideoCompositing compositor on Core Image with a Metal-backed CIContext — which also unlocked filters and true crossfades the standard path never supported. On-device smart crop: Vision samples three frames per template slot and runs face detection + saliency (faces weighted 3×) to choose the 9:16 pan point — with a user override and a centered fallback when it isn't confident. Exports you can verify: A Maestro end-to-end flow drives launch → pick template → fill four slots → export → share, and the output is checked with ffprobe as a valid 1080×1920 H.264/AAC MP4. The test asserts the artifact, not the UI. Shipping surface, pre-ship: StoreKit 2 subscriptions wired with real product IDs, on-device SFSpeechRecognizer captions, and a competitive teardown of 12+ apps done before a line of code — which set product rules like “never gate a completed export.”"
     },
     {
-      "id": "p77",
+      "id": "p76",
       "title": "Nik",
       "heading": "The bug I'm proudest of finding",
       "url": "https://farazian.com/work/nik/",
       "text": "Exports were failing with cryptic -11800 / -12780 OSStatus codes. The root cause: a two-pass build was deallocating source AVURLAssets too early — the asset was gone by the time the second pass read from it. Fixed by explicitly retaining the source assets in SlotInfo. Chasing a lifetime bug through an opaque Apple error code is the kind of debugging that doesn't show up in a feature list."
     },
     {
-      "id": "p78",
+      "id": "p77",
       "title": "Nik",
       "heading": "Status",
       "url": "https://farazian.com/work/nik/",
       "text": "Prototype / early v2 — 27 Swift files, ~5,100 lines. StoreKit pricing is wired, but it is not on the App Store. I'm showing it for the compositor and the Vision crop, not as a shipped product."
     },
     {
-      "id": "p79",
+      "id": "p78",
       "title": "BigUps",
       "heading": "Overview",
       "url": "https://farazian.com/work/bigups/",
       "text": "BigUps (AI / ML, 2026). One topic string in, a fully narrated and captioned video out. A Python pipeline that orchestrates three different AI providers — an LLM for the script, Flux-Pro for the images, ElevenLabs for the voice — and assembles the result."
     },
     {
-      "id": "p80",
+      "id": "p79",
       "title": "BigUps",
       "heading": "What it does",
       "url": "https://farazian.com/work/bigups/",
       "text": "One command takes a topic and returns a finished video. Under the hood it chains four AI stages: an LLM (Claude / GPT) writes the script, Flux-Pro on Replicate generates a scene image per beat, ElevenLabs narrates it, and the pipeline generates captions and assembles the cut. A verified run produced 18 scene images, 18 voice clips, a caption track, and the final MP4."
     },
     {
-      "id": "p81",
+      "id": "p80",
       "title": "BigUps",
       "heading": "The orchestration problem",
       "url": "https://farazian.com/work/bigups/",
       "text": "Three vendors, one run: Each provider has different latency, rate limits, and failure modes. The pipeline sequences them into a single command and keeps partial work when one stage misbehaves. Parallel where it pays: Image and voice generation are independent and both slow, so they run concurrently on a ThreadPoolExecutor instead of serially. Timed off measured reality: The subtle one: captions and final assembly are timed from the *actual* duration of the generated audio, not a pre-estimate. TTS clip lengths are unpredictable — assume them and the whole video drifts out of sync. Ten modules: script_gen · image_gen · voiceover · captions · video_assembly · pipeline · cli — packaged as an installable CLI."
     },
     {
-      "id": "p82",
+      "id": "p81",
       "title": "BigUps",
       "heading": "Honest about BigUps",
       "url": "https://farazian.com/work/bigups/",
       "text": "This is a working personal prototype, not a shipped product: it never left single-topic testing and it isn't under version control. I'm including it because the interesting engineering isn't the video — it's making a downstream stage (captioning) depend on the real output of an upstream one (audio duration) rather than an assumption, across three vendors that each fail differently."
     },
     {
-      "id": "p83",
+      "id": "p82",
       "title": "Wax",
       "heading": "Overview",
       "url": "https://farazian.com/work/wax/",
       "text": "Wax (Software, 2025). Silence the noise. Keep the connection. A calm, fast Instagram experience without the Reels rabbit hole — named for the beeswax Odysseus' crew used to drown out the Sirens' song. Keep the feed, stories, and DMs you love; lose the algorithmic pull."
     },
     {
-      "id": "p84",
+      "id": "p83",
       "title": "Wax",
       "heading": "Why Wax",
       "url": "https://farazian.com/work/wax/",
       "text": "Speed: Virtualized feeds, on-device caching, image prefetch, and optimistic UI for 60fps scrolling. Fairness: Every “use Instagram normally” feature is free, forever — no paywalls on the basics. Craft: Instagram-1:1 inside, wrapped in a calm honey-and-wax brand at the edges."
     },
     {
-      "id": "p85",
+      "id": "p84",
       "title": "Wax",
       "heading": "Architecture",
       "url": "https://farazian.com/work/wax/",
       "text": "The UI talks only to a single SocialProvider interface, and the active backend is chosen in one file — so Wax can swap data sources (mock → IG private API → Graph API → a Wax-native network) without rewriting the app. Built on Expo Router, Shopify FlashList, TanStack Query, and expo-image; session tokens stay on-device via expo-secure-store."
     },
     {
-      "id": "p86",
+      "id": "p85",
       "title": "Emotion Translation with Transformers",
       "heading": "Overview",
       "url": "https://farazian.com/work/emotion-translation/",
       "text": "Emotion Translation with Transformers (AI / ML, 2024). Rewrite the emotion of a sentence without changing what it says. A study in controllable generation — and in how tangled sentiment and semantics really are."
     },
     {
-      "id": "p87",
+      "id": "p86",
       "title": "Emotion Translation with Transformers",
       "heading": "The problem",
       "url": "https://farazian.com/work/emotion-translation/",
       "text": "Take a neutral sentence — “The meeting is at 3pm.” — and re-render it as joyful, angry, or melancholic, while keeping the fact intact. It sounds like style transfer, but it isn't: sentiment and semantics are entangled. Push the emotion too hard and the model starts inventing content (“the meeting I've been dreading all week”); hold the meaning too tightly and the emotion never lands. The interesting work is the tension between those two failure modes."
     },
     {
-      "id": "p88",
+      "id": "p87",
       "title": "Emotion Translation with Transformers",
       "heading": "The approach",
       "url": "https://farazian.com/work/emotion-translation/",
       "text": "Three architectures: GPT-2 (decoder-only), BART, and T5 (encoder-decoder) — chosen to compare how the architecture itself shapes the meaning-preservation trade-off. Three regimes: Zero-shot, few-shot, and supervised fine-tuning across all three, so the gain from actually training could be separated from what prompting alone buys. The dual objective: An output only counts if it hits the target emotion AND preserves the source's factual content — success on one axis alone is a failure."
     },
     {
-      "id": "p89",
+      "id": "p88",
       "title": "Emotion Translation with Transformers",
       "heading": "Why it stuck with me",
       "url": "https://farazian.com/work/emotion-translation/",
       "text": "This was a graduate coursework project at USC, and it's the earliest version of the question I still work on: how do you make a language model do the thing you asked, and only the thing you asked? Emotion translation is that question in miniature — the model must change one dimension and hold everything else still. The production version of the same instinct is Honest, where an eval harness checks that a model's answer stayed grounded in the facts it was given."
     },
     {
-      "id": "p90",
+      "id": "p89",
       "title": "StudyBuddy",
       "heading": "Overview",
       "url": "https://farazian.com/work/studybuddy/",
       "text": "StudyBuddy (Web, 2025). A tutoring and mentoring marketplace for USC students — matching, scheduling, payments, and a live pull of the real USC course catalog. I was CTO and led a 5-person team."
     },
     {
-      "id": "p91",
+      "id": "p90",
       "title": "StudyBuddy",
       "heading": "What it is",
       "url": "https://farazian.com/work/studybuddy/",
       "text": "Finding help on campus was a group-chat scavenger hunt. StudyBuddy made it a marketplace: students post what they're stuck on, tutors get matched to it, and the whole loop — booking, scheduling, the session itself, and payment — happens in one place."
     },
     {
-      "id": "p92",
+      "id": "p91",
       "title": "StudyBuddy",
       "heading": "What got built",
       "url": "https://farazian.com/work/studybuddy/",
       "text": "Booking & scheduling: Availability, session booking, and calendar flow for both sides of the marketplace. Payments: Stripe Connect — tutors onboard as connected accounts and get paid out automatically. Sessions: Zoom integration that provisions a meeting per booking, so nobody trades links. Roles & trust: Tutor / student / admin roles, plus reviews, badges, and analytics. Comms: In-app messaging, notifications, and a referral system. USC course importer: An edge function that pulls the real USC course catalog, so tutors and requests attach to actual courses rather than free-text guesses."
     },
     {
-      "id": "p93",
+      "id": "p92",
       "title": "StudyBuddy",
       "heading": "Under the hood",
       "url": "https://farazian.com/work/studybuddy/",
       "text": "React + TypeScript (Vite, Tailwind, shadcn/ui) on Supabase — Postgres, Auth, Storage, and Deno edge functions. The shape of it: 394 TypeScript source files, 86 SQL migrations, and 39 edge functions. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster."
     },
     {
-      "id": "p94",
+      "id": "p93",
       "title": "StudyBuddy",
       "heading": "How it ended",
       "url": "https://farazian.com/work/studybuddy/",
       "text": "Built, functional, and wound down in 2025 — the team moved on and I went full-time on Parkzy. I'm not going to dress that up: the product worked, and the business didn't. What it did give me was the first end-to-end marketplace I'd ever architected — two-sided matching, payments, scheduling — which is exactly the shape of the thing I build now."
     },
     {
-      "id": "p95",
+      "id": "p94",
       "title": "Canvas Year in Review",
       "heading": "Overview",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "Canvas Year in Review (Web, 2021). A Spotify-Wrapped for school — a browser extension that turns your Canvas account into a color-coded semester recap. Winner of the Secret Prize at CruzHacks 2021."
     },
     {
-      "id": "p96",
+      "id": "p95",
       "title": "Canvas Year in Review",
       "heading": "Recognition",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "Canvas Year in Review won: Secret Prize — Wildest Idea — CruzHacks 2021."
     },
     {
-      "id": "p97",
+      "id": "p96",
       "title": "Canvas Year in Review",
       "heading": "Inspiration",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "Built mid-pandemic, when every class had been forced online — most of them through Canvas, the platform universities use to centralize courses, assignments, and grades. All that data was just sitting there. We turned it into a recap."
     },
     {
-      "id": "p98",
+      "id": "p97",
       "title": "Canvas Year in Review",
       "heading": "What It Does",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "Canvas Year in Review analyzes every assignment submission in your account and generates the semester's stats — then presents them in a dashboard where each metric is color-coded green, yellow, or red so you can gauge your performance at a glance."
     },
     {
-      "id": "p99",
+      "id": "p98",
       "title": "Canvas Year in Review",
       "heading": "The Report",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "Assignments & submissions: Total assignments assigned vs. how many you actually submitted. Late & missing: Every deadline you slipped past — and the ones that never got anything at all. Rush submissions: Assignments turned in less than 30 minutes before the due date. The panic metric. Grade averages: Average grades across assignments and across all courses."
     },
     {
-      "id": "p100",
+      "id": "p99",
       "title": "Canvas Year in Review",
       "heading": "How We Built It",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "JavaScript on the WebExtensions framework, with the UI in HTML/CSS styled with Bulma. The extension talks to the Canvas API to fetch courses and assignments, then runs all the analytics locally — your data never leaves the browser.It was our first browser extension, and the first hackathon project we both finished and were proud to look at — my corner of it was the CSS and debugging support."
     },
     {
-      "id": "p101",
+      "id": "p100",
       "title": "Canvas Year in Review",
       "heading": "What's Next",
       "url": "https://farazian.com/work/canvas-year-in-review/",
       "text": "Custom time periods to snapshot, including or excluding specific courses, and sharing your year-in-review as an image on social media — Wrapped all the way."
     },
     {
-      "id": "p102",
+      "id": "p101",
       "title": "Snake",
       "heading": "Overview",
       "url": "https://farazian.com/work/snake/",
       "text": "Snake (Games, 2024). The arcade classic, rebuilt — and playable right here. Eat, grow, and don't bite yourself."
     },
     {
-      "id": "p103",
+      "id": "p102",
       "title": "Snake",
       "heading": "Overview",
       "url": "https://farazian.com/work/snake/",
       "text": "An implementation of the arcade classic — grid movement, a growing tail, self-collision, and the one rule everyone knows. Not really much else to say. Sometimes you build a thing just because it's satisfying to build."
     },
     {
-      "id": "p104",
+      "id": "p103",
       "title": "How I Build With AI",
       "heading": "Overview",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "How I Build With AI (Writing, 2026). The question every interview asks now: how do you actually use AI in your work? Here's the real answer — the loop, the judgment, and the verification system that makes AI-accelerated development fast without making it sloppy."
     },
     {
-      "id": "p105",
+      "id": "p104",
       "title": "How I Build With AI",
       "heading": "The honest version",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "There are two bad answers to “how do you use AI to build?” One is “I don't” — which in 2026 means leaving a force multiplier on the table. The other is “I let it write everything” — which means shipping code you don't understand. I do neither. I treat AI as the fastest junior engineer I've ever worked with: tireless, occasionally brilliant, occasionally confidently wrong — and never the one accountable for what merges. That's still me."
     },
     {
-      "id": "p106",
+      "id": "p105",
       "title": "How I Build With AI",
       "heading": "The proof",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "I built Parkzy — a live App Store marketplace (5.0★, 1,000+ downloads) — end to end as sole engineer: ~3,600 commits in 10 months, 392 database migrations, 163 serverless edge functions, with production LLM features. I built Gosan, a native macOS DAW, in about ten days. That velocity is impossible the old way — and reckless the naive way. The entire difference between the two is the system around the speed."
     },
     {
-      "id": "p107",
+      "id": "p106",
       "title": "How I Build With AI",
       "heading": "What I delegate, what I own",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "I work in a tight plan → generate → verify loop. I own every part that needs judgment: the architecture, the data model, what the product should even do, and the review of every line before it lands. I hand off the parts that are mechanical or fully specified — boilerplate, migrations, test scaffolding, wide refactors, the first draft of a function. I never merge code I haven't read and understood. The AI writes fast; I decide what's correct."
     },
     {
-      "id": "p108",
+      "id": "p107",
       "title": "How I Build With AI",
       "heading": "Velocity without verification is just faster bugs",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "This is the part most people skip, and it's the whole game. Speed only compounds if it's safe. So every change runs a gauntlet: Playwright end-to-end tests, Vitest, and Deno suites in CI; Sentry for what escapes into production; PostHog to check that a feature actually helped a real user. And a human reviews every merge. The tests aren't bolted on at the end — they're what lets me move this fast without breaking what's live. AI-accelerated, not AI-sloppy."
     },
     {
-      "id": "p109",
+      "id": "p108",
       "title": "How I Build With AI",
       "heading": "I don't just use AI — I build with it",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "The tools are one layer; the interesting work is a level up. I write agentic workflows — Claude Code automations that audit a codebase, check migrations for drift, and gate releases — so my own process improves itself. It's the same muscle I'd bring to building agentic features and automations for a client: not prompting a chatbot, but engineering a system that reasons and acts, with guardrails."
     },
     {
-      "id": "p110",
+      "id": "p109",
       "title": "How I Build With AI",
       "heading": "Why this is the job now",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
       "text": "The multiplier was never “AI writes my code.” It's judgment about what to hand off, the discipline to verify everything, and the taste to know when the machine is wrong — applied at several times the old speed. That's senior engineering in 2026, and it's exactly what I do for teams. If that's the kind of engineer you're looking for, let's talk."
     },
     {
-      "id": "p111",
+      "id": "p110",
       "title": "How Machines Learn to Discriminate",
       "heading": "Overview",
       "url": "https://farazian.com/work/how-machines-learn/",
       "text": "How Machines Learn to Discriminate (Writing, 2024). Embedding fairness into machine-learning algorithms — how models trained on real-world data automate existing bias along race and sex, even absent any ill intent. And what it takes to push back."
     },
     {
-      "id": "p112",
+      "id": "p111",
       "title": "How Machines Learn to Discriminate",
       "heading": "The Thesis",
       "url": "https://farazian.com/work/how-machines-learn/",
       "text": "Nobody has to design a discriminatory algorithm. Inspired by Professor Lise Getoor's Ethics & Algorithms course and Ruha Benjamin's The New Jim Code, this talk shows how models trained on past real-world data tend to automate — and amplify — existing discrimination on the basis of race and sex. Bias doesn't have to be written in; it's inherited from the data we feed the machine."
     },
     {
-      "id": "p113",
+      "id": "p112",
       "title": "How Machines Learn to Discriminate",
       "heading": "Correcting Bias in the Process",
       "url": "https://farazian.com/work/how-machines-learn/",
       "text": "Pre-Processing: Detect and remove bias in the data where possible, add corrective sampling, and embed features carefully before training ever starts. Processing: Evaluate the model's rankings for bias while it works — and search for inference: is it reconstructing protected attributes from proxies? Post-Processing: Examine causal relations in the outputs and verify results for the accuracy-versus-fairness trade-off before anything ships. Question Your Own Bias: The people building the pipeline are part of the pipeline. Fairness constraints in the algorithm can't compensate for never asking the question."
     },
     {
-      "id": "p114",
+      "id": "p113",
       "title": "How Machines Learn to Discriminate",
       "heading": "The Takeaway",
       "url": "https://farazian.com/work/how-machines-learn/",
       "text": "There is no one correct way to define fairness. Equal treatment and equal outcome are both principled — and, as the playground above shows, they can be mutually exclusive on biased data. The choice between them is not a technical decision; it's an ethical one. The danger isn't choosing wrong — it's letting the data choose by default.ReferencesKayser-Bril, N. (2020). Google apologizes after its Vision AI produced racist results. AlgorithmWatch.MobilizeGreen (2021). Environmental equity vs. environmental justice.Fu, R., Aseri, M., Singh, P. V., & Srinivasan, K. (2021). “Un”Fair Machine Learning Algorithms. Management Science."
     },
     {
-      "id": "p115",
+      "id": "p114",
       "title": "Milad Farazian",
       "heading": "Profile",
       "url": "https://farazian.com/",
       "text": "Milad Farazian is a full-stack software engineer with AI depth, based in Los Angeles, CA. Full-stack software engineer with AI depth — production systems end-to-end: payments, real-time, and LLM features. Actively interviewing for full-time software engineering roles (full-stack & AI). A small freelance side lane (advisory, automation & agents, AI features) runs alongside the search. Email: miladfarazian@gmail.com. GitHub: github.com/MiladFarazian. Resume PDF: https://farazian.com/Milad_Farazian_Resume.pdf. Book an intro call: https://cal.com/milad-farazian/15min."
     },
     {
-      "id": "p116",
+      "id": "p115",
       "title": "Stack",
       "heading": "Languages",
       "url": "https://farazian.com/#stack",
       "text": "Milad's Languages stack and skills: TypeScript, Python, Swift / SwiftUI, C++, Java, SQL."
     },
     {
-      "id": "p117",
+      "id": "p116",
       "title": "Stack",
       "heading": "AI / ML",
       "url": "https://farazian.com/#stack",
       "text": "Milad's AI / ML stack and skills: LLM APIs (Anthropic · OpenAI), RAG · pgvector · embeddings, LLM evals · guardrails, MCP · agentic tooling, PyTorch · Hugging Face, scikit-learn."
     },
     {
-      "id": "p118",
+      "id": "p117",
       "title": "Stack",
       "heading": "Web & Mobile",
       "url": "https://farazian.com/#stack",
       "text": "Milad's Web & Mobile stack and skills: React, React Native · Expo, Next.js, Node.js · FastAPI, Capacitor (iOS · Android), Tailwind."
     },
     {
-      "id": "p119",
+      "id": "p118",
       "title": "Stack",
       "heading": "Cloud & Data",
       "url": "https://farazian.com/#stack",
       "text": "Milad's Cloud & Data stack and skills: Postgres · Supabase, AWS (RDS · Lambda), Terraform, Docker, Stripe Connect · Identity, Mapbox GL."
     },
     {
-      "id": "p120",
+      "id": "p119",
       "title": "Stack",
       "heading": "Reliability",
       "url": "https://farazian.com/#stack",
       "text": "Milad's Reliability stack and skills: GitHub Actions CI, Playwright · Vitest, Sentry, PostHog."
     },
     {
-      "id": "p121",
+      "id": "p120",
       "title": "Stack",
       "heading": "Graphics & Media",
       "url": "https://farazian.com/#stack",
       "text": "Milad's Graphics & Media stack and skills: Three.js, WebGL · WebGPU, GLSL · Metal, CoreAudio."
     },
     {
-      "id": "p122",
+      "id": "p121",
       "title": "Hire Milad",
       "heading": "Fractional AI / Engineering Advisor",
       "url": "https://farazian.com/hire/",
       "text": "Freelance service — Fractional AI / Engineering Advisor (from $1,500/mo): Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Retainer or per-session. Includes: Working calls + async review (Slack/email); Architecture, model choice, build-vs-buy; Code & AI reviews on your real repo; Also available per-session — from $250 / 90 min. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
-      "id": "p123",
+      "id": "p122",
       "title": "Hire Milad",
       "heading": "Automation & AI Agents",
       "url": "https://farazian.com/hire/",
       "text": "Freelance service — Automation & AI Agents (from $1,500): Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Includes: One scoped automation or agent, shipped; Runs in your stack — no lock-in; Docs + a handoff walkthrough; Typical turnaround: 1–2 weeks. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
-      "id": "p124",
+      "id": "p123",
       "title": "Hire Milad",
       "heading": "AI Features Into Your Product",
       "url": "https://farazian.com/hire/",
       "text": "Freelance service — AI Features Into Your Product (from $3,000): Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Includes: Design, build, and ship one AI feature; RAG / embeddings / function-calling as needed; Evals + guardrails so it survives real users; Integrated into your codebase, tested. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
-      "id": "p125",
+      "id": "p124",
       "title": "Hire Milad",
       "heading": "AI / Codebase Audit",
       "url": "https://farazian.com/hire/",
       "text": "Freelance service — AI / Codebase Audit (from $500): A fast, honest review of your codebase or AI setup — where it's fragile, what to fix first, what's worth building. The low-risk way to start. Includes: Deep read of your repo or AI stack; Written report: risks, quick wins, roadmap; A live call to walk through it; Credited toward a larger project if you continue. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
-      "id": "p126",
+      "id": "p125",
       "title": "Resume",
       "heading": "Co-founder & CTO @ Parkzy",
       "url": "https://farazian.com/resume/",
       "text": "Co-founder & CTO at Parkzy (Los Angeles, Sep 2025 – Present): Built Parkzy from zero to a live App Store product (5.0★, 1,000+ downloads) as sole engineer — React 18/TypeScript/Supabase across web and iOS via Capacitor, 392 SQL migrations, 163 serverless edge functions, 3,600+ commits in 10 months Designed the core real-time “ping” matching system — one tap alerts every nearby host, built for sub-60-second accepts — with Mapbox GL geospatial search, dynamic pricing, and Stripe Connect + Stripe Identity payments and ID verification Maintained production quality solo: Playwright E2E, Vitest, and Deno test suites in CI, Sentry error tracking, and PostHog product analytics"
     },
     {
-      "id": "p127",
+      "id": "p126",
       "title": "Resume",
       "heading": "Co-founder & CTO @ StudyBuddy",
       "url": "https://farazian.com/resume/",
       "text": "Co-founder & CTO at StudyBuddy (Los Angeles, Dec 2024 – Aug 2025): Led a 5-person team building a tutoring platform for USC students with scheduling and user profiles (React/TypeScript + Supabase/Postgres) Shipped the platform end to end — 394 TypeScript source files, 86 SQL migrations, and 39 serverless edge functions"
     },
     {
-      "id": "p128",
+      "id": "p127",
       "title": "Resume",
       "heading": "Software Engineer II (Full-Stack) @ Walmart",
       "url": "https://farazian.com/resume/",
       "text": "Software Engineer II (Full-Stack) at Walmart (Sunnyvale, Feb 2022 – May 2023): Built 10+ features for Converse Self Serve, tooling for Walmart's Dialogflow-based conversational-AI platform behind 66M+ AI-assisted customer contacts, alongside the NLP team Integrated push notification API into Last Mile Delivery servers — 4,700 stores reaching 90% of the US — on a 4-person US–India team Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform"
     },
     {
-      "id": "p129",
+      "id": "p128",
       "title": "Resume",
       "heading": "Software Engineer Intern @ Walmart",
       "url": "https://farazian.com/resume/",
       "text": "Software Engineer Intern at Walmart (Sunnyvale, Jun 2021 – Aug 2021): Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); built a CSAT feedback system that collected 6M+ customer ratings by Mar 2022"
     },
     {
-      "id": "p130",
+      "id": "p129",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
       "text": "M.S. Computer Science — Artificial Intelligence, University of Southern California (Los Angeles, Aug 2023 – May 2025): Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence"
     },
     {
-      "id": "p131",
+      "id": "p130",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
       "text": "B.S. Computer Science, Minor in Economics, UC Santa Cruz (Santa Cruz, Sep 2018 – Dec 2021): GPA 3.74 · CruzHacks awards: Secret Prize 2021 — Wildest Idea (Canvas Year in Review) · Best Use of Google Cloud Platform Solution Challenge Coordinator for Google's Developer Student Club"
     },
     {
-      "id": "p132",
+      "id": "p131",
       "title": "The Engine Room",
       "heading": "How this site works",
       "url": "https://farazian.com/engineering/",
       "text": "farazian.com is built with Vite and vanilla TypeScript — no framework — with a Three.js GPGPU particle hero (65,536 particles). It runs on a single-file Cloudflare Worker at the edge with KV storage and one Durable Object; there is no origin server and zero databases on the read path. Content is generated at build time by one generator that emits the human pages, the agent-readable site.json, the retrieval corpus, and the sitemap from a single source. Decision records (ADRs) on the engineering page explain each tradeoff: no framework, content as a build step, a raw JSON-RPC MCP server with no SDK, the guestbook stored in KV metadata, live state on a Durable Object, and zero databases on the read path."
     },
     {
-      "id": "p133",
+      "id": "p132",
       "title": "The Engine Room",
       "heading": "Postmortem: the Instagram boot hang",
       "url": "https://farazian.com/engineering/",
       "text": "A real production postmortem: visitors from Instagram's in-app browser hung on the boot screen at 00 because the in-app WebView killed an API at module scope, taking down the whole bundle including its own safety net. The fix is three independent defense layers: an inline head watchdog that paints the error onto the boot label and force-dismisses the loader at 8 seconds, crash-isolated subsystem inits with typed fallbacks and a render-loop kill-switch, and a pure-CSS keyframes failsafe. All three were verified headless before deploy."
     },
     {
-      "id": "p134",
+      "id": "p133",
       "title": "Status",
       "heading": "Live telemetry",
       "url": "https://farazian.com/status/",

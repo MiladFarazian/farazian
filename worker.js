@@ -714,6 +714,13 @@ export default {
       return Response.redirect(url.toString(), 302);
     }
 
+    // The Parkzy deep dives were briefly standalone pages — they now live as
+    // tabs on the Parkzy page. Old links (search, corpus citations) 301 in.
+    const divesMoved = url.pathname.match(/^\/work\/(ai-company|money-correctness|ping-dispatch|ops-console)\/?$/);
+    if (divesMoved) {
+      return Response.redirect(`${url.origin}/work/parkzy/#tab-${divesMoved[1]}`, 301);
+    }
+
     if (url.pathname === "/api/presence") {
       if (!env.PRESENCE) return json({ error: "Presence offline." }, 503);
       if ((request.headers.get("upgrade") || "").toLowerCase() === "websocket") {
