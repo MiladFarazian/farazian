@@ -103,14 +103,14 @@
       "title": "Parkzy",
       "heading": "Overview",
       "url": "https://farazian.com/work/parkzy/",
-      "text": "Parkzy (Software, 2025). Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 5.0★ rating. My company; built end-to-end."
+      "text": "Parkzy (Software, 2025). Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 4.9★ rating and 2,400+ downloads. My company; built end-to-end."
     },
     {
       "id": "p15",
       "title": "Parkzy",
       "heading": "Recognition",
       "url": "https://farazian.com/work/parkzy/",
-      "text": "Parkzy won: Rated 5.0 on the App Store — live in production — Parkzy: Find Parking Nearby."
+      "text": "Parkzy won: Rated 4.9 on the App Store — live in production — Parkzy: Find Parking Nearby."
     },
     {
       "id": "p16",
@@ -131,7 +131,7 @@
       "title": "Parkzy",
       "heading": "Under the hood",
       "url": "https://farazian.com/work/parkzy/",
-      "text": "The shape of it: 598 TypeScript source files (~184k lines), 392 SQL migrations, and 163 Supabase edge functions — built and operated as sole engineer since Sept 2025. One codebase, three platforms: React 18 + Vite + TypeScript, shipped to web, iOS, and Android through Capacitor 7 — with Capgo for over-the-air updates so a fix doesn't wait on app review. Payments & identity: Stripe Connect for host payouts plus Stripe Identity for ID verification — the trust layer a stranger-parks-in-your-driveway marketplace actually requires. Geospatial search: Mapbox GL with supercluster, so thousands of spots cluster and re-rank smoothly as you pan. Tested, not hoped: 6 Playwright end-to-end specs (guest booking, auth booking, pricing, Safari), Vitest units on the pricing engine, and a Deno test on the edge functions — all gated in GitHub Actions. Data warehouse: A separate dbt + BigQuery stack lands PostHog, Supabase, and Stripe data in one place, so product questions get answered with SQL instead of vibes."
+      "text": "The shape of it: 490 SQL migrations, 163 Supabase edge functions, and 3,989 commits in the first year — built and operated as sole engineer since Sept 2025. One codebase, three platforms: React 18 + Vite + TypeScript, shipped to web, iOS, and Android through Capacitor 7 — with Capgo for over-the-air updates so a fix doesn't wait on app review. Payments & identity: Stripe Connect for host payouts plus Stripe Identity for ID verification — the trust layer a stranger-parks-in-your-driveway marketplace actually requires. Geospatial search: Mapbox GL with supercluster, so thousands of spots cluster and re-rank smoothly as you pan. Tested, not hoped: 6 Playwright end-to-end specs (guest booking, auth booking, pricing, Safari), Vitest units on the pricing engine, and a Deno test on the edge functions — all gated in GitHub Actions. Data warehouse: A separate dbt + BigQuery stack lands PostHog, Supabase, and Stripe data in one place, so product questions get answered with SQL instead of vibes."
     },
     {
       "id": "p19",
@@ -649,7 +649,7 @@
       "title": "StudyBuddy",
       "heading": "Under the hood",
       "url": "https://farazian.com/work/studybuddy/",
-      "text": "React + TypeScript (Vite, Tailwind, shadcn/ui) on Supabase — Postgres, Auth, Storage, and Deno edge functions. The shape of it: 394 TypeScript source files, 86 SQL migrations, and 39 edge functions. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster."
+      "text": "React + TypeScript (Vite, Tailwind, shadcn/ui) on Supabase — Postgres, Auth, Storage, and Deno edge functions, with a GraphQL gateway over Postgres and Stripe Connect: per-request DataLoader batching and depth limits cut a representative nested query from 121 database round trips to 4, constant as the result set grows. University sign-on runs OAuth 2.0 with PKCE, and the app passes WCAG 2.1 AA (screen reader + high zoom, all 7 failing pages fixed). An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster."
     },
     {
       "id": "p93",
@@ -740,7 +740,7 @@
       "title": "How I Build With AI",
       "heading": "The proof",
       "url": "https://farazian.com/work/how-i-build-with-ai/",
-      "text": "I built Parkzy — a live App Store marketplace (5.0★, 1,000+ downloads) — end to end as sole engineer: ~3,600 commits in 10 months, 392 database migrations, 163 serverless edge functions, with production LLM features. I built Gosan, a native macOS DAW, in about ten days. That velocity is impossible the old way — and reckless the naive way. The entire difference between the two is the system around the speed."
+      "text": "I built Parkzy — a live App Store marketplace (4.9★, 2,400+ downloads) — end to end as sole engineer: 3,989 commits in the first year, 490 database migrations, with production LLM features. I built Gosan, a native macOS DAW, in about ten days. That velocity is impossible the old way — and reckless the naive way. The entire difference between the two is the system around the speed."
     },
     {
       "id": "p106",
@@ -831,14 +831,14 @@
       "title": "Stack",
       "heading": "Cloud & Data",
       "url": "https://farazian.com/#stack",
-      "text": "Milad's Cloud & Data stack and skills: Postgres · Supabase, AWS (RDS · Lambda), Terraform, Docker, Stripe Connect · Identity, Mapbox GL."
+      "text": "Milad's Cloud & Data stack and skills: Postgres · Supabase, Kubernetes (Helm · HPA), Kafka, Redis, AWS (RDS · Lambda), Terraform, Docker, dbt · BigQuery, Stripe Connect · Identity, Mapbox GL."
     },
     {
       "id": "p119",
       "title": "Stack",
       "heading": "Reliability",
       "url": "https://farazian.com/#stack",
-      "text": "Milad's Reliability stack and skills: GitHub Actions CI, Playwright · Vitest, Sentry, PostHog."
+      "text": "Milad's Reliability stack and skills: GitHub Actions CI, Playwright · Vitest, Prometheus · Grafana, SLOs · burn-rate alerts, Sentry, PostHog."
     },
     {
       "id": "p120",
@@ -880,42 +880,42 @@
       "title": "Resume",
       "heading": "Co-founder & CTO @ Parkzy",
       "url": "https://farazian.com/resume/",
-      "text": "Co-founder & CTO at Parkzy (Los Angeles, Sep 2025 – Present): Built Parkzy from zero to a live App Store product (5.0★, 1,000+ downloads) as sole engineer — React 18/TypeScript/Supabase across web and iOS via Capacitor, 392 SQL migrations, 163 serverless edge functions, 3,600+ commits in 10 months Designed the core real-time “ping” matching system — one tap alerts every nearby host, built for sub-60-second accepts — with Mapbox GL geospatial search, dynamic pricing, and Stripe Connect + Stripe Identity payments and ID verification Maintained production quality solo: Playwright E2E, Vitest, and Deno test suites in CI, Sentry error tracking, and PostHog product analytics"
+      "text": "Co-founder & CTO at Parkzy (Los Angeles, Sep 2025 – Present): Launched Parkzy from zero to a live App Store product (4.9★, 2,400+ downloads) as sole engineer: React 18/TypeScript/Supabase across web, iOS, and Android via Capacitor, 490 SQL migrations, and 3,989 commits in the first year Designed the real-time 'ping' dispatch system, where one tap fans out to nearby hosts who accept from the lock screen, and lifted acceptance from 16% to 45% while cutting expiry from 70% to 36% through instrumented lifecycle fixes Defined three production SLOs and wired burn-rate alerts into Slack, backed by Prometheus and Grafana dashboards and an on-call runbook, then moved the pricing service onto Kubernetes where an HPA scaled it from 1 to 5 pods under 754 requests per second Assembled an internal-docs RAG pipeline that answers with citations from pgvector retrieval, then measured it against a golden set: 0.97 hit@8 in 47 ms, 0.93 judged faithfulness, and correct refusal on questions the corpus cannot answer"
     },
     {
       "id": "p126",
       "title": "Resume",
       "heading": "Co-founder & CTO @ StudyBuddy",
       "url": "https://farazian.com/resume/",
-      "text": "Co-founder & CTO at StudyBuddy (Los Angeles, Dec 2024 – Aug 2025): Led a 5-person team building a tutoring platform for USC students with scheduling and user profiles (React/TypeScript + Supabase/Postgres) Shipped the platform end to end — 394 TypeScript source files, 86 SQL migrations, and 39 serverless edge functions"
+      "text": "Co-founder & CTO at StudyBuddy (Los Angeles, Dec 2024 – Aug 2025): Led a 5-person team building StudyBuddy, a tutoring marketplace for USC students, on React/TypeScript with a Supabase (Postgres) backend, covering booking and scheduling, Stripe Connect payments, and Zoom-integrated sessions across tutor, student, and admin roles Layered a GraphQL gateway over Postgres and Stripe Connect with per-request DataLoader batching and depth limits, cutting a representative nested query from 121 database round trips to 4, constant as the result set grows Implemented university sign-on on OAuth 2.0 with PKCE plus a scraper that ingested each semester's course catalog, and made it usable with a screen reader and at high zoom (WCAG 2.1 AA), fixing all 7 failing pages"
     },
     {
       "id": "p127",
       "title": "Resume",
       "heading": "Software Engineer II (Full-Stack) @ Walmart",
       "url": "https://farazian.com/resume/",
-      "text": "Software Engineer II (Full-Stack) at Walmart (Sunnyvale, Feb 2022 – May 2023): Built 10+ features for Converse Self Serve, tooling for Walmart's Dialogflow-based conversational-AI platform behind 66M+ AI-assisted customer contacts, alongside the NLP team Integrated push notification API into Last Mile Delivery servers — 4,700 stores reaching 90% of the US — on a 4-person US–India team Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform"
+      "text": "Software Engineer II (Full-Stack) at Walmart (Sunnyvale, Feb 2022 – May 2023): Developed 10+ features for Converse Self Serve, Walmart's Dialogflow conversational-AI platform behind 66M+ AI-assisted customer contacts Collaborated with a 4-person US/India team on a push-notification API for Walmart's Last Mile Delivery servers (4,700 stores, 90% of the US) Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform"
     },
     {
       "id": "p128",
       "title": "Resume",
       "heading": "Software Engineer Intern @ Walmart",
       "url": "https://farazian.com/resume/",
-      "text": "Software Engineer Intern at Walmart (Sunnyvale, Jun 2021 – Aug 2021): Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); built a CSAT feedback system that collected 6M+ customer ratings by Mar 2022"
+      "text": "Software Engineer Intern at Walmart (Sunnyvale, Jun 2021 – Aug 2021): Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022"
     },
     {
       "id": "p129",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
-      "text": "M.S. Computer Science — Artificial Intelligence, University of Southern California (Los Angeles, Aug 2023 – May 2025): Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence"
+      "text": "M.S. Computer Science — Artificial Intelligence, University of Southern California (Los Angeles, Aug 2023 – May 2025): Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence Expat Society · Persian Student Organization · Association for Computing Machinery (ACM)"
     },
     {
       "id": "p130",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
-      "text": "B.S. Computer Science, Minor in Economics, UC Santa Cruz (Santa Cruz, Sep 2018 – Dec 2021): GPA 3.74 · CruzHacks awards: Secret Prize 2021 — Wildest Idea (Canvas Year in Review) · Best Use of Google Cloud Platform Solution Challenge Coordinator for Google's Developer Student Club"
+      "text": "B.S. Computer Science, Minor in Economics, UC Santa Cruz (Santa Cruz, Sep 2018 – Dec 2021): GPA 3.74 · Coursework: Data Structures & Algorithms (C/Java), Artificial Intelligence (Python/SQL) CruzHacks awards: Secret Prize 2021 (Wildest Idea, Canvas Year in Review) · Best Use of Google Cloud Platform Solution Challenge Coordinator for Google's Developer Student Club · Iranian Student Union"
     },
     {
       "id": "p131",

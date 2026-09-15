@@ -1406,3 +1406,16 @@
 .pk-tabs__sub { color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; max-width: 60em; margin: 0 0 0.6rem; }
 .pk-tabs__panel > .proj__section { padding: 1.6rem 0 0; }
 .pk-tabs__panel > .proj__section h2 { font-size: 1.1rem; }
+
+/* Resume: non-linked project card (Azadi) + skill group labels */
+.rs-projects .rs-proj {
+  border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(8, 12, 20, 0.5);
+  padding: 1.1rem 1.2rem; display: grid; gap: 0.45rem; align-content: start;
+}
+.rs-skillgroup { margin-top: 1.1rem; }
+.rs-skillgroup h3 {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint); margin: 0 0 0.6rem;
+}

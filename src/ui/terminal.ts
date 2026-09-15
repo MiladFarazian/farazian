@@ -73,7 +73,7 @@ export function initTerminal(
       print(
         [
           "<span class='accent'>currently…</span>",
-          "  🅿️  shipping <span class='ok'>Parkzy</span> — live on the App Store (5.0★)",
+          "  🅿️  shipping <span class='ok'>Parkzy</span> — live on the App Store (4.9★)",
           "  🤝  taking a few freelance clients → <a href='/hire/'>/hire</a>",
           "  ☕  running on an irresponsible amount of coffee",
         ].join("<br>")

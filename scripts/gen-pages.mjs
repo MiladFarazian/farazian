@@ -362,7 +362,7 @@ const PK_APPCARD = `<section class="proj__section" data-reveal>
           <div class="pk-appcard__body">
             <b>Parkzy: Find Parking Nearby</b>
             <span>Book Spots or Earn From Yours.</span>
-            <div class="pk-appcard__meta"><span class="pk-stars" aria-label="Rated 5.0 out of 5">★★★★★</span> 5.0 · Travel · Free · v2.2</div>
+            <div class="pk-appcard__meta"><span class="pk-stars" aria-label="Rated 4.9 out of 5">★★★★★</span> 4.9 · Travel · Free · v2.2</div>
           </div>
           <a class="btn btn--primary" href="https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" target="_blank" rel="noopener" data-magnetic data-scramble>App Store ↗</a>
         </div>
@@ -408,7 +408,7 @@ const PK_REVIEW = `<section class="proj__section" data-reveal>
         <div class="pk-review">
           <span class="pk-stars pk-stars--lg" aria-hidden="true">★★★★★</span>
           <blockquote>“I listed 12 of my spots on Parkzy and was able to successfully rent out all of them. They earned me <b>$600 in just one night</b> from an event.”</blockquote>
-          <cite>— App Store review, 5.0★ rating</cite>
+          <cite>— five-star App Store review</cite>
         </div>
       </section>`;
 // ---- How Machines Learn to Discriminate: bespoke illustrated sections ----
@@ -807,7 +807,7 @@ export const PAGES = [
     category: "Software",
     year: "2025",
     icon: "pk-icon.png",
-    sub: "Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 5.0★ rating. My company; built end-to-end.",
+    sub: "Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 4.9★ rating and 2,400+ downloads. My company; built end-to-end.",
     meta: "Parkzy, Inc. · useparkzy.com",
     tags: ["React Native", "Supabase", "Stripe", "Maps", "i18n"],
     links: [
@@ -815,7 +815,7 @@ export const PAGES = [
       { label: "Visit useparkzy.com", href: "https://useparkzy.com" },
     ],
     blocks: [
-      { t: "award", badge: "★ 5.0", prize: "Rated 5.0 on the App Store — live in production", lead: "Shipping as", event: "Parkzy: Find Parking Nearby", href: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" },
+      { t: "award", badge: "★ 4.9", prize: "Rated 4.9 on the App Store — live in production", lead: "Shipping as", event: "Parkzy: Find Parking Nearby", href: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" },
       { t: "raw", html: PK_DEMO },
       { t: "raw", html: PK_STEPS },
       { t: "raw", html: PK_REVIEW },
@@ -853,7 +853,7 @@ export const PAGES = [
         t: "features",
         h: "Under the hood",
         items: [
-          { title: "The shape of it", desc: "598 TypeScript source files (~184k lines), 392 SQL migrations, and 163 Supabase edge functions — built and operated as sole engineer since Sept 2025." },
+          { title: "The shape of it", desc: "490 SQL migrations, 163 Supabase edge functions, and 3,989 commits in the first year — built and operated as sole engineer since Sept 2025." },
           { title: "One codebase, three platforms", desc: "React 18 + Vite + TypeScript, shipped to web, iOS, and Android through Capacitor 7 — with Capgo for over-the-air updates so a fix doesn't wait on app review." },
           { title: "Payments & identity", desc: "Stripe Connect for host payouts plus Stripe Identity for ID verification — the trust layer a stranger-parks-in-your-driveway marketplace actually requires." },
           { title: "Geospatial search", desc: "Mapbox GL with supercluster, so thousands of spots cluster and re-rank smoothly as you pan." },
@@ -1233,7 +1233,7 @@ claude mcp add --transport http farazian https://farazian.com/mcp` },
           { title: "USC course importer", desc: "An edge function that pulls the real USC course catalog, so tutors and requests attach to actual courses rather than free-text guesses." },
         ],
       },
-      { t: "text", h: "Under the hood", html: "<p>React + TypeScript (Vite, Tailwind, shadcn/ui) on <strong>Supabase</strong> — Postgres, Auth, Storage, and Deno edge functions. The shape of it: <strong>394 TypeScript source files, 86 SQL migrations, and 39 edge functions</strong>. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster.</p>" },
+      { t: "text", h: "Under the hood", html: "<p>React + TypeScript (Vite, Tailwind, shadcn/ui) on <strong>Supabase</strong> — Postgres, Auth, Storage, and Deno edge functions, with a <strong>GraphQL gateway</strong> over Postgres and Stripe Connect: per-request DataLoader batching and depth limits cut a representative nested query from 121 database round trips to 4, constant as the result set grows. University sign-on runs OAuth 2.0 with PKCE, and the app passes WCAG 2.1 AA (screen reader + high zoom, all 7 failing pages fixed). An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster.</p>" },
       { t: "text", h: "How it ended", html: "<p>Built, functional, and wound down in 2025 — the team moved on and I went full-time on <a href=\"/work/parkzy/\" style=\"color:var(--cyan)\">Parkzy</a>. I'm not going to dress that up: the product worked, and the business didn't. What it did give me was the first end-to-end marketplace I'd ever architected — two-sided matching, payments, scheduling — which is exactly the shape of the thing I build now.</p>" },
     ],
   },
@@ -1293,7 +1293,7 @@ claude mcp add --transport http farazian https://farazian.com/mcp` },
     links: [{ label: "Work with me", href: "/hire/", internal: true }],
     blocks: [
       { t: "text", h: "The honest version", html: "<p>There are two bad answers to “how do you use AI to build?” One is “I don't” — which in 2026 means leaving a force multiplier on the table. The other is “I let it write everything” — which means shipping code you don't understand. I do neither. I treat AI as the fastest junior engineer I've ever worked with: tireless, occasionally brilliant, occasionally confidently wrong — and never the one accountable for what merges. That's still me.</p>" },
-      { t: "text", h: "The proof", html: "<p>I built <a href=\"/work/parkzy/\" style=\"color:var(--cyan)\">Parkzy</a> — a live App Store marketplace (5.0★, 1,000+ downloads) — end to end as sole engineer: <strong>~3,600 commits in 10 months, 392 database migrations, 163 serverless edge functions</strong>, with production LLM features. I built <a href=\"/work/gosan/\" style=\"color:var(--cyan)\">Gosan</a>, a native macOS DAW, in about ten days. That velocity is impossible the old way — and <em>reckless</em> the naive way. The entire difference between the two is the system around the speed.</p>" },
+      { t: "text", h: "The proof", html: "<p>I built <a href=\"/work/parkzy/\" style=\"color:var(--cyan)\">Parkzy</a> — a live App Store marketplace (4.9★, 2,400+ downloads) — end to end as sole engineer: <strong>3,989 commits in the first year, 490 database migrations</strong>, with production LLM features. I built <a href=\"/work/gosan/\" style=\"color:var(--cyan)\">Gosan</a>, a native macOS DAW, in about ten days. That velocity is impossible the old way — and <em>reckless</em> the naive way. The entire difference between the two is the system around the speed.</p>" },
       { t: "text", h: "What I delegate, what I own", html: "<p>I work in a tight <strong>plan → generate → verify</strong> loop. I own every part that needs judgment: the architecture, the data model, what the product should even do, and the review of every line before it lands. I hand off the parts that are mechanical or fully specified — boilerplate, migrations, test scaffolding, wide refactors, the first draft of a function. I never merge code I haven't read and understood. The AI writes fast; I decide what's correct.</p>" },
       { t: "text", h: "Velocity without verification is just faster bugs", html: "<p>This is the part most people skip, and it's the whole game. Speed only compounds if it's safe. So every change runs a gauntlet: <strong>Playwright end-to-end tests, Vitest, and Deno suites in CI</strong>; <strong>Sentry</strong> for what escapes into production; <strong>PostHog</strong> to check that a feature actually helped a real user. And a human reviews every merge. The tests aren't bolted on at the end — they're what lets me move this fast without breaking what's live. AI-accelerated, not AI-sloppy.</p>" },
       { t: "text", h: "I don't just use AI — I build with it", html: "<p>The tools are one layer; the interesting work is a level up. I write <strong>agentic workflows</strong> — Claude Code automations that audit a codebase, check migrations for drift, and gate releases — so my own process improves itself. It's the same muscle I'd bring to building agentic features and automations for a client: not prompting a chatbot, but engineering a system that reasons and acts, with guardrails.</p>" },
@@ -1341,47 +1341,59 @@ const rsJob = (role, org, where, when, bullets) =>
 
 // Single source for resume entries — rendered on /resume AND flattened into
 // the /api/ask corpus so questions like "what did he do at Walmart?" ground.
+// Synced to the 2026-09-14 base resume (azadi/resumes/base/content.json) —
+// bullets are VERBATIM from the base so recruiters cross-checking the PDF
+// find an exact match. Site keeps "Co-founder & CTO" (the PDF prints "Lead
+// Full-Stack Software Engineer & CTO" only for ATS parsers).
 const RESUME_JOBS = [
   {
     role: "Co-founder & CTO", org: "Parkzy", where: "Los Angeles", when: "Sep 2025 – Present",
     bullets: [
-      "Built Parkzy from zero to a live App Store product (5.0★, 1,000+ downloads) as sole engineer — React 18/TypeScript/Supabase across web and iOS via Capacitor, 392 SQL migrations, 163 serverless edge functions, 3,600+ commits in 10 months",
-      "Designed the core real-time “ping” matching system — one tap alerts every nearby host, built for sub-60-second accepts — with Mapbox GL geospatial search, dynamic pricing, and Stripe Connect + Stripe Identity payments and ID verification",
-      "Maintained production quality solo: Playwright E2E, Vitest, and Deno test suites in CI, Sentry error tracking, and PostHog product analytics",
+      "Launched Parkzy from zero to a live App Store product (4.9★, 2,400+ downloads) as sole engineer: React 18/TypeScript/Supabase across web, iOS, and Android via Capacitor, 490 SQL migrations, and 3,989 commits in the first year",
+      "Designed the real-time 'ping' dispatch system, where one tap fans out to nearby hosts who accept from the lock screen, and lifted acceptance from 16% to 45% while cutting expiry from 70% to 36% through instrumented lifecycle fixes",
+      "Defined three production SLOs and wired burn-rate alerts into Slack, backed by Prometheus and Grafana dashboards and an on-call runbook, then moved the pricing service onto Kubernetes where an HPA scaled it from 1 to 5 pods under 754 requests per second",
+      "Assembled an internal-docs RAG pipeline that answers with citations from pgvector retrieval, then measured it against a golden set: 0.97 hit@8 in 47 ms, 0.93 judged faithfulness, and correct refusal on questions the corpus cannot answer",
     ],
   },
   {
     role: "Co-founder & CTO", org: "StudyBuddy", where: "Los Angeles", when: "Dec 2024 – Aug 2025",
     bullets: [
-      "Led a 5-person team building a tutoring platform for USC students with scheduling and user profiles (React/TypeScript + Supabase/Postgres)",
-      "Shipped the platform end to end — 394 TypeScript source files, 86 SQL migrations, and 39 serverless edge functions",
+      "Led a 5-person team building StudyBuddy, a tutoring marketplace for USC students, on React/TypeScript with a Supabase (Postgres) backend, covering booking and scheduling, Stripe Connect payments, and Zoom-integrated sessions across tutor, student, and admin roles",
+      "Layered a GraphQL gateway over Postgres and Stripe Connect with per-request DataLoader batching and depth limits, cutting a representative nested query from 121 database round trips to 4, constant as the result set grows",
+      "Implemented university sign-on on OAuth 2.0 with PKCE plus a scraper that ingested each semester's course catalog, and made it usable with a screen reader and at high zoom (WCAG 2.1 AA), fixing all 7 failing pages",
     ],
   },
   {
     role: "Software Engineer II (Full-Stack)", org: "Walmart", where: "Sunnyvale", when: "Feb 2022 – May 2023",
     bullets: [
-      "Built 10+ features for Converse Self Serve, tooling for Walmart's Dialogflow-based conversational-AI platform behind 66M+ AI-assisted customer contacts, alongside the NLP team",
-      "Integrated push notification API into Last Mile Delivery servers — 4,700 stores reaching 90% of the US — on a 4-person US–India team",
+      "Developed 10+ features for Converse Self Serve, Walmart's Dialogflow conversational-AI platform behind 66M+ AI-assisted customer contacts",
+      "Collaborated with a 4-person US/India team on a push-notification API for Walmart's Last Mile Delivery servers (4,700 stores, 90% of the US)",
       "Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform",
     ],
   },
   {
+    // The CSAT 6M+ figure lives here (where the system was built), and only
+    // here — the base puts it under SWE II, but it must appear exactly once.
     role: "Software Engineer Intern", org: "Walmart", where: "Sunnyvale", when: "Jun 2021 – Aug 2021",
     bullets: [
-      "Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); built a CSAT feedback system that collected 6M+ customer ratings by Mar 2022",
+      "Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022",
     ],
   },
 ];
 const RESUME_EDU = [
   {
     role: "M.S. Computer Science — Artificial Intelligence", org: "University of Southern California", where: "Los Angeles", when: "Aug 2023 – May 2025",
-    bullets: ["Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence"],
+    bullets: [
+      "Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence",
+      "Expat Society · Persian Student Organization · Association for Computing Machinery (ACM)",
+    ],
   },
   {
     role: "B.S. Computer Science, Minor in Economics", org: "UC Santa Cruz", where: "Santa Cruz", when: "Sep 2018 – Dec 2021",
     bullets: [
-      "GPA 3.74 · CruzHacks awards: Secret Prize 2021 — Wildest Idea (Canvas Year in Review) · Best Use of Google Cloud Platform",
-      "Solution Challenge Coordinator for Google's Developer Student Club",
+      "GPA 3.74 · Coursework: Data Structures & Algorithms (C/Java), Artificial Intelligence (Python/SQL)",
+      "CruzHacks awards: Secret Prize 2021 (Wildest Idea, Canvas Year in Review) · Best Use of Google Cloud Platform",
+      "Solution Challenge Coordinator for Google's Developer Student Club · Iranian Student Union",
     ],
   },
 ];
@@ -1420,7 +1432,7 @@ const RESUME_HTML = `<!doctype html>
       <section class="proj__hero">
         <p class="proj__eyebrow" data-reveal>resume</p>
         <h1 class="proj__title" data-reveal>Milad Farazian</h1>
-        <p class="proj__sub" data-reveal>Full-stack software engineer with AI depth: built Parkzy, a live peer-to-peer parking marketplace (App Store, 5.0★, 1,000+ downloads), end to end as sole engineer — payments, AWS infrastructure, production LLM features. Ex-Walmart SWE II; USC M.S. in Computer Science (AI).</p>
+        <p class="proj__sub" data-reveal>Full-stack software engineer with AI depth: built Parkzy, a live peer-to-peer parking marketplace (App Store, 4.9★, 2,400+ downloads), end to end as sole engineer — payments, real-time dispatch, production LLM features. Ex-Walmart SWE II; USC M.S. in Computer Science (AI).</p>
         <div class="proj__links" data-reveal>
           <a class="btn btn--primary" href="/Milad_Farazian_Resume.pdf" data-magnetic data-scramble>Download PDF ↓</a>
           <a class="btn btn--ghost" href="mailto:miladfarazian@gmail.com" data-magnetic data-scramble>Email me</a>
@@ -1434,9 +1446,9 @@ const RESUME_HTML = `<!doctype html>
       <section class="proj__section">
         <h2 data-reveal>Projects</h2>
         <div class="rs-projects" data-reveal>
-          <a href="/work/gosan/"><b>Gosan →</b><span>Native macOS DAW with an AI taste engine — ~11,300 LOC in ~10 days. Swift, SwiftUI, AVAudioEngine.</span></a>
-          <a href="/work/mehdi/"><b>Mehdi →</b><span>Plaid-linked financial assistant — a deterministic engine computes every number; the LLM explains only code-verified facts.</span></a>
-          <a href="/work/lincoln/"><b>Lincoln →</b><span>Swipe-based job search — TF-IDF + logistic regression recommender retraining every 20 swipes, plus Claude resume tailoring.</span></a>
+          <div class="rs-proj"><b>Azadi</b><span>Job-pipeline system with a learned ranking model: sweeps 485 organization ATS boards on authoritative posting dates and enforces gates across 660 tracked roles. A pure-stdlib TF-IDF + logistic-regression ranker trained on 618 labeled decisions; a 5-fold cross-validated ablation showed the source board (AUC 0.705) predicts pursuit far better than the fit score (0.548).</span></div>
+          <a href="/work/gosan/"><b>Gosan →</b><span>Native macOS DAW in ~10 days (~11,300 LOC): multitrack recording, MIDI, AudioUnit hosting, mixer, WAV export. A purpose-built benchmark harness profiled the real signal chain and surfaced three latent defects: missing plugin delay compensation shifting tracks 256 samples out of alignment, MIDI a median 5.3 ms late, and a heap allocation in the render callback.</span></a>
+          <a href="/work/mehdi/"><b>Mehdi →</b><span>Plaid-linked financial assistant: a deterministic engine computes every number; the LLM explains only code-verified facts.</span></a>
         </div>
       </section>
       <section class="proj__section">
@@ -1445,9 +1457,15 @@ const RESUME_HTML = `<!doctype html>
       </section>
       <section class="proj__section" data-reveal>
         <h2>Skills</h2>
-        <div class="proj__tags rs-skills">
-          ${["TypeScript", "Python", "React", "Node.js", "Next.js", "Swift / SwiftUI", "Capacitor", "React Native", "LLM APIs (Anthropic, OpenAI)", "pgvector / semantic search", "PyTorch", "Hugging Face", "scikit-learn", "PostgreSQL / Supabase", "AWS", "Terraform", "Docker", "GitHub Actions", "Stripe Connect + Identity"].map((t) => `<span class="tag">${t}</span>`).join("")}
-        </div>
+        ${[
+          { label: "Languages & Frameworks", items: ["TypeScript", "JavaScript", "Python", "React", "Node.js", "Next.js", "Swift/SwiftUI", "Capacitor (iOS/Android)", "React Native"] },
+          { label: "AI / ML", items: ["LLM APIs (Claude/Anthropic, OpenAI)", "RAG (pgvector retrieval, eval harnesses)", "Vector embeddings", "PyTorch", "scikit-learn", "Hugging Face"] },
+          { label: "Infrastructure & Data", items: ["Postgres/Supabase", "Serverless (Deno)", "Kubernetes (Helm, HPA)", "Kafka", "Redis", "AWS (RDS, Lambda, API Gateway)", "Terraform", "Docker", "CI/CD (GitHub Actions)", "Prometheus/Grafana", "Sentry", "PostHog", "dbt/BigQuery", "Stripe Connect + Identity"] },
+        ]
+          .map(
+            (g) => `<div class="rs-skillgroup"><h3>${g.label}</h3><div class="proj__tags rs-skills">${g.items.map((t) => `<span class="tag">${t}</span>`).join("")}</div></div>`
+          )
+          .join("\n        ")}
       </section>
       <footer class="footer">
         <span>© <span id="year">2026</span> Milad Farazian</span>
@@ -1533,7 +1551,7 @@ const HIRE_HTML = `<!doctype html>
         <p class="proj__eyebrow" data-reveal>work with me</p>
         <p class="hire-status" data-reveal><strong>Currently interviewing for full-time engineering roles.</strong> Recruiters and hiring managers: start with the <a href="/resume/">resume</a> — this page is the small freelance side lane that runs alongside that search.</p>
         <h1 class="proj__title" data-reveal>Ship AI features that survive real users.</h1>
-        <p class="proj__sub" data-reveal>I'm a full-stack engineer with real AI depth — I built <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>, a live App Store marketplace (5.0★, 1,000+ downloads), end to end as sole engineer, LLM features and all. Now I take on a few focused engagements at a time: <strong>advisory, automation, and production AI</strong>.</p>
+        <p class="proj__sub" data-reveal>I'm a full-stack engineer with real AI depth — I built <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>, a live App Store marketplace (4.9★, 2,400+ downloads), end to end as sole engineer, LLM features and all. Now I take on a few focused engagements at a time: <strong>advisory, automation, and production AI</strong>.</p>
         <div class="proj__links" data-reveal>
           <a class="btn btn--primary" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call →</a>
           <a class="btn btn--ghost" href="/#work" data-magnetic data-scramble>See the work</a>
@@ -1551,7 +1569,7 @@ const HIRE_HTML = `<!doctype html>
       <section class="proj__section" data-reveal>
         <h2>Why me</h2>
         <div class="hire-proof">
-          <div><b>Shipped, not theoretical</b><span>A live App Store product (5.0★), built solo — 392 migrations, 163 edge functions, production LLM features. I've done this for real.</span></div>
+          <div><b>Shipped, not theoretical</b><span>A live App Store product (4.9★), built solo — 490 migrations, production LLM features. I've done this for real.</span></div>
           <div><b>Fast</b><span>A native macOS DAW in ~10 days; new products from zero on a regular cadence. You'll see progress in days, not months.</span></div>
           <div><b>Verified</b><span>Playwright/Vitest in CI, Sentry, human review of every merge. AI-accelerated, not AI-sloppy.</span></div>
         </div>

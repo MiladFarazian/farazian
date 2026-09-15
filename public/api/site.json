@@ -53,9 +53,13 @@
       "group": "Cloud & Data",
       "items": [
         "Postgres · Supabase",
+        "Kubernetes (Helm · HPA)",
+        "Kafka",
+        "Redis",
         "AWS (RDS · Lambda)",
         "Terraform",
         "Docker",
+        "dbt · BigQuery",
         "Stripe Connect · Identity",
         "Mapbox GL"
       ]
@@ -65,6 +69,8 @@
       "items": [
         "GitHub Actions CI",
         "Playwright · Vitest",
+        "Prometheus · Grafana",
+        "SLOs · burn-rate alerts",
         "Sentry",
         "PostHog"
       ]
@@ -289,7 +295,7 @@
       "title": "Parkzy",
       "category": "Software",
       "year": "2025",
-      "summary": "Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 5.0★ rating. My company; built end-to-end.",
+      "summary": "Driveways, garages, and private lots — booked in seconds from real people in your neighborhood. A peer-to-peer parking marketplace, live on the App Store with a 4.9★ rating and 2,400+ downloads. My company; built end-to-end.",
       "tags": [
         "React Native",
         "Supabase",
@@ -311,7 +317,7 @@
       "sections": [
         {
           "heading": "Recognition",
-          "text": "Rated 5.0 on the App Store — live in production — Parkzy: Find Parking Nearby"
+          "text": "Rated 4.9 on the App Store — live in production — Parkzy: Find Parking Nearby"
         },
         {
           "heading": "For spot hosts",
@@ -352,7 +358,7 @@
           "items": [
             {
               "title": "The shape of it",
-              "desc": "598 TypeScript source files (~184k lines), 392 SQL migrations, and 163 Supabase edge functions — built and operated as sole engineer since Sept 2025."
+              "desc": "490 SQL migrations, 163 Supabase edge functions, and 3,989 commits in the first year — built and operated as sole engineer since Sept 2025."
             },
             {
               "title": "One codebase, three platforms",
@@ -1167,7 +1173,7 @@
         },
         {
           "heading": "Under the hood",
-          "text": "React + TypeScript (Vite, Tailwind, shadcn/ui) on Supabase — Postgres, Auth, Storage, and Deno edge functions. The shape of it: 394 TypeScript source files, 86 SQL migrations, and 39 edge functions. An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster."
+          "text": "React + TypeScript (Vite, Tailwind, shadcn/ui) on Supabase — Postgres, Auth, Storage, and Deno edge functions, with a GraphQL gateway over Postgres and Stripe Connect: per-request DataLoader batching and depth limits cut a representative nested query from 121 database round trips to 4, constant as the result set grows. University sign-on runs OAuth 2.0 with PKCE, and the app passes WCAG 2.1 AA (screen reader + high zoom, all 7 failing pages fixed). An earlier prototype ran on NestJS + Prisma + Postgres before I rebuilt it on Supabase to move faster."
         },
         {
           "heading": "How it ended",
@@ -1286,7 +1292,7 @@
         },
         {
           "heading": "The proof",
-          "text": "I built Parkzy — a live App Store marketplace (5.0★, 1,000+ downloads) — end to end as sole engineer: ~3,600 commits in 10 months, 392 database migrations, 163 serverless edge functions, with production LLM features. I built Gosan, a native macOS DAW, in about ten days. That velocity is impossible the old way — and reckless the naive way. The entire difference between the two is the system around the speed."
+          "text": "I built Parkzy — a live App Store marketplace (4.9★, 2,400+ downloads) — end to end as sole engineer: 3,989 commits in the first year, 490 database migrations, with production LLM features. I built Gosan, a native macOS DAW, in about ten days. That velocity is impossible the old way — and reckless the naive way. The entire difference between the two is the system around the speed."
         },
         {
           "heading": "What I delegate, what I own",

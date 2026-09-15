@@ -21,7 +21,7 @@ export const PROJECTS: Project[] = [
     no: "01",
     title: "Parkzy",
     extra: "interactive",
-    desc: "Airbnb for parking — live on the App Store (5.0★, 1,000+ downloads). Payments, maps, real-time matching, and a production AI suite: semantic search, LLM-explained pricing, AI-graded photos.",
+    desc: "Airbnb for parking — live on the App Store (4.9★, 2,400+ downloads). Payments, maps, real-time matching, and a production AI suite: semantic search, LLM-explained pricing, AI-graded photos.",
     tags: ["React Native", "Supabase", "Stripe", "LLMs"],
     href: "/work/parkzy/",
     category: "Software",
@@ -237,12 +237,12 @@ export const STACK_GROUPS: StackGroup[] = [
   {
     label: "Cloud & Data",
     accent: "blue",
-    items: ["Postgres · Supabase", "AWS (RDS · Lambda)", "Terraform", "Docker", "Stripe Connect · Identity", "Mapbox GL"],
+    items: ["Postgres · Supabase", "Kubernetes (Helm · HPA)", "Kafka", "Redis", "AWS (RDS · Lambda)", "Terraform", "Docker", "dbt · BigQuery", "Stripe Connect · Identity", "Mapbox GL"],
   },
   {
     label: "Reliability",
     accent: "amber",
-    items: ["GitHub Actions CI", "Playwright · Vitest", "Sentry", "PostHog"],
+    items: ["GitHub Actions CI", "Playwright · Vitest", "Prometheus · Grafana", "SLOs · burn-rate alerts", "Sentry", "PostHog"],
   },
   { label: "Graphics & Media", accent: "lime", items: ["Three.js", "WebGL · WebGPU", "GLSL · Metal", "CoreAudio"] },
 ];
