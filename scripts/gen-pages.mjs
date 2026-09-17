@@ -1364,19 +1364,14 @@ const RESUME_JOBS = [
     ],
   },
   {
-    role: "Software Engineer II (Full-Stack)", org: "Walmart", where: "Sunnyvale", when: "Feb 2022 – May 2023",
+    // One consolidated Walmart entry, mirroring the base resume (which now
+    // folds the internship into the SWE II range). CSAT appears exactly once.
+    role: "Software Engineer II (Full-Stack)", org: "Walmart", where: "Sunnyvale", when: "Aug 2021 – May 2023",
     bullets: [
       "Developed 10+ features for Converse Self Serve, Walmart's Dialogflow conversational-AI platform behind 66M+ AI-assisted customer contacts",
       "Collaborated with a 4-person US/India team on a push-notification API for Walmart's Last Mile Delivery servers (4,700 stores, 90% of the US)",
+      "Instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022",
       "Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform",
-    ],
-  },
-  {
-    // The CSAT 6M+ figure lives here (where the system was built), and only
-    // here — the base puts it under SWE II, but it must appear exactly once.
-    role: "Software Engineer Intern", org: "Walmart", where: "Sunnyvale", when: "Jun 2021 – Aug 2021",
-    bullets: [
-      "Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022",
     ],
   },
 ];

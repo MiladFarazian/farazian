@@ -894,45 +894,38 @@
       "title": "Resume",
       "heading": "Software Engineer II (Full-Stack) @ Walmart",
       "url": "https://farazian.com/resume/",
-      "text": "Software Engineer II (Full-Stack) at Walmart (Sunnyvale, Feb 2022 – May 2023): Developed 10+ features for Converse Self Serve, Walmart's Dialogflow conversational-AI platform behind 66M+ AI-assisted customer contacts Collaborated with a 4-person US/India team on a push-notification API for Walmart's Last Mile Delivery servers (4,700 stores, 90% of the US) Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform"
+      "text": "Software Engineer II (Full-Stack) at Walmart (Sunnyvale, Aug 2021 – May 2023): Developed 10+ features for Converse Self Serve, Walmart's Dialogflow conversational-AI platform behind 66M+ AI-assisted customer contacts Collaborated with a 4-person US/India team on a push-notification API for Walmart's Last Mile Delivery servers (4,700 stores, 90% of the US) Instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022 Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform"
     },
     {
       "id": "p128",
-      "title": "Resume",
-      "heading": "Software Engineer Intern @ Walmart",
-      "url": "https://farazian.com/resume/",
-      "text": "Software Engineer Intern at Walmart (Sunnyvale, Jun 2021 – Aug 2021): Prototyped a Node.js CLI for Cortex (3 proof-of-concepts); instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022"
-    },
-    {
-      "id": "p129",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
       "text": "M.S. Computer Science — Artificial Intelligence, University of Southern California (Los Angeles, Aug 2023 – May 2025): Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence Expat Society · Persian Student Organization · Association for Computing Machinery (ACM)"
     },
     {
-      "id": "p130",
+      "id": "p129",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
       "text": "B.S. Computer Science, Minor in Economics, UC Santa Cruz (Santa Cruz, Sep 2018 – Dec 2021): GPA 3.74 · Coursework: Data Structures & Algorithms (C/Java), Artificial Intelligence (Python/SQL) CruzHacks awards: Secret Prize 2021 (Wildest Idea, Canvas Year in Review) · Best Use of Google Cloud Platform Solution Challenge Coordinator for Google's Developer Student Club · Iranian Student Union"
     },
     {
-      "id": "p131",
+      "id": "p130",
       "title": "The Engine Room",
       "heading": "How this site works",
       "url": "https://farazian.com/engineering/",
       "text": "farazian.com is built with Vite and vanilla TypeScript — no framework — with a Three.js GPGPU particle hero (65,536 particles). It runs on a single-file Cloudflare Worker at the edge with KV storage and one Durable Object; there is no origin server and zero databases on the read path. Content is generated at build time by one generator that emits the human pages, the agent-readable site.json, the retrieval corpus, and the sitemap from a single source. Decision records (ADRs) on the engineering page explain each tradeoff: no framework, content as a build step, a raw JSON-RPC MCP server with no SDK, the guestbook stored in KV metadata, live state on a Durable Object, and zero databases on the read path."
     },
     {
-      "id": "p132",
+      "id": "p131",
       "title": "The Engine Room",
       "heading": "Postmortem: the Instagram boot hang",
       "url": "https://farazian.com/engineering/",
       "text": "A real production postmortem: visitors from Instagram's in-app browser hung on the boot screen at 00 because the in-app WebView killed an API at module scope, taking down the whole bundle including its own safety net. The fix is three independent defense layers: an inline head watchdog that paints the error onto the boot label and force-dismisses the loader at 8 seconds, crash-isolated subsystem inits with typed fallbacks and a render-loop kill-switch, and a pure-CSS keyframes failsafe. All three were verified headless before deploy."
     },
     {
-      "id": "p133",
+      "id": "p132",
       "title": "Status",
       "heading": "Live telemetry",
       "url": "https://farazian.com/status/",
