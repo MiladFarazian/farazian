@@ -255,7 +255,8 @@ export interface Link {
 export const LINKS: Link[] = [
   { label: "Resume", href: "/resume/" },
   { label: "GitHub", href: "https://github.com/MiladFarazian" },
-  { label: "miladfarazian.com", href: "https://miladfarazian.com" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/miladfarazian" },
+  { label: "Parkzy on the App Store", href: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230" },
   { label: "Parkzy", href: "https://useparkzy.com" },
   { label: "Email", href: "mailto:miladfarazian@gmail.com" },
 ];

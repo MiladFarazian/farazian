@@ -355,6 +355,38 @@ strong {
     display: none;
   }
 }
+/* Profile links under the hero CTA: the two-click path from a name to the work.
+   Mono, quiet, always visible (the nav collapses on mobile). */
+.hero__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  margin-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.72);
+}
+.hero__social a {
+  color: inherit;
+  position: relative;
+  padding: 0.2em 0;
+}
+.hero__social a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.hero__social a:hover { color: #fff; }
+.hero__social a:hover::after { transform: scaleX(1); }
+
 .nav__links a.is-active {
   color: var(--cyan);
   text-shadow: 0 0 14px rgba(42, 245, 255, 0.45);

@@ -1967,6 +1967,8 @@ const SITE_JSON = {
     site: BASE,
     email: "miladfarazian@gmail.com",
     github: "https://github.com/MiladFarazian",
+    linkedin: "https://linkedin.com/in/miladfarazian",
+    app_store: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230",
     resume: `${BASE}/Milad_Farazian_Resume.pdf`,
     hire: `${BASE}/hire/`,
     book_intro_call: "https://cal.com/milad-farazian/15min",
