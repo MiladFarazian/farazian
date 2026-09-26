@@ -114,7 +114,7 @@ const MCP_TOOLS = [
   {
     name: "get_services",
     description:
-      "Freelance services and starting prices: advisory, automation & AI agents, AI features, and the entry-level AI/codebase audit.",
+      "Freelance engagement types (advisory, automation & AI agents, AI features) and how to hire — via Milad's Upwork profile or a free intro call. Rates are quoted on Upwork.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
   },
   {
@@ -173,7 +173,7 @@ async function mcpToolCall(env, origin, ip, name, args) {
       return { name: n, headline, location, availability, links, stack };
     }
     case "get_services":
-      return { services: site.services, book_intro_call: site.links.book_intro_call, hire_page: site.links.hire };
+      return { services: site.services, hire_via_upwork: site.links.upwork, book_intro_call: site.links.book_intro_call, hire_page: site.links.hire };
     case "ask": {
       // Retrieval-only for agents: passages + citations, no LLM in the middle
       // (the caller IS a model — it can synthesize from sources itself).

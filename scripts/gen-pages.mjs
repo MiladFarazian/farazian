@@ -1029,7 +1029,7 @@ curl -s https://farazian.com/mcp \\
           { title: "list_projects", desc: "Every project — title, category, year, summary, tags, URL. The index an agent starts from." },
           { title: "get_project", desc: "Full detail for one slug: links plus the page's written sections as clean, readable text." },
           { title: "get_profile", desc: "Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking." },
-          { title: "get_services", desc: "The freelance offerings with starting prices, straight from the /hire page's single source of truth." },
+          { title: "get_services", desc: "The freelance engagement types and how to hire (Upwork profile + intro call), straight from the /hire page's single source of truth." },
           { title: "sign_guestbook", desc: "The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form." },
         ],
       },
@@ -1473,43 +1473,31 @@ const RESUME_HTML = `<!doctype html>
 `;
 
 // ============================================================
-// HIRE PAGE — /hire/  (freelance services; prices are starting anchors)
+// HIRE PAGE — /hire/  (slim: engagement types, no rates — pricing and
+// scoping happen on Upwork; the page's first job is telling recruiters
+// he's interviewing for full-time roles)
 // ============================================================
-// Single source for the hire offerings — rendered on /hire and exposed
-// (agent-readable) through /api/site.json + the MCP server.
+const UPWORK = "https://www.upwork.com/freelancers/miladfarazian";
+// Single source for engagement types — rendered on /hire and exposed
+// (agent-readable) through /api/site.json + the MCP server. Deliberately
+// price-free: rates live on Upwork.
 const HIRE_SERVICES = [
   {
-    tag: "Fractional advisor",
+    tag: "Advisory",
     name: "Fractional AI / Engineering Advisor",
-    price: "from $1,500/mo",
-    desc: "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Retainer or per-session.",
-    includes: ["Working calls + async review (Slack/email)", "Architecture, model choice, build-vs-buy", "Code & AI reviews on your real repo", "Also available per-session — from $250 / 90 min"],
+    desc: "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Working calls, async review, code and AI reviews on your real repo.",
   },
   {
     tag: "Automation & agents",
     name: "Automation & AI Agents",
-    price: "from $1,500",
-    desc: "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows.",
-    includes: ["One scoped automation or agent, shipped", "Runs in your stack — no lock-in", "Docs + a handoff walkthrough", "Typical turnaround: 1–2 weeks"],
+    desc: "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Runs in your stack, handed off with docs.",
   },
   {
     tag: "AI features",
     name: "AI Features Into Your Product",
-    price: "from $3,000",
-    desc: "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy.",
-    includes: ["Design, build, and ship one AI feature", "RAG / embeddings / function-calling as needed", "Evals + guardrails so it survives real users", "Integrated into your codebase, tested"],
-  },
-  {
-    tag: "Start here",
-    name: "AI / Codebase Audit",
-    price: "from $500",
-    desc: "A fast, honest review of your codebase or AI setup — where it's fragile, what to fix first, what's worth building. The low-risk way to start.",
-    includes: ["Deep read of your repo or AI stack", "Written report: risks, quick wins, roadmap", "A live call to walk through it", "Credited toward a larger project if you continue"],
+    desc: "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Evals and guardrails included, so it survives real users.",
   },
 ];
-
-const hireSvc = ({ tag, name, price, desc, includes }) =>
-  `<div class="hire-svc" data-reveal><div class="hire-svc__top"><span class="hire-svc__tag">${tag}</span><span class="hire-svc__price">${price}</span></div><h3>${name}</h3><p>${desc}</p><ul>${includes.map((i) => `<li>${i}</li>`).join("")}</ul></div>`;
 
 const HIRE_HTML = `<!doctype html>
 <html lang="en">
@@ -1518,7 +1506,7 @@ const HIRE_HTML = `<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#04060a" />
     <title>Hire Me — Milad Farazian</title>
-    <meta name="description" content="Work with Milad Farazian — fractional AI/engineering advisor, automation & AI agents, and production LLM features. A small side practice while he interviews for full-time engineering roles. Los Angeles, remote-friendly." />
+    <meta name="description" content="Work with Milad Farazian via Upwork — AI/engineering advisory, automation & AI agents, and production LLM features. A small side practice while he interviews for full-time engineering roles. Los Angeles, remote-friendly." />
     <link rel="canonical" href="https://farazian.com/hire/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Milad Farazian" />
@@ -1548,17 +1536,21 @@ const HIRE_HTML = `<!doctype html>
         <h1 class="proj__title" data-reveal>Ship AI features that survive real users.</h1>
         <p class="proj__sub" data-reveal>I'm a full-stack engineer with real AI depth — I built <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>, a live App Store marketplace (4.9★, 2,400+ downloads), end to end as sole engineer, LLM features and all. Now I take on a few focused engagements at a time: <strong>advisory, automation, and production AI</strong>.</p>
         <div class="proj__links" data-reveal>
-          <a class="btn btn--primary" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call →</a>
+          <a class="btn btn--primary" href="${UPWORK}" target="_blank" rel="noopener" data-magnetic data-scramble>Hire me on Upwork ↗</a>
+          <a class="btn btn--ghost" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call</a>
           <a class="btn btn--ghost" href="/#work" data-magnetic data-scramble>See the work</a>
-          <a class="btn btn--ghost" href="/resume/" data-magnetic data-scramble>Resume</a>
         </div>
       </section>
 
       <section class="proj__section">
-        <h2 data-reveal>How I can help</h2>
+        <h2 data-reveal>What I take on</h2>
         <div class="hire-grid">
-          ${HIRE_SERVICES.map(hireSvc).join("\n          ")}
+          ${HIRE_SERVICES.map(
+            ({ tag, name, desc }) =>
+              `<div class="hire-svc" data-reveal><div class="hire-svc__top"><span class="hire-svc__tag">${tag}</span></div><h3>${name}</h3><p>${desc}</p></div>`
+          ).join("\n          ")}
         </div>
+        <p class="proj-note" data-reveal>Rates, scoping, contracts, and payment all run through <a href="${UPWORK}" target="_blank" rel="noopener" style="color:var(--cyan)">my Upwork profile</a> — one place, no surprises.</p>
       </section>
 
       <section class="proj__section" data-reveal>
@@ -1572,16 +1564,12 @@ const HIRE_HTML = `<!doctype html>
 
       <section class="proj__section" data-reveal>
         <h2>How it works</h2>
-        <div class="pk-steps">
-          <div class="pk-step"><i>01</i><b>Intro call</b><p>A free 15 minutes. You tell me the problem; I tell you honestly whether I'm the right fit and how I'd approach it.</p></div>
-          <div class="pk-step"><i>02</i><b>Scoped proposal</b><p>A fixed scope, price, and timeline in writing. 50% deposit to start — no open-ended hourly surprises.</p></div>
-          <div class="pk-step"><i>03</i><b>Build &amp; ship</b><p>I build in your stack with regular check-ins, hand it off with docs, and it's yours. Balance due on delivery.</p></div>
-        </div>
+        <p>Everything starts on Upwork: send an invite or a message there, we scope it in writing, and the contract and payment run through their escrow — clean for both of us. Prefer a conversation first? The 15-minute intro call is free.</p>
         <p class="proj-note">A deliberately small side lane — one or two engagements at a time alongside my full-time search, so the ones I take get real focus. Los Angeles · remote-friendly.</p>
         <div class="proj__links" data-reveal style="margin-top:1.6rem">
-          <a class="btn btn--primary" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call →</a>
+          <a class="btn btn--primary" href="${UPWORK}" target="_blank" rel="noopener" data-magnetic data-scramble>Hire me on Upwork ↗</a>
+          <a class="btn btn--ghost" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call</a>
           <a class="btn btn--ghost" href="mailto:miladfarazian@gmail.com?subject=Project%20inquiry" data-magnetic data-scramble>Email me</a>
-          <a class="btn btn--ghost" href="https://linkedin.com/in/miladfarazian" target="_blank" rel="noopener" data-magnetic data-scramble>LinkedIn ↗</a>
         </div>
       </section>
       <footer class="footer">
@@ -1972,13 +1960,14 @@ const SITE_JSON = {
     resume: `${BASE}/Milad_Farazian_Resume.pdf`,
     hire: `${BASE}/hire/`,
     book_intro_call: "https://cal.com/milad-farazian/15min",
+    upwork: UPWORK,
     parkzy: "https://useparkzy.com",
     creative: `${BASE}/creative/`,
     engineering: `${BASE}/engineering/`,
     status: `${BASE}/status/`,
   },
   stack: STACK.map((g) => ({ group: g.label, items: g.items })),
-  services: HIRE_SERVICES.map(({ name, price, desc, includes }) => ({ name, price, desc, includes })),
+  services: HIRE_SERVICES.map(({ name, desc }) => ({ name, desc, hire_via: UPWORK })),
   projects: PAGES.map((p) => ({
     slug: p.slug,
     title: p.title,
@@ -2029,7 +2018,7 @@ addPassage("Milad Farazian", "Profile", `${BASE}/`,
 for (const g of STACK)
   addPassage("Stack", g.label, `${BASE}/#stack`, `Milad's ${g.label} stack and skills: ${g.items.join(", ")}.`);
 for (const s of HIRE_SERVICES)
-  addPassage("Hire Milad", s.name, `${BASE}/hire/`, `Freelance service — ${s.name} (${s.price}): ${s.desc} Includes: ${s.includes.join("; ")}. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search.`);
+  addPassage("Hire Milad", s.name, `${BASE}/hire/`, `Freelance engagement type — ${s.name}: ${s.desc} Rates, scoping, contracts, and payment run through Milad's Upwork profile (${UPWORK}). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search.`);
 for (const j of RESUME_JOBS)
   addPassage("Resume", `${j.role} @ ${j.org}`, `${BASE}/resume/`, `${j.role} at ${j.org} (${j.where}, ${j.when}): ${j.bullets.join(" ")}`);
 for (const j of RESUME_EDU)

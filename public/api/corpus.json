@@ -432,7 +432,7 @@
       "title": "Portfolio MCP Server",
       "heading": "The tools",
       "url": "https://farazian.com/work/mcp/",
-      "text": "list_projects: Every project — title, category, year, summary, tags, URL. The index an agent starts from. get_project: Full detail for one slug: links plus the page's written sections as clean, readable text. get_profile: Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking. get_services: The freelance offerings with starting prices, straight from the /hire page's single source of truth. sign_guestbook: The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form."
+      "text": "list_projects: Every project — title, category, year, summary, tags, URL. The index an agent starts from. get_project: Full detail for one slug: links plus the page's written sections as clean, readable text. get_profile: Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking. get_services: The freelance engagement types and how to hire (Upwork profile + intro call), straight from the /hire page's single source of truth. sign_guestbook: The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form."
     },
     {
       "id": "p62",
@@ -852,80 +852,73 @@
       "title": "Hire Milad",
       "heading": "Fractional AI / Engineering Advisor",
       "url": "https://farazian.com/hire/",
-      "text": "Freelance service — Fractional AI / Engineering Advisor (from $1,500/mo): Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Retainer or per-session. Includes: Working calls + async review (Slack/email); Architecture, model choice, build-vs-buy; Code & AI reviews on your real repo; Also available per-session — from $250 / 90 min. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
+      "text": "Freelance engagement type — Fractional AI / Engineering Advisor: Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Working calls, async review, code and AI reviews on your real repo. Rates, scoping, contracts, and payment run through Milad's Upwork profile (https://www.upwork.com/freelancers/miladfarazian). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
       "id": "p122",
       "title": "Hire Milad",
       "heading": "Automation & AI Agents",
       "url": "https://farazian.com/hire/",
-      "text": "Freelance service — Automation & AI Agents (from $1,500): Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Includes: One scoped automation or agent, shipped; Runs in your stack — no lock-in; Docs + a handoff walkthrough; Typical turnaround: 1–2 weeks. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
+      "text": "Freelance engagement type — Automation & AI Agents: Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Runs in your stack, handed off with docs. Rates, scoping, contracts, and payment run through Milad's Upwork profile (https://www.upwork.com/freelancers/miladfarazian). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
       "id": "p123",
       "title": "Hire Milad",
       "heading": "AI Features Into Your Product",
       "url": "https://farazian.com/hire/",
-      "text": "Freelance service — AI Features Into Your Product (from $3,000): Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Includes: Design, build, and ship one AI feature; RAG / embeddings / function-calling as needed; Evals + guardrails so it survives real users; Integrated into your codebase, tested. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
+      "text": "Freelance engagement type — AI Features Into Your Product: Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Evals and guardrails included, so it survives real users. Rates, scoping, contracts, and payment run through Milad's Upwork profile (https://www.upwork.com/freelancers/miladfarazian). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
     },
     {
       "id": "p124",
-      "title": "Hire Milad",
-      "heading": "AI / Codebase Audit",
-      "url": "https://farazian.com/hire/",
-      "text": "Freelance service — AI / Codebase Audit (from $500): A fast, honest review of your codebase or AI setup — where it's fragile, what to fix first, what's worth building. The low-risk way to start. Includes: Deep read of your repo or AI stack; Written report: risks, quick wins, roadmap; A live call to walk through it; Credited toward a larger project if you continue. Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
-    },
-    {
-      "id": "p125",
       "title": "Resume",
       "heading": "Co-founder & CTO @ Parkzy",
       "url": "https://farazian.com/resume/",
       "text": "Co-founder & CTO at Parkzy (Los Angeles, Sep 2025 – Present): Launched Parkzy from zero to a live App Store product (4.9★, 2,400+ downloads) as sole engineer: React 18/TypeScript/Supabase across web, iOS, and Android via Capacitor, 490 SQL migrations, and 3,989 commits in the first year Designed the real-time 'ping' dispatch system, where one tap fans out to nearby hosts who accept from the lock screen, and lifted acceptance from 16% to 45% while cutting expiry from 70% to 36% through instrumented lifecycle fixes Defined three production SLOs and wired burn-rate alerts into Slack, backed by Prometheus and Grafana dashboards and an on-call runbook, then moved the pricing service onto Kubernetes where an HPA scaled it from 1 to 5 pods under 754 requests per second Assembled an internal-docs RAG pipeline that answers with citations from pgvector retrieval, then measured it against a golden set: 0.97 hit@8 in 47 ms, 0.93 judged faithfulness, and correct refusal on questions the corpus cannot answer"
     },
     {
-      "id": "p126",
+      "id": "p125",
       "title": "Resume",
       "heading": "Co-founder & CTO @ StudyBuddy",
       "url": "https://farazian.com/resume/",
       "text": "Co-founder & CTO at StudyBuddy (Los Angeles, Dec 2024 – Aug 2025): Led a 5-person team building StudyBuddy, a tutoring marketplace for USC students, on React/TypeScript with a Supabase (Postgres) backend, covering booking and scheduling, Stripe Connect payments, and Zoom-integrated sessions across tutor, student, and admin roles Layered a GraphQL gateway over Postgres and Stripe Connect with per-request DataLoader batching and depth limits, cutting a representative nested query from 121 database round trips to 4, constant as the result set grows Implemented university sign-on on OAuth 2.0 with PKCE plus a scraper that ingested each semester's course catalog, and made it usable with a screen reader and at high zoom (WCAG 2.1 AA), fixing all 7 failing pages"
     },
     {
-      "id": "p127",
+      "id": "p126",
       "title": "Resume",
       "heading": "Software Engineer II (Full-Stack) @ Walmart",
       "url": "https://farazian.com/resume/",
       "text": "Software Engineer II (Full-Stack) at Walmart (Sunnyvale, Aug 2021 – May 2023): Developed 10+ features for Converse Self Serve, Walmart's Dialogflow conversational-AI platform behind 66M+ AI-assisted customer contacts Collaborated with a 4-person US/India team on a push-notification API for Walmart's Last Mile Delivery servers (4,700 stores, 90% of the US) Instrumented a CSAT feedback system that collected 6M+ customer ratings by March 2022 Migrated 32 config features and 50+ testing tools from Cortex to Botmock, Walmart's newly acquired Self Serve platform"
     },
     {
-      "id": "p128",
+      "id": "p127",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
       "text": "M.S. Computer Science — Artificial Intelligence, University of Southern California (Los Angeles, Aug 2023 – May 2025): Coursework: Applied Natural Language Processing, Fundamentals of Artificial Intelligence Expat Society · Persian Student Organization · Association for Computing Machinery (ACM)"
     },
     {
-      "id": "p129",
+      "id": "p128",
       "title": "Resume",
       "heading": "Education",
       "url": "https://farazian.com/resume/",
       "text": "B.S. Computer Science, Minor in Economics, UC Santa Cruz (Santa Cruz, Sep 2018 – Dec 2021): GPA 3.74 · Coursework: Data Structures & Algorithms (C/Java), Artificial Intelligence (Python/SQL) CruzHacks awards: Secret Prize 2021 (Wildest Idea, Canvas Year in Review) · Best Use of Google Cloud Platform Solution Challenge Coordinator for Google's Developer Student Club · Iranian Student Union"
     },
     {
-      "id": "p130",
+      "id": "p129",
       "title": "The Engine Room",
       "heading": "How this site works",
       "url": "https://farazian.com/engineering/",
       "text": "farazian.com is built with Vite and vanilla TypeScript — no framework — with a Three.js GPGPU particle hero (65,536 particles). It runs on a single-file Cloudflare Worker at the edge with KV storage and one Durable Object; there is no origin server and zero databases on the read path. Content is generated at build time by one generator that emits the human pages, the agent-readable site.json, the retrieval corpus, and the sitemap from a single source. Decision records (ADRs) on the engineering page explain each tradeoff: no framework, content as a build step, a raw JSON-RPC MCP server with no SDK, the guestbook stored in KV metadata, live state on a Durable Object, and zero databases on the read path."
     },
     {
-      "id": "p131",
+      "id": "p130",
       "title": "The Engine Room",
       "heading": "Postmortem: the Instagram boot hang",
       "url": "https://farazian.com/engineering/",
       "text": "A real production postmortem: visitors from Instagram's in-app browser hung on the boot screen at 00 because the in-app WebView killed an API at module scope, taking down the whole bundle including its own safety net. The fix is three independent defense layers: an inline head watchdog that paints the error onto the boot label and force-dismisses the loader at 8 seconds, crash-isolated subsystem inits with typed fallbacks and a render-loop kill-switch, and a pure-CSS keyframes failsafe. All three were verified headless before deploy."
     },
     {
-      "id": "p132",
+      "id": "p131",
       "title": "Status",
       "heading": "Live telemetry",
       "url": "https://farazian.com/status/",

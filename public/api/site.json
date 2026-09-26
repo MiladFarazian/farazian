@@ -12,6 +12,7 @@
     "resume": "https://farazian.com/Milad_Farazian_Resume.pdf",
     "hire": "https://farazian.com/hire/",
     "book_intro_call": "https://cal.com/milad-farazian/15min",
+    "upwork": "https://www.upwork.com/freelancers/miladfarazian",
     "parkzy": "https://useparkzy.com",
     "creative": "https://farazian.com/creative/",
     "engineering": "https://farazian.com/engineering/",
@@ -90,47 +91,18 @@
   "services": [
     {
       "name": "Fractional AI / Engineering Advisor",
-      "price": "from $1,500/mo",
-      "desc": "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Retainer or per-session.",
-      "includes": [
-        "Working calls + async review (Slack/email)",
-        "Architecture, model choice, build-vs-buy",
-        "Code & AI reviews on your real repo",
-        "Also available per-session — from $250 / 90 min"
-      ]
+      "desc": "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Working calls, async review, code and AI reviews on your real repo.",
+      "hire_via": "https://www.upwork.com/freelancers/miladfarazian"
     },
     {
       "name": "Automation & AI Agents",
-      "price": "from $1,500",
-      "desc": "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows.",
-      "includes": [
-        "One scoped automation or agent, shipped",
-        "Runs in your stack — no lock-in",
-        "Docs + a handoff walkthrough",
-        "Typical turnaround: 1–2 weeks"
-      ]
+      "desc": "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Runs in your stack, handed off with docs.",
+      "hire_via": "https://www.upwork.com/freelancers/miladfarazian"
     },
     {
       "name": "AI Features Into Your Product",
-      "price": "from $3,000",
-      "desc": "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy.",
-      "includes": [
-        "Design, build, and ship one AI feature",
-        "RAG / embeddings / function-calling as needed",
-        "Evals + guardrails so it survives real users",
-        "Integrated into your codebase, tested"
-      ]
-    },
-    {
-      "name": "AI / Codebase Audit",
-      "price": "from $500",
-      "desc": "A fast, honest review of your codebase or AI setup — where it's fragile, what to fix first, what's worth building. The low-risk way to start.",
-      "includes": [
-        "Deep read of your repo or AI stack",
-        "Written report: risks, quick wins, roadmap",
-        "A live call to walk through it",
-        "Credited toward a larger project if you continue"
-      ]
+      "desc": "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Evals and guardrails included, so it survives real users.",
+      "hire_via": "https://www.upwork.com/freelancers/miladfarazian"
     }
   ],
   "projects": [
@@ -800,7 +772,7 @@
             },
             {
               "title": "get_services",
-              "desc": "The freelance offerings with starting prices, straight from the /hire page's single source of truth."
+              "desc": "The freelance engagement types and how to hire (Upwork profile + intro call), straight from the /hire page's single source of truth."
             },
             {
               "title": "sign_guestbook",
