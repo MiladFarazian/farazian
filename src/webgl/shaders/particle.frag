@@ -15,11 +15,12 @@ void main() {
   if (d > 0.5) discard;
   float alpha = smoothstep(0.5, 0.0, d);
 
-  // Bioluminescent gradient: seafoam ↔ light-water blue by per-particle
-  // seed (the Pelagic palette's --cyan / --violet).
-  vec3 cyan = vec3(0.624, 0.910, 0.831);
-  vec3 violet = vec3(0.561, 0.776, 0.949);
-  vec3 col = mix(cyan, violet, vSeed);
+  // Two-tone water palette with a wide luminance spread, so the name has
+  // internal contrast against the mid-blue backdrop: bright near-white
+  // foam (blooms) against deep saturated ocean blue (doesn't).
+  vec3 bright = vec3(0.86, 1.0, 0.95);
+  vec3 deep = vec3(0.07, 0.34, 0.58);
+  vec3 col = mix(deep, bright, smoothstep(0.12, 0.88, vSeed));
 
   // A touch of white-hot energy where particles are pushed off the z=0 plane
   // (mouse / burst). Kept subtle so dense areas don't blow out to white.
