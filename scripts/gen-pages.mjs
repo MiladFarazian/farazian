@@ -1538,19 +1538,32 @@ const HIRE_HTML = `<!doctype html>
     <link rel="preconnect" href="${MILADANDCO}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400..700&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet" />
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
     <noscript><meta http-equiv="refresh" content="0; url=${MILADANDCO}/" /></noscript>
     <style>
-      /* Phase 1 is this site's dark terminal; phase 2 is Milad & Co.'s
-         exact design tokens (miladand.co/css/styles.css), light and dark. */
-      :root { --bg: #f8f5f0; --text: #22191a; --muted: #6e6460; --rose: #7b1e2c; --grain: 0.07; }
+      /* Phase 1 is this site's dark terminal; phase 2 is a faithful
+         recreation of miladand.co's actual hero (nav, headline, lede,
+         CTAs, rosette + میلاد starburst) in its exact tokens, so the
+         redirect swap is nearly invisible. Light and dark both match. */
+      :root {
+        --bg: #f8f5f0; --text: #22191a; --muted: #6e6460; --rose: #7b1e2c;
+        --accent: #7b1e2c; --accent-2: #651824; --on-accent: #ffffff;
+        --border: #d6cdc1; --surface: #ffffff; --gold: #b89b5e; --grain: 0.07;
+        --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76' viewBox='0 0 32 32'%3E%3Cpolygon points='16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8' fill='none' stroke='%237b1e2c' stroke-opacity='0.22' stroke-width='0.55'/%3E%3C/svg%3E");
+      }
       @media (prefers-color-scheme: dark) {
-        :root { --bg: #141012; --text: #efe8e3; --muted: #a59a96; --rose: #e8919d; --grain: 0.09; }
+        :root {
+          --bg: #141012; --text: #efe8e3; --muted: #a59a96; --rose: #e8919d;
+          --accent: #a8394b; --accent-2: #bb4458; --border: #43393b; --surface: #201a1c;
+          --gold: #d6a24e; --grain: 0.09;
+          --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76' viewBox='0 0 32 32'%3E%3Cpolygon points='16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8' fill='none' stroke='%23e8919d' stroke-opacity='0.2' stroke-width='0.55'/%3E%3C/svg%3E");
+        }
       }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { height: 100%; }
-      body { background: #04060a; overflow: hidden; cursor: pointer; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif; }
+      body { background: #04060a; overflow: hidden; cursor: pointer;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       @font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 
       .term { position: fixed; inset: 0; display: grid; place-items: center; background: #04060a;
@@ -1563,57 +1576,97 @@ const HIRE_HTML = `<!doctype html>
       @keyframes type { to { width: 26ch; } }
       @keyframes blink { 50% { opacity: 0; } }
 
-      /* The hand-off: Milad & Co.'s paper wipes over the terminal from the
-         center, then its hero assembles — mark draws, wordmark rises. */
-      .paper { position: fixed; inset: 0; display: grid; place-items: center; background: var(--bg); color: var(--text);
-        clip-path: circle(0% at 50% 56%); transition: clip-path 1.05s cubic-bezier(0.65, 0, 0.35, 1); }
-      .go .paper { clip-path: circle(141.5% at 50% 56%); }
-      .grain { position: absolute; inset: -100%; pointer-events: none; opacity: var(--grain);
+      /* The hand-off: Milad & Co.'s page wipes over the terminal and its
+         real hero assembles in place. */
+      .paper { position: fixed; inset: 0; background: var(--bg); color: var(--text); overflow: hidden;
+        clip-path: circle(0% at 50% 50%); transition: clip-path 1.05s cubic-bezier(0.65, 0, 0.35, 1); }
+      .go .paper { clip-path: circle(141.5% at 50% 50%); }
+      .grain { position: absolute; inset: -100%; pointer-events: none; opacity: var(--grain); z-index: 5;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         animation: grain 1.2s steps(5) infinite; }
       @keyframes grain { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-5%, 3%); } 40% { transform: translate(4%, -6%); } 60% { transform: translate(-3%, 7%); } 80% { transform: translate(6%, 2%); } }
-      .bar { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--rose); transform: scaleX(0); transform-origin: 0 50%; }
+      .bar { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--rose); transform: scaleX(0); transform-origin: 0 50%; z-index: 6; }
       .go .bar { animation: load 1.85s linear 0.35s forwards; }
       @keyframes load { to { transform: scaleX(1); } }
-      .fa { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -58%); font-family: "Noto Nastaliq Urdu", serif; font-size: clamp(170px, 38vw, 430px); line-height: 1; color: var(--rose); opacity: 0; pointer-events: none; user-select: none; -webkit-user-select: none; }
-      .go .fa { animation: ghost 1.4s ease 0.8s forwards; }
-      @keyframes ghost { to { opacity: 0.06; } }
 
-      .card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 0 16px; }
-      .card > * { opacity: 0; transform: translateY(14px); }
-      .go .card > * { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
-      .go .mark { animation-delay: 0.35s; }
-      .go .eyebrow { animation-delay: 0.55s; }
-      .go h1 { animation-delay: 0.7s; }
-      .go .swash { animation-delay: 0.95s; }
-      .go .sub { animation-delay: 1.1s; }
+      .wrapm { width: min(1180px, 100% - 48px); margin-inline: auto; }
+      .rise { opacity: 0; transform: translateY(14px); }
+      .go .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
       @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-      .mark { width: clamp(44px, 7vw, 58px); height: auto; }
-      .mark polygon, .mark circle { fill: var(--rose); fill-opacity: 0; stroke: var(--rose); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
-      .go .mark polygon { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s forwards, draw 0.8s cubic-bezier(0.6, 0, 0.3, 1) 0.45s forwards, fillin 0.45s ease 1.2s forwards; }
-      .go .mark circle { animation: draw 0.6s ease 0.7s forwards, fillin 0.45s ease 1.25s forwards; }
-      @keyframes draw { to { stroke-dashoffset: 0; } }
-      @keyframes fillin { to { fill-opacity: 1; } }
-      .eyebrow { font-size: clamp(10px, 1.4vw, 12px); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rose); }
-      h1 { font-family: "Fraunces", Georgia, serif; font-weight: 500; font-size: clamp(46px, 9vw, 92px); letter-spacing: -0.02em; line-height: 1.05; }
-      h1 em { font-style: italic; font-weight: 400; color: var(--rose); }
-      .swash { width: clamp(180px, 30vw, 290px); height: auto; margin-top: -8px; }
+
+      /* Nav — brand, links, Book a call pill */
+      .mnav { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 20px; }
+      .go .mnav { animation-delay: 0.3s; }
+      .brand { display: flex; align-items: center; gap: 9px; }
+      .brand svg { width: 24px; height: 24px; fill: var(--accent); }
+      .brand span { font: 600 17.5px/1 "Fraunces", Georgia, serif; letter-spacing: -0.01em; }
+      .brand em { font-style: italic; font-weight: 400; color: var(--rose); }
+      .mlinks { display: flex; gap: 28px; font: 500 15px/1 "Inter", sans-serif; color: var(--text); }
+      .pill { font: 600 14px/1 "Inter", sans-serif; color: var(--on-accent); background: var(--accent);
+        border-radius: 999px; padding: 12px 20px; white-space: nowrap; }
+
+      /* Hero — exact copy of the live site's */
+      .mhero { display: grid; grid-template-columns: 1.08fr 0.92fr; align-items: center; gap: 24px;
+        min-height: min(78vh, 700px); padding-top: clamp(10px, 3vh, 36px); }
+      .eyebrow { font: 700 12px/1 "Inter", sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 20px; }
+      .go .eyebrow { animation-delay: 0.5s; }
+      h1 { font-family: "Fraunces", Georgia, serif; font-weight: 360; font-size: clamp(40px, 6.4vw, 86px);
+        letter-spacing: -0.02em; line-height: 1.04; margin-bottom: 26px; }
+      .go h1 { animation-delay: 0.62s; }
+      .swash-word { position: relative; font-style: italic; font-weight: 400; color: var(--rose); white-space: nowrap; }
+      .swash { position: absolute; left: 0; right: 0; bottom: -0.12em; width: 100%; height: 0.22em; }
       .swash path { fill: none; stroke: var(--rose); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-      .go .swash path { animation: draw 0.7s ease 1.05s forwards; }
-      .sub { max-width: 34em; font-size: clamp(15px, 2vw, 18px); line-height: 1.55; color: var(--muted); }
-      .hint { position: absolute; left: 0; right: 0; bottom: max(24px, env(safe-area-inset-bottom)); text-align: center; font: 400 12px/1.7 "JetBrains Mono", monospace; letter-spacing: 0.02em; color: var(--muted); padding: 0 16px; opacity: 0; }
-      .go .hint { animation: rise 0.7s ease 1.25s forwards; }
-      .hint b { color: var(--text); font-weight: 600; }
+      .go .swash path { animation: draw 0.8s ease 1.15s forwards; }
+      @keyframes draw { to { stroke-dashoffset: 0; } }
+      .lede { font: 400 clamp(16px, 1.6vw, 19px)/1.6 "Inter", sans-serif; color: var(--muted); max-width: 32em; margin-bottom: 34px; }
+      .go .lede { animation-delay: 0.78s; }
+      .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+      .go .cta-row { animation-delay: 0.92s; }
+      .btn { font: 600 16px/1 "Inter", sans-serif; border-radius: 999px; padding: 18px 28px; white-space: nowrap; }
+      .btn-primary { background: var(--accent); color: var(--on-accent); }
+      .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+      /* The rosette side: tiled star pattern under a radial mask, the
+         16-point starburst, میلاد, and the floating gold dots. */
+      .seed { position: relative; height: clamp(320px, 58vh, 560px); }
+      .go .seed { animation-delay: 0.55s; }
+      .seed__pattern { position: absolute; inset: -12% -18%; background-image: var(--pattern);
+        -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 78%);
+        mask-image: radial-gradient(closest-side, #000 30%, transparent 78%); }
+      .seed__burst { position: absolute; top: 50%; left: 50%; width: clamp(170px, 20vw, 240px);
+        transform: translate(-50%, -50%); }
+      .seed__burst polygon { fill: none; stroke: var(--rose); stroke-width: 1.6; }
+      .seed__fa { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -56%);
+        font-family: "Noto Nastaliq Urdu", serif; font-size: clamp(34px, 3.6vw, 48px); color: var(--rose); line-height: 1; }
+      .seed__star { position: absolute; top: 8%; left: 2%; width: 26px; height: 26px; }
+      .seed__star polygon { fill: none; stroke: var(--rose); stroke-width: 1.4; }
+      .dot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); opacity: 0.8; }
+      .dot--a { top: 24%; right: 16%; } .dot--b { bottom: 20%; left: 18%; } .dot--c { top: 55%; left: 4%; }
+
+      .scrollcue { position: absolute; left: 50%; bottom: 46px; transform: translateX(-50%); z-index: 4;
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+        font: 600 10px/1 "Inter", sans-serif; letter-spacing: 0.22em; color: var(--muted); }
+      .scrollcue i { display: block; width: 1px; height: 26px; background: var(--rose); }
+      .go .scrollcue { animation-delay: 1.2s; }
+      .hint { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; z-index: 6;
+        font: 400 11px/1.6 "JetBrains Mono", monospace; letter-spacing: 0.02em; color: var(--muted); opacity: 0; padding: 0 16px; }
+      .go .hint { animation: rise 0.7s ease 1.3s forwards; }
       .hint a { color: var(--rose); }
 
-      /* Reduced motion (JS adds .instant): no choreography — a readable
-         card, then the forward. */
-      .instant .paper { clip-path: circle(141.5% at 50% 56%); transition: none; }
+      @media (max-width: 860px) {
+        .mlinks { display: none; }
+        .mhero { grid-template-columns: 1fr; padding-top: 40px; }
+        .seed { position: absolute; inset: 0; height: auto; opacity: 0.3; pointer-events: none; }
+        .go .seed { animation-delay: 0.4s; }
+        h1 { font-size: clamp(38px, 10vw, 56px); }
+      }
+
+      /* Reduced motion (JS adds .instant): no choreography — the finished
+         hero, then the forward. */
+      .instant .paper { clip-path: circle(141.5% at 50% 50%); transition: none; }
       .instant .grain { animation: none; }
-      .instant .card > *, .instant .hint { opacity: 1; transform: none; animation: none; }
-      .instant .mark polygon, .instant .mark circle { stroke-dashoffset: 0; fill-opacity: 1; animation: none; }
+      .instant .rise, .instant .hint { opacity: 1; transform: none; animation: none; }
       .instant .swash path { stroke-dashoffset: 0; animation: none; }
-      .instant .fa { opacity: 0.06; animation: none; }
       .instant .bar { animation: none; }
     </style>
   </head>
@@ -1625,20 +1678,36 @@ const HIRE_HTML = `<!doctype html>
     <main class="paper">
       <div class="grain" aria-hidden="true"></div>
       <i class="bar" aria-hidden="true"></i>
-      <div class="fa" lang="fa" aria-hidden="true">میلاد</div>
-      <div class="card">
-        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><polygon pathLength="1" points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /><circle pathLength="1" cx="16" cy="16" r="3.4" /></svg>
-        <p class="eyebrow">AI consulting for small businesses</p>
-        <h1>Milad <em>&amp;</em> Co.</h1>
-        <svg class="swash" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 22 C 70 6, 150 4, 296 14" /></svg>
-        <p class="sub">Hiring me now runs through my consulting practice — taking you there.</p>
+      <div class="wrapm">
+        <nav class="mnav rise">
+          <span class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /><circle cx="16" cy="16" r="3.4" /></svg><span>Milad <em>&amp;</em> Co.</span></span>
+          <span class="mlinks" aria-hidden="true"><span>Services</span><span>Industries</span><span>What it's worth</span><span>FAQ</span></span>
+          <span class="pill">Book a call</span>
+        </nav>
+        <div class="mhero">
+          <div>
+            <p class="eyebrow rise">AI consulting for small businesses</p>
+            <h1 class="rise">A new beginning for how your business <span class="swash-word">works.<svg class="swash" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 22 C 70 6, 150 4, 296 14" /></svg></span></h1>
+            <p class="lede rise">We find the repetitive work in your week, show you what it's worth, and build AI that handles it. It's trained on your business, written in your voice, and it asks before it acts.</p>
+            <div class="cta-row rise"><span class="btn btn-primary">Book a free intro call</span><span class="btn btn-ghost">See what you'd save&nbsp;&nbsp;&#8594;</span></div>
+          </div>
+          <div class="seed rise" aria-hidden="true">
+            <div class="seed__pattern"></div>
+            <svg class="seed__burst" viewBox="0 0 200 200"><polygon points="100,0 128,42 170,30 158,72 200,100 158,128 170,170 128,158 100,200 72,158 30,170 42,128 0,100 42,72 30,30 72,42" /></svg>
+            <span class="seed__fa" lang="fa">میلاد</span>
+            <svg class="seed__star" viewBox="0 0 32 32"><polygon points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /></svg>
+            <i class="dot dot--a"></i><i class="dot dot--b"></i><i class="dot dot--c"></i>
+          </div>
+        </div>
       </div>
+      <div class="scrollcue rise" aria-hidden="true"><i></i>SCROLL</div>
       <p class="hint">Forwarding to <b>miladand.co</b> — click anywhere to jump now · <a href="/" data-stay>stay on farazian.com</a></p>
     </main>
     <script>
       // The hand-off choreography: type the command in this site's terminal,
-      // wipe to Milad & Co.'s paper, assemble its hero, then forward.
-      // Click/Enter skips ahead; Esc or the "stay" link cancels.
+      // wipe to Milad & Co.'s hero rebuilt in place, then forward — the real
+      // page loads looking the same. Click/Enter skips ahead; Esc or the
+      // "stay" link cancels.
       (function () {
         var DEST = "${MILADANDCO}/";
         var root = document.documentElement;
@@ -1650,7 +1719,7 @@ const HIRE_HTML = `<!doctype html>
           t2 = setTimeout(go, 900);
         } else {
           t1 = setTimeout(function () { root.classList.add("go"); }, 1400);
-          t2 = setTimeout(go, 3650);
+          t2 = setTimeout(go, 3800);
         }
         var cancel = function () { done = true; clearTimeout(t1); clearTimeout(t2); };
         document.querySelector("[data-stay]").addEventListener("click", function (e) { e.stopPropagation(); cancel(); });
