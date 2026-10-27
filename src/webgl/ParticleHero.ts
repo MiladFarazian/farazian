@@ -209,7 +209,12 @@ export class ParticleHero {
       new THREE.Vector2(w, h),
       strong ? 0.55 : mobile ? 0.5 : 0.42, // strength
       0.4, // radius
-      strong ? 0.34 : mobile ? 0.3 : 0.42 // threshold — only bright cores bloom
+      // Threshold sits ABOVE the sunlit water backdrop (its brightest
+      // patches reach ~0.45 luminance) so only the near-white particle
+      // name blooms. The old 0.30-0.42 values were tuned for the near-
+      // black cyber backdrop; against ocean blue they bloomed the whole
+      // background into washed-out turquoise clouds.
+      strong ? 0.55 : mobile ? 0.52 : 0.55
     );
     this.composer.addPass(this.bloomPass);
 
