@@ -1521,7 +1521,8 @@ const HIRE_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#04060a" />
+    <meta name="theme-color" content="#f8f5f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141012" media="(prefers-color-scheme: dark)" />
     <title>Hire Me — Milad Farazian</title>
     <meta name="description" content="Hiring Milad runs through Milad & Co. — his AI consulting practice. This page hands you over to miladand.co." />
     <link rel="canonical" href="https://farazian.com/hire/" />
@@ -1539,189 +1540,133 @@ const HIRE_HTML = `<!doctype html>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400..700&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet" />
-    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
     <noscript><meta http-equiv="refresh" content="0; url=${MILADANDCO}/" /></noscript>
     <style>
-      /* Phase 1 is this site's dark terminal; phase 2 is a faithful
-         recreation of miladand.co's actual hero (nav, headline, lede,
-         CTAs, rosette + میلاد starburst) in its exact tokens, so the
-         redirect swap is nearly invisible. Light and dark both match. */
+      /* No transition theater: the page IS Milad & Co.'s landing hero,
+         rebuilt in its exact tokens (miladand.co/css/styles.css), and it
+         quietly forwards — so the swap to the real site is near-invisible.
+         Light and dark both match the destination. */
       :root {
         --bg: #f8f5f0; --text: #22191a; --muted: #6e6460; --rose: #7b1e2c;
-        --accent: #7b1e2c; --accent-2: #651824; --on-accent: #ffffff;
-        --border: #d6cdc1; --surface: #ffffff; --gold: #b89b5e; --grain: 0.07;
-        --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76' viewBox='0 0 32 32'%3E%3Cpolygon points='16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8' fill='none' stroke='%237b1e2c' stroke-opacity='0.22' stroke-width='0.55'/%3E%3C/svg%3E");
+        --accent: #7b1e2c; --on-accent: #ffffff; --border: #d6cdc1;
+        --surface: #ffffff; --gold: #b89b5e; --grain: 0.07;
       }
       @media (prefers-color-scheme: dark) {
         :root {
           --bg: #141012; --text: #efe8e3; --muted: #a59a96; --rose: #e8919d;
-          --accent: #a8394b; --accent-2: #bb4458; --border: #43393b; --surface: #201a1c;
-          --gold: #d6a24e; --grain: 0.09;
-          --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76' viewBox='0 0 32 32'%3E%3Cpolygon points='16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8' fill='none' stroke='%23e8919d' stroke-opacity='0.2' stroke-width='0.55'/%3E%3C/svg%3E");
+          --accent: #a8394b; --on-accent: #ffffff; --border: #43393b;
+          --surface: #201a1c; --gold: #d6a24e; --grain: 0.09;
         }
       }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { height: 100%; }
-      body { background: #04060a; overflow: hidden; cursor: pointer;
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-      @font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+      body { background: var(--bg); color: var(--text); overflow: hidden; cursor: pointer;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased; }
 
-      .term { position: fixed; inset: 0; display: grid; place-items: center; background: #04060a;
-        background-image: linear-gradient(rgba(95, 251, 241, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(95, 251, 241, 0.035) 1px, transparent 1px);
-        background-size: 56px 56px; }
-      .term__brand { position: fixed; top: 26px; left: 30px; font: 700 13px "JetBrains Mono", monospace; letter-spacing: 0.08em; color: #5ffbf1; border: 1px solid rgba(95, 251, 241, 0.35); padding: 6px 9px; border-radius: 4px; }
-      .cmd { font: 500 clamp(14px, 2.4vw, 19px)/1.4 "JetBrains Mono", monospace; color: #dfe9ec; white-space: nowrap; }
-      .typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; width: 0ch; animation: type 0.85s steps(26, end) 0.35s forwards; }
-      .caret { display: inline-block; width: 0.6em; height: 1.1em; margin-left: 3px; vertical-align: text-bottom; background: #5ffbf1; animation: blink 1s steps(1, end) infinite; }
-      @keyframes type { to { width: 26ch; } }
-      @keyframes blink { 50% { opacity: 0; } }
-
-      /* The hand-off: Milad & Co.'s page wipes over the terminal and its
-         real hero assembles in place. */
-      .paper { position: fixed; inset: 0; background: var(--bg); color: var(--text); overflow: hidden;
-        clip-path: circle(0% at 50% 50%); transition: clip-path 1.05s cubic-bezier(0.65, 0, 0.35, 1); }
-      .go .paper { clip-path: circle(141.5% at 50% 50%); }
-      .grain { position: absolute; inset: -100%; pointer-events: none; opacity: var(--grain); z-index: 5;
+      .grain { position: fixed; inset: -100%; pointer-events: none; opacity: var(--grain); z-index: 5;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         animation: grain 1.2s steps(5) infinite; }
       @keyframes grain { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-5%, 3%); } 40% { transform: translate(4%, -6%); } 60% { transform: translate(-3%, 7%); } 80% { transform: translate(6%, 2%); } }
-      .bar { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--rose); transform: scaleX(0); transform-origin: 0 50%; z-index: 6; }
-      .go .bar { animation: load 1.85s linear 0.35s forwards; }
+      .bar { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: var(--rose);
+        transform: scaleX(0); transform-origin: 0 50%; z-index: 6;
+        animation: load 1.9s linear 0.15s forwards; }
       @keyframes load { to { transform: scaleX(1); } }
 
-      .wrapm { width: min(1180px, 100% - 48px); margin-inline: auto; }
-      .rise { opacity: 0; transform: translateY(14px); }
-      .go .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
-      @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+      .wrapm { width: min(1180px, 100% - 32px); margin-inline: auto; }
+      main { animation: settle 0.45s ease both; }
+      @keyframes settle { from { opacity: 0; } }
 
       /* Nav — brand, links, Book a call pill */
-      .mnav { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 20px; }
-      .go .mnav { animation-delay: 0.3s; }
-      .brand { display: flex; align-items: center; gap: 9px; }
-      .brand svg { width: 24px; height: 24px; fill: var(--accent); }
-      .brand span { font: 600 17.5px/1 "Fraunces", Georgia, serif; letter-spacing: -0.01em; }
+      .mnav { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 22px; }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .brand > svg { width: 26px; height: 26px; fill: var(--accent); flex: 0 0 auto; }
+      .brand span { font: 600 19px/1 "Fraunces", Georgia, serif; letter-spacing: -0.01em; white-space: nowrap; }
       .brand em { font-style: italic; font-weight: 400; color: var(--rose); }
-      .mlinks { display: flex; gap: 28px; font: 500 15px/1 "Inter", sans-serif; color: var(--text); }
-      .pill { font: 600 14px/1 "Inter", sans-serif; color: var(--on-accent); background: var(--accent);
-        border-radius: 999px; padding: 12px 20px; white-space: nowrap; }
+      .mlinks { display: flex; gap: 30px; font: 500 15px/1 "Inter", sans-serif; color: var(--text); }
+      .pill { font: 600 14.5px/1 "Inter", sans-serif; color: var(--on-accent); background: var(--accent);
+        border-radius: 999px; padding: 13px 22px; white-space: nowrap; }
 
-      /* Hero — exact copy of the live site's */
-      .mhero { display: grid; grid-template-columns: 1.08fr 0.92fr; align-items: center; gap: 24px;
-        min-height: min(78vh, 700px); padding-top: clamp(10px, 3vh, 36px); }
-      .eyebrow { font: 700 12px/1 "Inter", sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 20px; }
-      .go .eyebrow { animation-delay: 0.5s; }
-      h1 { font-family: "Fraunces", Georgia, serif; font-weight: 360; font-size: clamp(40px, 6.4vw, 86px);
-        letter-spacing: -0.02em; line-height: 1.04; margin-bottom: 26px; }
-      .go h1 { animation-delay: 0.62s; }
+      /* Hero — matches the live site's landing state */
+      .mhero { display: grid; grid-template-columns: 1.02fr 0.98fr; align-items: center; gap: 10px;
+        min-height: calc(100vh - 170px); min-height: calc(100svh - 170px); }
+      .eyebrow { font: 700 12.5px/1 "Inter", sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 22px; }
+      h1 { font-family: "Fraunces", Georgia, serif; font-weight: 350; font-size: clamp(44px, 7vw, 96px);
+        letter-spacing: -0.02em; line-height: 1.04; margin-bottom: 28px; max-width: 10.5ch; }
       .swash-word { position: relative; font-style: italic; font-weight: 400; color: var(--rose); white-space: nowrap; }
-      .swash { position: absolute; left: 0; right: 0; bottom: -0.12em; width: 100%; height: 0.22em; }
-      .swash path { fill: none; stroke: var(--rose); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-      .go .swash path { animation: draw 0.8s ease 1.15s forwards; }
-      @keyframes draw { to { stroke-dashoffset: 0; } }
-      .lede { font: 400 clamp(16px, 1.6vw, 19px)/1.6 "Inter", sans-serif; color: var(--muted); max-width: 32em; margin-bottom: 34px; }
-      .go .lede { animation-delay: 0.78s; }
+      .swash { position: absolute; left: 0; right: 0; bottom: -0.1em; width: 100%; height: 0.22em; }
+      .swash path { fill: none; stroke: var(--rose); stroke-width: 3.4; stroke-linecap: round; }
+      .lede { font: 400 clamp(16px, 1.55vw, 19px)/1.6 "Inter", sans-serif; color: var(--muted); max-width: 30em; margin-bottom: 36px; }
       .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-      .go .cta-row { animation-delay: 0.92s; }
-      .btn { font: 600 16px/1 "Inter", sans-serif; border-radius: 999px; padding: 18px 28px; white-space: nowrap; }
+      .btn { font: 600 16px/1 "Inter", sans-serif; border-radius: 999px; padding: 19px 30px; white-space: nowrap; }
       .btn-primary { background: var(--accent); color: var(--on-accent); }
       .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
 
-      /* The rosette side: tiled star pattern under a radial mask, the
-         16-point starburst, میلاد, and the floating gold dots. */
-      .seed { position: relative; height: clamp(320px, 58vh, 560px); }
-      .go .seed { animation-delay: 0.55s; }
-      .seed__pattern { position: absolute; inset: -12% -18%; background-image: var(--pattern);
-        -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 78%);
-        mask-image: radial-gradient(closest-side, #000 30%, transparent 78%); }
-      .seed__burst { position: absolute; top: 50%; left: 50%; width: clamp(170px, 20vw, 240px);
-        transform: translate(-50%, -50%); }
-      .seed__burst polygon { fill: none; stroke: var(--rose); stroke-width: 1.6; }
-      .seed__fa { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -56%);
-        font-family: "Noto Nastaliq Urdu", serif; font-size: clamp(34px, 3.6vw, 48px); color: var(--rose); line-height: 1; }
-      .seed__star { position: absolute; top: 8%; left: 2%; width: 26px; height: 26px; }
-      .seed__star polygon { fill: none; stroke: var(--rose); stroke-width: 1.4; }
-      .dot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); opacity: 0.8; }
-      .dot--a { top: 24%; right: 16%; } .dot--b { bottom: 20%; left: 18%; } .dot--c { top: 55%; left: 4%; }
+      /* The rosette: rings of star outlines, the spiky starburst, میلاد */
+      .seed { position: relative; height: min(72vh, 660px); }
+      .rosette { position: absolute; inset: 50% auto auto 50%; width: min(150%, 680px); aspect-ratio: 1;
+        transform: translate(-50%, -50%); color: var(--rose); }
+      .rosette__web { opacity: 0.35; }
+      .rosette__burst { stroke: var(--rose); }
+      .rosette__dot { fill: var(--gold); opacity: 0.85; }
+      .seed__fa { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -58%) rotate(-12deg);
+        font-family: "Noto Nastaliq Urdu", serif; font-size: clamp(30px, 3vw, 42px); color: var(--rose); line-height: 1; }
 
-      .scrollcue { position: absolute; left: 50%; bottom: 46px; transform: translateX(-50%); z-index: 4;
+      .scrollcue { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); z-index: 4;
         display: flex; flex-direction: column; align-items: center; gap: 8px;
         font: 600 10px/1 "Inter", sans-serif; letter-spacing: 0.22em; color: var(--muted); }
       .scrollcue i { display: block; width: 1px; height: 26px; background: var(--rose); }
-      .go .scrollcue { animation-delay: 1.2s; }
-      .hint { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; z-index: 6;
-        font: 400 11px/1.6 "JetBrains Mono", monospace; letter-spacing: 0.02em; color: var(--muted); opacity: 0; padding: 0 16px; }
-      .go .hint { animation: rise 0.7s ease 1.3s forwards; }
+      .hint { position: fixed; left: 0; right: 0; bottom: 10px; text-align: center; z-index: 6;
+        font: 500 11.5px/1.6 "Inter", sans-serif; color: var(--muted); opacity: 0.85; padding: 0 16px; }
       .hint a { color: var(--rose); }
 
-      @media (max-width: 860px) {
+      @media (max-width: 900px) {
         .mlinks { display: none; }
-        .mhero { grid-template-columns: 1fr; padding-top: 40px; }
-        .seed { position: absolute; inset: 0; height: auto; opacity: 0.3; pointer-events: none; }
-        .go .seed { animation-delay: 0.4s; }
-        h1 { font-size: clamp(38px, 10vw, 56px); }
+        .mhero { grid-template-columns: 1fr; min-height: calc(100vh - 140px); min-height: calc(100svh - 140px); }
+        .seed { position: absolute; inset: 0; height: auto; opacity: 0.25; pointer-events: none; z-index: -1; }
+        h1 { font-size: clamp(40px, 10.5vw, 64px); }
       }
-
-      /* Reduced motion (JS adds .instant): no choreography — the finished
-         hero, then the forward. */
-      .instant .paper { clip-path: circle(141.5% at 50% 50%); transition: none; }
-      .instant .grain { animation: none; }
-      .instant .rise, .instant .hint { opacity: 1; transform: none; animation: none; }
-      .instant .swash path { stroke-dashoffset: 0; animation: none; }
-      .instant .bar { animation: none; }
+      @media (prefers-reduced-motion: reduce) {
+        .grain, main { animation: none; }
+      }
     </style>
   </head>
   <body>
-    <div class="term" aria-hidden="true">
-      <span class="term__brand">MF</span>
-      <p class="cmd"><span class="typed">$ open https://miladand.co</span><span class="caret"></span></p>
-    </div>
-    <main class="paper">
-      <div class="grain" aria-hidden="true"></div>
-      <i class="bar" aria-hidden="true"></i>
+    <div class="grain" aria-hidden="true"></div>
+    <i class="bar" aria-hidden="true"></i>
+    <main>
       <div class="wrapm">
-        <nav class="mnav rise">
-          <span class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /><circle cx="16" cy="16" r="3.4" /></svg><span>Milad <em>&amp;</em> Co.</span></span>
+        <nav class="mnav">
+          <span class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /><circle cx="16" cy="16" r="3.4" fill="var(--bg)" /></svg><span>Milad <em>&amp;</em> Co.</span></span>
           <span class="mlinks" aria-hidden="true"><span>Services</span><span>Industries</span><span>What it's worth</span><span>FAQ</span></span>
           <span class="pill">Book a call</span>
         </nav>
         <div class="mhero">
           <div>
-            <p class="eyebrow rise">AI consulting for small businesses</p>
-            <h1 class="rise">A new beginning for how your business <span class="swash-word">works.<svg class="swash" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 22 C 70 6, 150 4, 296 14" /></svg></span></h1>
-            <p class="lede rise">We find the repetitive work in your week, show you what it's worth, and build AI that handles it. It's trained on your business, written in your voice, and it asks before it acts.</p>
-            <div class="cta-row rise"><span class="btn btn-primary">Book a free intro call</span><span class="btn btn-ghost">See what you'd save&nbsp;&nbsp;&#8594;</span></div>
+            <p class="eyebrow">AI consulting for small businesses</p>
+            <h1>A new beginning for how your business <span class="swash-word">works.<svg class="swash" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M4 22 C 70 6, 150 4, 296 14" /></svg></span></h1>
+            <p class="lede">We find the repetitive work in your week, show you what it's worth, and build AI that handles it. It's trained on your business, written in your voice, and it asks before it acts.</p>
+            <div class="cta-row"><span class="btn btn-primary">Book a free intro call</span><span class="btn btn-ghost">See what you'd save&nbsp;&nbsp;&#8594;</span></div>
           </div>
-          <div class="seed rise" aria-hidden="true">
-            <div class="seed__pattern"></div>
-            <svg class="seed__burst" viewBox="0 0 200 200"><polygon points="100,0 128,42 170,30 158,72 200,100 158,128 170,170 128,158 100,200 72,158 30,170 42,128 0,100 42,72 30,30 72,42" /></svg>
+          <div class="seed" aria-hidden="true">
+            <svg class="rosette" viewBox="0 0 640 640" aria-hidden="true"><defs><g id="st8"><polygon points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" fill="none" stroke="currentColor" stroke-width="0.9" transform="translate(-16,-16)"/></g></defs><g class="rosette__web"><use href="#st8" x="0" y="0" transform="translate(424.0,320.0) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(393.5,393.5) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(320.0,424.0) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(246.5,393.5) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(216.0,320.0) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(246.5,246.5) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(320.0,216.0) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(393.5,246.5) scale(1.44)"/><use href="#st8" x="0" y="0" transform="translate(502.6,364.7) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(460.9,444.4) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(387.0,495.7) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(297.6,506.7) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(213.5,474.9) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(153.7,407.6) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(132.0,320.3) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(153.4,232.9) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(212.9,165.5) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(297.0,133.4) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(386.4,144.1) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(460.5,195.1) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(502.5,274.7) scale(1.67)"/><use href="#st8" x="0" y="0" transform="translate(590.0,352.6) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(562.6,443.0) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(505.9,518.5) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(426.8,570.1) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(334.8,591.6) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(241.0,580.3) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(156.8,537.6) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(92.2,468.6) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(55.1,381.8) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(50.0,287.4) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(77.4,197.0) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(134.1,121.5) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(213.2,69.9) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(305.2,48.4) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(399.0,59.7) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(483.2,102.4) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(547.8,171.4) scale(1.90)"/><use href="#st8" x="0" y="0" transform="translate(584.9,258.2) scale(1.90)"/></g><polygon class="rosette__burst" points="320.0,224.0 330.1,269.0 356.7,231.3 348.9,276.8 387.9,252.1 363.2,291.1 408.7,283.3 371.0,309.9 416.0,320.0 371.0,330.1 408.7,356.7 363.2,348.9 387.9,387.9 348.9,363.2 356.7,408.7 330.1,371.0 320.0,416.0 309.9,371.0 283.3,408.7 291.1,363.2 252.1,387.9 276.8,348.9 231.3,356.7 269.0,330.1 224.0,320.0 269.0,309.9 231.3,283.3 276.8,291.1 252.1,252.1 291.1,276.8 283.3,231.3 309.9,269.0" fill="none" stroke-width="1.5"/><circle class="rosette__dot" cx="150" cy="180" r="4.5"/><circle class="rosette__dot" cx="492" cy="208" r="4.5"/><circle class="rosette__dot" cx="208" cy="468" r="4.5"/><circle class="rosette__dot" cx="462" cy="430" r="4.5"/><circle class="rosette__dot" cx="320" cy="92" r="4.5"/></svg>
             <span class="seed__fa" lang="fa">میلاد</span>
-            <svg class="seed__star" viewBox="0 0 32 32"><polygon points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /></svg>
-            <i class="dot dot--a"></i><i class="dot dot--b"></i><i class="dot dot--c"></i>
           </div>
         </div>
       </div>
-      <div class="scrollcue rise" aria-hidden="true"><i></i>SCROLL</div>
-      <p class="hint">Forwarding to <b>miladand.co</b> — click anywhere to jump now · <a href="/" data-stay>stay on farazian.com</a></p>
+      <div class="scrollcue" aria-hidden="true"><i></i>SCROLL</div>
+      <p class="hint">Taking you to <b>miladand.co</b> · click to jump now · <a href="/" data-stay>stay on farazian.com</a></p>
     </main>
     <script>
-      // The hand-off choreography: type the command in this site's terminal,
-      // wipe to Milad & Co.'s hero rebuilt in place, then forward — the real
-      // page loads looking the same. Click/Enter skips ahead; Esc or the
-      // "stay" link cancels.
+      // The page opens as Milad & Co.'s landing hero and forwards after a
+      // beat, so the swap to the real site is near-invisible. Click/Enter
+      // jumps now; Esc or the "stay" link cancels.
       (function () {
         var DEST = "${MILADANDCO}/";
-        var root = document.documentElement;
         var done = false;
         var go = function () { if (done) return; done = true; location.replace(DEST); };
-        var t1, t2;
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          root.classList.add("go", "instant");
-          t2 = setTimeout(go, 900);
-        } else {
-          t1 = setTimeout(function () { root.classList.add("go"); }, 1400);
-          t2 = setTimeout(go, 3800);
-        }
-        var cancel = function () { done = true; clearTimeout(t1); clearTimeout(t2); };
+        var t = setTimeout(go, 2150);
+        var cancel = function () { done = true; clearTimeout(t); };
         document.querySelector("[data-stay]").addEventListener("click", function (e) { e.stopPropagation(); cancel(); });
         addEventListener("click", go);
         addEventListener("keydown", function (e) {
