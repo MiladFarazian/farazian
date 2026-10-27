@@ -4,17 +4,19 @@
    ============================================================ */
 
 :root {
-  --bg: #04060a;
-  --bg-2: #070b12;
-  --ink: #e8f0ff;
-  --ink-dim: #8aa0c0;
-  --ink-faint: #72829a; /* meets WCAG AA (>=4.5:1) on the dark background */
-  --cyan: #2af5ff;
-  --violet: #b06bff;
-  --magenta: #ff3ec9;
-  --line: rgba(110, 150, 220, 0.14);
-  --glow-cyan: 0 0 24px rgba(42, 245, 255, 0.45);
-  --glow-violet: 0 0 28px rgba(176, 107, 255, 0.4);
+  /* Pelagic — twilight-zone open water (approved in the Design Lab):
+     depth-gradient blue ground, seafoam primary, light-water secondary. */
+  --bg: #063250;
+  --bg-2: #084a72;
+  --ink: #eaf7f4;
+  --ink-dim: #b3d6dc;
+  --ink-faint: #a8cdd6; /* meets WCAG AA (>=4.5:1) on the ocean background */
+  --cyan: #9fe8d4;
+  --violet: #8fc6f2;
+  --magenta: #6fd8ff;
+  --line: rgba(191, 234, 223, 0.2);
+  --glow-cyan: 0 0 24px rgba(159, 232, 212, 0.45);
+  --glow-violet: 0 0 28px rgba(143, 198, 242, 0.4);
   --font-sans: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
   --maxw: 1200px;
@@ -85,17 +87,35 @@ body {
   }
 }
 
-/* subtle animated base gradient behind canvas */
+/* the water column: depth gradient behind everything */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(70% 50% at 50% 0%, rgba(45, 60, 130, 0.18), transparent 70%),
-    radial-gradient(60% 60% at 85% 30%, rgba(176, 107, 255, 0.1), transparent 70%),
-    radial-gradient(50% 50% at 10% 70%, rgba(42, 245, 255, 0.08), transparent 70%),
-    var(--bg);
+    radial-gradient(70% 45% at 50% 0%, rgba(214, 248, 255, 0.16), transparent 72%),
+    radial-gradient(60% 60% at 85% 30%, rgba(143, 198, 242, 0.1), transparent 70%),
+    linear-gradient(180deg, #063250 0%, #084a72 55%, #0a5a86 100%);
+}
+/* god rays sweeping down from the surface */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(104deg,
+    transparent 18%, rgba(205, 240, 255, 0.09) 23%, transparent 30%,
+    transparent 44%, rgba(205, 240, 255, 0.07) 50%, transparent 58%,
+    transparent 70%, rgba(205, 240, 255, 0.08) 76%, transparent 84%);
+  animation: god-rays 11s ease-in-out infinite alternate;
+}
+@keyframes god-rays {
+  to { transform: translateX(52px); opacity: 0.6; }
+}
+.reduced-motion body::after {
+  animation: none;
 }
 
 a {
@@ -112,7 +132,7 @@ strong {
 }
 
 ::selection {
-  background: rgba(42, 245, 255, 0.25);
+  background: rgba(159, 232, 212, 0.3);
   color: #fff;
 }
 
@@ -1489,7 +1509,7 @@ main {
   font-family: var(--font-sans);
   font-size: 0.95rem;
   color: var(--ink);
-  background: rgba(4, 6, 10, 0.5);
+  background: rgba(4, 24, 38, 0.5);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 0.75em 0.95em;
@@ -1550,9 +1570,9 @@ main {
   align-items: center;
   gap: 0.55em;
   padding: 0.5em 1em;
-  border: 1px solid rgba(42, 245, 255, 0.25);
+  border: 1px solid rgba(159, 232, 212, 0.3);
   border-radius: 999px;
-  background: rgba(4, 6, 10, 0.72);
+  background: rgba(4, 24, 38, 0.72);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   font-family: var(--font-mono);
@@ -1605,7 +1625,7 @@ main {
   font-size: 0.58rem;
   letter-spacing: 0.06em;
   color: hsl(var(--hue, 180) 90% 78% / 0.9);
-  text-shadow: 0 1px 6px rgba(4, 6, 10, 0.9);
+  text-shadow: 0 1px 6px rgba(4, 24, 38, 0.9);
 }
 .presence-cursor.is-gone { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {

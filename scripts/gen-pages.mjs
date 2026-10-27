@@ -130,7 +130,7 @@ const page = (p) => {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#04060a" />
+    <meta name="theme-color" content="#063250" />
     <title>${p.title} — Milad Farazian</title>
     <meta name="description" content="${esc(p.sub)}" />
     <link rel="canonical" href="https://farazian.com/work/${p.slug}/" />
@@ -1412,7 +1412,7 @@ const RESUME_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#04060a" />
+    <meta name="theme-color" content="#063250" />
     <title>Resume — Milad Farazian</title>
     <meta name="description" content="Milad Farazian — full-stack software engineer with AI depth. Parkzy co-founder & CTO, ex-Walmart SWE II, USC M.S. in Computer Science (AI)." />
     <link rel="canonical" href="https://farazian.com/resume/" />
@@ -1754,7 +1754,7 @@ const CREATIVE_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#04060a" />
+    <meta name="theme-color" content="#063250" />
     <title>Creative — Milad Farazian</title>
     <meta name="description" content="The other half of Milad Farazian — original music on Spotify, film & acting credits on IMDb, and the person behind the engineering." />
     <link rel="canonical" href="https://farazian.com/creative/" />
@@ -1834,7 +1834,7 @@ const STATUS_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#04060a" />
+    <meta name="theme-color" content="#063250" />
     <title>Status — Milad Farazian</title>
     <meta name="description" content="Live telemetry for farazian.com — visitors online right now, the edge that served you, the running deploy, MCP call counters, and real-visitor Web Vitals." />
     <link rel="canonical" href="https://farazian.com/status/" />
@@ -1921,7 +1921,7 @@ const ENGINEERING_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#04060a" />
+    <meta name="theme-color" content="#063250" />
     <title>The Engine Room — Milad Farazian</title>
     <meta name="description" content="How farazian.com actually works: the architecture, six ADRs with their tradeoffs, and a real production postmortem. The site is its own case study." />
     <link rel="canonical" href="https://farazian.com/engineering/" />

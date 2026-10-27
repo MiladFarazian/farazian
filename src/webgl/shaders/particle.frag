@@ -15,9 +15,10 @@ void main() {
   if (d > 0.5) discard;
   float alpha = smoothstep(0.5, 0.0, d);
 
-  // Neon gradient: cyan ↔ violet by per-particle seed.
-  vec3 cyan = vec3(0.16, 0.96, 1.0);
-  vec3 violet = vec3(0.69, 0.42, 1.0);
+  // Bioluminescent gradient: seafoam ↔ light-water blue by per-particle
+  // seed (the Pelagic palette's --cyan / --violet).
+  vec3 cyan = vec3(0.624, 0.910, 0.831);
+  vec3 violet = vec3(0.561, 0.776, 0.949);
   vec3 col = mix(cyan, violet, vSeed);
 
   // A touch of white-hot energy where particles are pushed off the z=0 plane

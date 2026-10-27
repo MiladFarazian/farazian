@@ -425,7 +425,7 @@
   border-radius: 50%;
   color: var(--accent);
   border: 2px solid currentColor;
-  background: rgba(4, 6, 10, 0.65);
+  background: rgba(4, 24, 38, 0.65);
   backdrop-filter: blur(4px);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   font-size: 0.9rem;
@@ -442,7 +442,7 @@
   text-transform: uppercase;
   padding: 0.3em 0.6em;
   border-radius: 6px;
-  background: rgba(4, 6, 10, 0.62);
+  background: rgba(4, 24, 38, 0.62);
   backdrop-filter: blur(4px);
   pointer-events: none;
 }
@@ -1145,7 +1145,7 @@
 @media (max-width: 860px) { .mcpp__panes { grid-template-columns: 1fr; } }
 .mcpp__pane {
   border: 1px solid var(--line); border-radius: 12px;
-  background: rgba(4, 6, 10, 0.75); overflow: hidden;
+  background: rgba(4, 24, 38, 0.75); overflow: hidden;
   display: grid; grid-template-rows: auto 1fr;
 }
 .mcpp__panehead {
@@ -1328,7 +1328,7 @@
 .askd__chip:hover { color: var(--cyan); border-color: rgba(42, 245, 255, 0.4); }
 .askd__thinking { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-faint); padding: 0.6rem 0.2rem; }
 .askd__answer {
-  border: 1px solid rgba(42, 245, 255, 0.25); border-left: 3px solid var(--cyan);
+  border: 1px solid rgba(159, 232, 212, 0.3); border-left: 3px solid var(--cyan);
   border-radius: 12px; background: rgba(42, 245, 255, 0.04);
   padding: 1.1rem 1.3rem; display: grid; gap: 0.6rem;
 }

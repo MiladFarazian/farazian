@@ -293,7 +293,7 @@ function runMatrix() {
   const draw = () => {
     ctx.fillStyle = "rgba(4,6,10,0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#2af5ff";
+    ctx.fillStyle = "#9fe8d4";
     ctx.font = "14px monospace";
     for (let i = 0; i < drops.length; i++) {
       const ch = chars[Math.floor(Math.random() * chars.length)];
