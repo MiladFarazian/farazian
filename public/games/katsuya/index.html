@@ -10,28 +10,36 @@ body { background: #000; display: flex; justify-content: center; align-items: ce
   position: relative; width: 1600px; height: 800px;
   transform-origin: center center;
 }
-canvas { display: block; cursor: crosshair; }
+canvas { display: block; cursor: url('images/crosshair.png') 16 16, crosshair; }
+/* The game's button style: black lacquer, gold border, cream lettering; warms to red lacquer on hover */
 .btn {
-  position: absolute; font: bold 22px 'Segoe UI', sans-serif; color: #fff;
-  background: rgba(40,40,60,0.85); border: 2px solid rgba(200,170,50,0.6);
-  cursor: pointer; text-align: center; padding: 0;
+  position: absolute; padding: 0; cursor: pointer; text-align: center;
+  font: 700 24px 'Gill Sans', 'Gill Sans MT', Optima, sans-serif; color: #f6eace; letter-spacing: 0.5px;
+  background: linear-gradient(#2c2428, #100c0e); border: 2px solid #d4ac48; border-radius: 14px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.45), inset 0 0 0 4px #100c0e, inset 0 0 0 5px rgba(212,172,72,0.35);
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+  transition: background 0.12s, border-color 0.12s, transform 0.05s;
 }
-.btn:hover { background: rgba(60,60,90,0.95); border-color: rgba(200,170,50,0.9); }
-#nextBtn   { right: 80px; bottom: 75px; width: 320px; height: 75px; font-size: 28px; }
-#pauseBtn  { left: 30px; bottom: 50px; width: 36px; height: 36px; font-size: 18px; display: none; }
-#resumeBtn { left: 285px; bottom: 50px; width: 100px; height: 36px; display: none; }
-#restartBtn{ left: 285px; bottom: 95px; width: 100px; height: 36px; display: none; }
-#quitBtn   { left: 285px; bottom: 140px; width: 100px; height: 36px; display: none; }
+.btn.primary, .btn:hover { background: linear-gradient(#b0222a, #600e14); }
+.btn:hover { border-color: #ffdc82; }
+.btn:active { transform: translateY(1px); filter: brightness(0.9); }
+#nextBtn   { right: 40px; bottom: 15px; width: 320px; height: 64px; font-size: 26px; }
+#pauseBtn  { left: 22px; top: 20px; width: 56px; height: 52px; font-size: 20px; display: none; }
+.menuBtn   { left: 620px; width: 360px; height: 58px; display: none; }
+#resumeBtn { top: 318px; }
+#restartBtn{ top: 390px; }
+#quitBtn   { top: 462px; }
+#deathBtn  { left: 590px; top: 500px; width: 420px; height: 70px; font-size: 26px; display: none; }
 #loading   { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
              color: #c8aa32; font: 24px serif; }
 /* Desktop controls hint (hidden on touch, which gets the on-screen pad). */
 #ctrlHint {
   position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
-  font: 12px 'Segoe UI', sans-serif; letter-spacing: 0.04em; color: #7d8aa0;
+  font: 12px 'Gill Sans', 'Gill Sans MT', Optima, sans-serif; letter-spacing: 0.04em; color: #7d8aa0;
   white-space: nowrap; pointer-events: none; z-index: 20;
 }
 #ctrlHint b { color: #c8aa32; font-weight: 600; }
-/* On-screen movement pad for touch devices. */
+/* On-screen pad for touch devices; shooting stays a tap on the canvas. */
 .touch-pad {
   position: fixed; left: 0; right: 0; bottom: 12px; z-index: 20;
   display: none; justify-content: space-between; align-items: flex-end;
@@ -39,13 +47,14 @@ canvas { display: block; cursor: crosshair; }
 }
 .touch-pad > * { pointer-events: auto; }
 .touch-pad__move { display: flex; gap: 12px; }
+.touch-pad__act { display: flex; gap: 12px; }
 .touch-pad button {
-  font: bold 20px 'Segoe UI', sans-serif; color: #fff;
-  background: rgba(40,40,60,0.7); border: 2px solid rgba(200,170,50,0.6);
+  font: 700 20px 'Gill Sans', 'Gill Sans MT', Optima, sans-serif; color: #f6eace;
+  background: linear-gradient(#2c2428, #100c0e); border: 2px solid #d4ac48;
   border-radius: 14px; padding: 16px 22px; min-width: 66px;
   user-select: none; -webkit-user-select: none; touch-action: none;
 }
-.touch-pad button:active { background: rgba(200,170,50,0.35); }
+.touch-pad button:active { background: linear-gradient(#b0222a, #600e14); }
 @media (hover: none) {
   #ctrlHint { display: none; }
   .touch-pad { display: flex; }
@@ -57,19 +66,42 @@ canvas { display: block; cursor: crosshair; }
   <canvas id="c" width="1600" height="800"></canvas>
   <div id="loading">Loading assets...</div>
   <button class="btn" id="nextBtn">Next</button>
-  <button class="btn" id="pauseBtn">||</button>
-  <button class="btn" id="resumeBtn">Resume</button>
-  <button class="btn" id="restartBtn">Restart</button>
-  <button class="btn" id="quitBtn" style="display:none">Quit</button>
+  <button class="btn" id="pauseBtn" title="Pause (Esc / P)">II</button>
+  <button class="btn menuBtn primary" id="resumeBtn">Resume</button>
+  <button class="btn menuBtn" id="restartBtn">Restart Level</button>
+  <button class="btn menuBtn" id="quitBtn">Main Menu</button>
+  <button class="btn primary" id="deathBtn">Restart Level</button>
 </div>
-<div id="ctrlHint"><b>A / D</b> or <b>← →</b> move · <b>Space</b> jump · <b>click</b> to shoot</div>
+<div id="ctrlHint"><b>A / D</b> or <b>&#8592; &#8594;</b> move &#183; <b>Space</b> jump &#183; <b>click</b> shoot &#183; <b>S</b> katana &#183; <b>Esc</b> pause</div>
 <div class="touch-pad" aria-hidden="true">
   <div class="touch-pad__move">
-    <button id="leftBtn" aria-label="Move left">◀</button>
-    <button id="rightBtn" aria-label="Move right">▶</button>
+    <button id="padLeft" aria-label="Move left">&#9664;</button>
+    <button id="padRight" aria-label="Move right">&#9654;</button>
   </div>
-  <button id="jumpBtn" aria-label="Jump">JUMP</button>
+  <div class="touch-pad__act">
+    <button id="padSlash" aria-label="Katana slash">SLASH</button>
+    <button id="padJump" aria-label="Jump">JUMP</button>
+  </div>
 </div>
+<script>
+// Touch pad: hold a button, dispatch the matching key events the game reads.
+(function () {
+  function hold(id, code) {
+    var el = document.getElementById(id);
+    var down = function (e) { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { code: code })); };
+    var up = function (e) { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { code: code })); };
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('pointerleave', up);
+  }
+  hold('padLeft', 'KeyA');
+  hold('padRight', 'KeyD');
+  hold('padJump', 'Space');
+  hold('padSlash', 'KeyS');
+})();
+</script>
+<script src="images/Cutscenes/actors.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
