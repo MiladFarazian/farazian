@@ -31,13 +31,13 @@ void main() {
   // the field in coherent patches — the water shows through INSIDE the
   // letters — and tints the thin patches deeper blue. Reads as dappled
   // light moving across the name.
-  float patch = n2(vPos.xy * 2.6 + vec2(uTime * 0.18, -uTime * 0.12));
-  patch = clamp(patch * 0.75 + 0.35 * n2(vPos.xy * 6.0 - vec2(uTime * 0.1, 0.0)), 0.0, 1.0);
-  alpha *= 0.18 + 0.82 * patch * patch;
+  float dapple = n2(vPos.xy * 2.6 + vec2(uTime * 0.18, -uTime * 0.12));
+  dapple = clamp(dapple * 0.75 + 0.35 * n2(vPos.xy * 6.0 - vec2(uTime * 0.1, 0.0)), 0.0, 1.0);
+  alpha *= 0.18 + 0.82 * dapple * dapple;
 
   vec3 bright = vec3(0.86, 1.0, 0.95);
   vec3 deep = vec3(0.07, 0.34, 0.58);
-  vec3 col = mix(deep, bright, 0.15 + 0.85 * patch);
+  vec3 col = mix(deep, bright, 0.15 + 0.85 * dapple);
 
   // A touch of white-hot energy where particles are pushed off the z=0 plane
   // (mouse / burst). Kept subtle so dense areas don't blow out to white.
