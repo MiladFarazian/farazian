@@ -6,6 +6,7 @@ uniform float uTime;
 uniform vec2 uResolution;
 uniform vec2 uMouse; // normalized 0..1
 uniform float uFade;
+uniform float uSchool; // 1 = fish-school mode: full water in the backdrop
 
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -53,6 +54,27 @@ void main() {
 
   // Light from the surface: a bright wash at the top of the frame.
   col += vec3(0.30, 0.55, 0.60) * smoothstep(0.1, 0.9, p.y) * 0.22;
+
+  // School mode: the backdrop carries the page's full water — caustic
+  // webs and rising bubbles — so the landing view reads underwater.
+  if (uSchool > 0.5) {
+    float cw = fbm(p * 4.2 + vec2(uTime * 0.22, 0.0)) * fbm(p * 4.2 - vec2(0.0, uTime * 0.16));
+    float caust = pow(clamp(cw * 1.55, 0.0, 1.0), 6.0);
+    col += vec3(0.45, 0.95, 0.88) * caust * 0.45 * (0.3 + 0.5 * smoothstep(-0.5, 0.5, p.y));
+    float bub = 0.0;
+    for (int i = 0; i < 2; i++) {
+      float fi = float(i);
+      float sc = 2.2 + fi * 1.4;
+      vec2 bp = vec2(p.x, p.y - uTime * (0.055 + 0.03 * fi)) * sc + vec2(fi * 17.3, 0.0);
+      vec2 id = floor(bp);
+      float rn = hash(id);
+      vec2 l = fract(bp) - 0.5;
+      l.x -= (rn - 0.5) * 0.5;
+      l.y -= (hash(id + vec2(7.7, 3.1)) - 0.5) * 0.5;
+      bub += smoothstep(0.05 + rn * 0.02, 0.02, length(l)) * step(0.8, rn);
+    }
+    col += vec3(0.75, 0.93, 1.0) * bub * 0.3;
+  }
 
   // Pointer halo — seafoam.
   vec2 mp = uMouse - 0.5;

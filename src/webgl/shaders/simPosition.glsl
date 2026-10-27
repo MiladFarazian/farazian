@@ -10,6 +10,7 @@ uniform vec2 uShockCenter;  // world xy where the last click landed
 uniform float uShockRadius; // expanding shockwave ring radius
 uniform float uShockActive; // 0..1 — decaying shockwave strength
 uniform sampler2D uTarget;  // target ("home") positions = the name
+uniform float uSchool;      // 1 = fish-school mode (?hero=school preview)
 
 void main() {
   vec2 uv = gl_FragCoord.xy / resolution.xy;
@@ -35,6 +36,26 @@ void main() {
     sin(pos.x * 1.3 + t * 0.8)
   );
   acc += swirl * (0.006 * (1.0 - form * 0.85) + 0.0018);
+
+  // School mode: the name is a school of little fish. One shared
+  // large-scale current gives coherent streams (not a swarm); seed-timed
+  // kicks dart each fish forward along it and then the spring glides it
+  // back, and the z-kick fires the fragment shader's white-hot energy
+  // flash — fish catching the light. A slow perpendicular sway is the
+  // tail beat.
+  if (uSchool > 0.5) {
+    float ang = 0.9 * sin(target.x * 1.1 + uTime * 0.33)
+              + 0.7 * cos(target.y * 1.7 + uTime * 0.26)
+              + 0.35 * sin((target.x + target.y) * 0.7 - uTime * 0.18);
+    vec2 dir = vec2(cos(ang), sin(ang) * 0.55);
+    float dartPhase = fract(uTime * (0.10 + 0.06 * seed) + seed * 7.31);
+    float kick = exp(-dartPhase * 6.0);
+    vec2 sway = dir * (0.22 + 0.9 * kick);
+    vec2 perp = vec2(-dir.y, dir.x);
+    sway += perp * sin(uTime * 3.8 + seed * 18.0) * 0.1;
+    acc.xy += sway * 0.018 * form;
+    acc.z += (seed - 0.5) * kick * 0.012 * form;
+  }
 
   // Pointer force field: repel + swirl tangentially = a little vortex.
   vec2 d2 = pos.xy - uMouse;

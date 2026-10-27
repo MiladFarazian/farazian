@@ -101,6 +101,12 @@ export class ParticleHero {
   private debugFormed =
     typeof location !== "undefined" &&
     new URLSearchParams(location.search).has("formed");
+  // Preview: ?hero=school turns the name into a school of fish and paints
+  // the full water (caustics + bubbles) into the backdrop. The default
+  // hero is untouched until the direction is approved.
+  private schoolMode =
+    typeof location !== "undefined" &&
+    new URLSearchParams(location.search).get("hero") === "school";
   private lastTargets: Float32Array | null = null;
 
   constructor(canvas: HTMLCanvasElement, profile: DeviceProfile) {
@@ -169,6 +175,7 @@ export class ParticleHero {
         uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
         uMouse: { value: this.mouseNorm },
         uFade: { value: 1 },
+        uSchool: { value: this.schoolMode ? 1 : 0 },
       },
     });
     this.bgMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.bgMaterial);
@@ -246,6 +253,7 @@ export class ParticleHero {
       uShockRadius: { value: 0 },
       uShockActive: { value: 0 },
       uTarget: { value: targetTex },
+      uSchool: { value: this.schoolMode ? 1 : 0 },
     });
 
     const err = this.gpu.init();
