@@ -80,6 +80,11 @@ void main() {
     col += vec3(0.75, 0.93, 1.0) * bub * 0.3;
   }
 
+  // A soft pool of shade behind the name (screen center), so the bright
+  // particle letters sit on dark water and stay readable.
+  float shade = exp(-pow(p.y * 2.4, 2.0)) * exp(-pow(p.x * 0.55, 4.0));
+  col *= 1.0 - 0.40 * shade;
+
   // Pointer halo — seafoam.
   vec2 mp = uMouse - 0.5;
   mp.x *= aspect;
