@@ -130,7 +130,7 @@ const page = (p) => {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#063250" />
+    <meta name="theme-color" content="#0a639a" />
     <title>${p.title} — Milad Farazian</title>
     <meta name="description" content="${esc(p.sub)}" />
     <link rel="canonical" href="https://farazian.com/work/${p.slug}/" />
@@ -158,7 +158,7 @@ const page = (p) => {
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
     <div class="fx-overlay" aria-hidden="true"></div>
     <header class="nav">
-      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__brand" href="/" aria-label="Milad Farazian — home" data-magnetic><span class="nav__brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 22.5 Q9 9.5 15.5 22 Q22 6 29 21" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></svg></span></a>
       <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
     </header>
     <main class="proj" id="content" tabindex="-1">
@@ -1412,7 +1412,7 @@ const RESUME_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#063250" />
+    <meta name="theme-color" content="#0a639a" />
     <title>Resume — Milad Farazian</title>
     <meta name="description" content="Milad Farazian — full-stack software engineer with AI depth. Parkzy co-founder & CTO, ex-Walmart SWE II, USC M.S. in Computer Science (AI)." />
     <link rel="canonical" href="https://farazian.com/resume/" />
@@ -1434,7 +1434,7 @@ const RESUME_HTML = `<!doctype html>
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
     <div class="fx-overlay" aria-hidden="true"></div>
     <header class="nav">
-      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__brand" href="/" aria-label="Milad Farazian — home" data-magnetic><span class="nav__brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 22.5 Q9 9.5 15.5 22 Q22 6 29 21" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></svg></span></a>
       <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
     </header>
     <main class="proj" id="content" tabindex="-1">
@@ -1754,7 +1754,7 @@ const CREATIVE_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#063250" />
+    <meta name="theme-color" content="#0a639a" />
     <title>Creative — Milad Farazian</title>
     <meta name="description" content="The other half of Milad Farazian — original music on Spotify, film & acting credits on IMDb, and the person behind the engineering." />
     <link rel="canonical" href="https://farazian.com/creative/" />
@@ -1777,7 +1777,7 @@ const CREATIVE_HTML = `<!doctype html>
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
     <div class="fx-overlay" aria-hidden="true"></div>
     <header class="nav">
-      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__brand" href="/" aria-label="Milad Farazian — home" data-magnetic><span class="nav__brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 22.5 Q9 9.5 15.5 22 Q22 6 29 21" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></svg></span></a>
       <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
     </header>
     <main class="proj" id="content" tabindex="-1">
@@ -1834,7 +1834,7 @@ const STATUS_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#063250" />
+    <meta name="theme-color" content="#0a639a" />
     <title>Status — Milad Farazian</title>
     <meta name="description" content="Live telemetry for farazian.com — visitors online right now, the edge that served you, the running deploy, MCP call counters, and real-visitor Web Vitals." />
     <link rel="canonical" href="https://farazian.com/status/" />
@@ -1856,7 +1856,7 @@ const STATUS_HTML = `<!doctype html>
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
     <div class="fx-overlay" aria-hidden="true"></div>
     <header class="nav">
-      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__brand" href="/" aria-label="Milad Farazian — home" data-magnetic><span class="nav__brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 22.5 Q9 9.5 15.5 22 Q22 6 29 21" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></svg></span></a>
       <a class="nav__back" href="/" data-magnetic data-scramble><span class="arrow">←</span> home</a>
     </header>
     <main class="proj" id="content" tabindex="-1">
@@ -1921,7 +1921,7 @@ const ENGINEERING_HTML = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#063250" />
+    <meta name="theme-color" content="#0a639a" />
     <title>The Engine Room — Milad Farazian</title>
     <meta name="description" content="How farazian.com actually works: the architecture, six ADRs with their tradeoffs, and a real production postmortem. The site is its own case study." />
     <link rel="canonical" href="https://farazian.com/engineering/" />
@@ -1943,7 +1943,7 @@ const ENGINEERING_HTML = `<!doctype html>
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
     <div class="fx-overlay" aria-hidden="true"></div>
     <header class="nav">
-      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
+      <a class="nav__brand" href="/" aria-label="Milad Farazian — home" data-magnetic><span class="nav__brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 22.5 Q9 9.5 15.5 22 Q22 6 29 21" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></svg></span></a>
       <a class="nav__back" href="/" data-magnetic data-scramble><span class="arrow">←</span> home</a>
     </header>
     <main class="proj" id="content" tabindex="-1">

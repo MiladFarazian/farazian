@@ -4,19 +4,20 @@
    ============================================================ */
 
 :root {
-  /* Pelagic — twilight-zone open water (approved in the Design Lab):
-     depth-gradient blue ground, seafoam primary, light-water secondary. */
-  --bg: #063250;
-  --bg-2: #084a72;
-  --ink: #eaf7f4;
-  --ink-dim: #b3d6dc;
-  --ink-faint: #a8cdd6; /* meets WCAG AA (>=4.5:1) on the ocean background */
-  --cyan: #9fe8d4;
-  --violet: #8fc6f2;
+  /* Pelagic, sunlit ("Finding Nemo" pass): tropical blue lit from the
+     surface — brighter at the top, deepening below — with caustic dapple
+     and bubbles. Seafoam primary, light-water secondary. */
+  --bg: #07558c;
+  --bg-2: #0a639a;
+  --ink: #f2fbfa;
+  --ink-dim: #cfe9ee;
+  --ink-faint: #c2e0e8; /* meets WCAG AA (>=4.5:1) up to the sunlit top band */
+  --cyan: #aef0de;
+  --violet: #9fd0f5;
   --magenta: #6fd8ff;
-  --line: rgba(191, 234, 223, 0.2);
-  --glow-cyan: 0 0 24px rgba(159, 232, 212, 0.45);
-  --glow-violet: 0 0 28px rgba(143, 198, 242, 0.4);
+  --line: rgba(214, 248, 255, 0.22);
+  --glow-cyan: 0 0 24px rgba(174, 240, 222, 0.45);
+  --glow-violet: 0 0 28px rgba(159, 208, 245, 0.4);
   --font-sans: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
   --maxw: 1200px;
@@ -87,16 +88,16 @@ body {
   }
 }
 
-/* the water column: depth gradient behind everything */
+/* the water column: sunlit at the surface, deepening below */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(70% 45% at 50% 0%, rgba(214, 248, 255, 0.16), transparent 72%),
-    radial-gradient(60% 60% at 85% 30%, rgba(143, 198, 242, 0.1), transparent 70%),
-    linear-gradient(180deg, #063250 0%, #084a72 55%, #0a5a86 100%);
+    radial-gradient(75% 42% at 50% 0%, rgba(214, 248, 255, 0.28), transparent 72%),
+    radial-gradient(60% 60% at 85% 30%, rgba(159, 208, 245, 0.1), transparent 70%),
+    linear-gradient(180deg, #0a639a 0%, #07558c 48%, #053e6b 100%);
 }
 /* god rays sweeping down from the surface */
 body::after {
@@ -106,16 +107,64 @@ body::after {
   z-index: -1;
   pointer-events: none;
   background: linear-gradient(104deg,
-    transparent 18%, rgba(205, 240, 255, 0.09) 23%, transparent 30%,
-    transparent 44%, rgba(205, 240, 255, 0.07) 50%, transparent 58%,
-    transparent 70%, rgba(205, 240, 255, 0.08) 76%, transparent 84%);
+    transparent 16%, rgba(214, 248, 255, 0.14) 22%, transparent 31%,
+    transparent 43%, rgba(214, 248, 255, 0.11) 50%, transparent 59%,
+    transparent 69%, rgba(214, 248, 255, 0.12) 76%, transparent 85%);
   animation: god-rays 11s ease-in-out infinite alternate;
 }
 @keyframes god-rays {
-  to { transform: translateX(52px); opacity: 0.6; }
+  to { transform: translateX(52px); opacity: 0.55; }
 }
-.reduced-motion body::after {
+/* caustic dapple rippling just under the surface (strongest at the top
+   of the viewport, fading out by two-thirds down) */
+html::before {
+  content: "";
+  position: fixed;
+  inset: -240px;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 32% 38%, rgba(214, 248, 255, 0.14) 0, transparent 34%),
+    radial-gradient(circle at 78% 64%, rgba(214, 248, 255, 0.11) 0, transparent 30%),
+    radial-gradient(circle at 55% 12%, rgba(214, 248, 255, 0.12) 0, transparent 28%),
+    radial-gradient(circle at 10% 80%, rgba(214, 248, 255, 0.09) 0, transparent 26%);
+  background-size: 440px 400px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 78%);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 78%);
+  animation: caustics 8s ease-in-out infinite alternate;
+}
+@keyframes caustics {
+  to { transform: translate(170px, -120px) scale(1.06); opacity: 0.72; }
+}
+/* bubbles drifting up — three repeating layers, loop = one tile height */
+html::after {
+  content: "";
+  position: fixed;
+  inset: -560px 0 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.4) 0 1.2px, rgba(255, 255, 255, 0.1) 2.6px, transparent 3.6px),
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.32) 0 0.9px, rgba(255, 255, 255, 0.08) 1.9px, transparent 2.7px),
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.45) 0 1.6px, rgba(255, 255, 255, 0.12) 3.4px, transparent 4.6px);
+  background-size: 420px 520px, 300px 520px, 520px 520px;
+  background-position: 40px 80px, 180px 300px, 320px 180px;
+  animation: bubbles 16s linear infinite;
+}
+@keyframes bubbles {
+  to { transform: translateY(-520px); }
+}
+.reduced-motion body::after,
+html.reduced-motion::before,
+html.reduced-motion::after {
   animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after,
+  html::before,
+  html::after {
+    animation: none;
+  }
 }
 
 a {
@@ -326,6 +375,11 @@ strong {
   font-size: 1.1rem;
   letter-spacing: 0.05em;
   color: #fff;
+}
+.nav__brand-mark svg {
+  display: block;
+  width: 24px;
+  height: 24px;
 }
 .nav__links {
   display: flex;

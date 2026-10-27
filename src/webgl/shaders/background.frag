@@ -42,23 +42,27 @@ void main() {
   );
   float f = fbm(p * 1.4 + 1.7 * r);
 
-  // Open water. Kept below the bloom threshold so only the particle name
-  // glows — the background is the water column: depth colour, slow drift.
-  vec3 deep = vec3(0.024, 0.175, 0.285); // sits on the page's #063250 band
+  // Sunlit water. Kept below the bloom threshold so only the particle
+  // name glows — the fbm field reads as caustic light drifting through
+  // the column.
+  vec3 deep = vec3(0.034, 0.30, 0.50); // sits on the page's #0a639a band
   vec3 col = deep;
-  col += vec3(0.10, 0.30, 0.28) * clamp(f * f * 1.4, 0.0, 1.0) * 0.5;
-  col += vec3(0.10, 0.22, 0.34) * clamp(length(r) - 0.4, 0.0, 1.0) * 0.45;
-  col += vec3(0.14, 0.34, 0.32) * pow(clamp(f, 0.0, 1.0), 4.0) * 0.3;
+  col += vec3(0.18, 0.42, 0.40) * clamp(f * f * 1.4, 0.0, 1.0) * 0.5;
+  col += vec3(0.12, 0.30, 0.46) * clamp(length(r) - 0.4, 0.0, 1.0) * 0.45;
+  col += vec3(0.22, 0.46, 0.44) * pow(clamp(f, 0.0, 1.0), 4.0) * 0.35;
+
+  // Light from the surface: a bright wash at the top of the frame.
+  col += vec3(0.30, 0.55, 0.60) * smoothstep(0.1, 0.9, p.y) * 0.22;
 
   // Pointer halo — seafoam.
   vec2 mp = uMouse - 0.5;
   mp.x *= aspect;
-  col += vec3(0.35, 0.70, 0.60) * exp(-length(p - mp) * 4.5) * 0.16;
+  col += vec3(0.40, 0.78, 0.68) * exp(-length(p - mp) * 4.5) * 0.16;
 
   // Vignette settles back into the deep (the page behind is ocean, not
   // black) + scroll dim.
-  col = mix(deep * 0.72, col, smoothstep(1.35, 0.25, length(p)));
-  col *= mix(0.5, 1.0, uFade);
+  col = mix(deep * 0.78, col, smoothstep(1.35, 0.25, length(p)));
+  col *= mix(0.55, 1.0, uFade);
 
   gl_FragColor = vec4(col, 1.0);
 }

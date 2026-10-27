@@ -136,7 +136,7 @@ export class ParticleHero {
       alpha: false,
       powerPreference: "high-performance",
     });
-    this.renderer.setClearColor(0x063250, 1);
+    this.renderer.setClearColor(0x0a639a, 1);
     this.renderer.setPixelRatio(this.profile.dpr);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
