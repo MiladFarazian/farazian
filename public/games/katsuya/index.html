@@ -37,7 +37,9 @@ canvas { display: block; cursor: url('images/crosshair.png') 16 16, crosshair; }
   position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
   font: 12px 'Gill Sans', 'Gill Sans MT', Optima, sans-serif; letter-spacing: 0.04em; color: #7d8aa0;
   white-space: nowrap; pointer-events: none; z-index: 20;
+  transition: opacity 0.6s ease;
 }
+#ctrlHint.is-hidden { opacity: 0; }
 #ctrlHint b { color: #c8aa32; font-weight: 600; }
 /* On-screen pad for touch devices; shooting stays a tap on the canvas. */
 .touch-pad {
@@ -99,6 +101,18 @@ canvas { display: block; cursor: url('images/crosshair.png') 16 16, crosshair; }
   hold('padRight', 'KeyD');
   hold('padJump', 'Space');
   hold('padSlash', 'KeyS');
+
+  // The hint belongs to the title screen only. Once the player interacts
+  // (Begin click, first keypress), fade it out so it never sits on top of
+  // the cutscene text at the bottom of the frame.
+  var hint = document.getElementById('ctrlHint');
+  function hideHint() {
+    if (hint) hint.classList.add('is-hidden');
+    window.removeEventListener('keydown', hideHint);
+    window.removeEventListener('pointerdown', hideHint);
+  }
+  window.addEventListener('keydown', hideHint);
+  window.addEventListener('pointerdown', hideHint);
 })();
 </script>
 <script src="images/Cutscenes/actors.js"></script>

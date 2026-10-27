@@ -76,7 +76,7 @@ const renderBlock = (b) => {
     case "video":
       return `<section class="proj__section">${b.h ? `<h2 data-reveal>${b.h}</h2>` : ""}${b.html ? `<div data-reveal>${b.html}</div>` : ""}<div class="proj-embed" data-reveal><video src="${b.src}"${b.poster ? ` poster="${b.poster}"` : ""} controls playsinline preload="metadata"${b.title ? ` aria-label="${b.title}"` : ""}></video></div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
     case "game":
-      return `<section class="proj__section" data-reveal><div class="proj-game"${b.ratio ? ` style="aspect-ratio:${b.ratio}"` : ""}><iframe src="${b.src}" title="${b.title || ""}" loading="lazy" allow="autoplay; fullscreen"></iframe></div>${b.note ? `<p class="proj-note">${b.note}</p>` : ""}</section>`;
+      return `<section class="proj__section" data-reveal><div class="proj-game"${b.ratio ? ` style="aspect-ratio:${b.ratio}"` : ""}><iframe src="${b.src}" title="${b.title || ""}" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe></div><div class="proj-game__bar">${b.note ? `<p class="proj-note">${b.note}</p>` : "<span></span>"}<button class="proj-game__fs" type="button" data-magnetic>⛶ fullscreen</button></div></section>`;
     case "controls":
       return `<section class="proj__section" data-reveal><h2>Controls</h2><div class="proj-controls">${b.items
         .map((c) => `<div class="proj-control"><kbd>${c.key}</kbd><span>${c.label}</span></div>`)

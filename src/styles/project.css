@@ -1419,3 +1419,19 @@
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink-faint); margin: 0 0 0.6rem;
 }
+
+/* Game embed: fullscreen control row */
+.proj-game__bar {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 1rem; margin-top: 0.7rem;
+}
+.proj-game__bar .proj-note { margin: 0; flex: 1; }
+.proj-game__fs {
+  flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.04em;
+  color: var(--ink-dim); background: rgba(8, 12, 20, 0.5);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 0.45em 1em; cursor: none;
+  transition: color 0.25s, border-color 0.25s;
+}
+.proj-game__fs:hover { color: var(--cyan); border-color: rgba(42, 245, 255, 0.4); }

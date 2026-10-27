@@ -74,6 +74,28 @@ if (tabRoot) {
   fromHash();
 }
 
+// Playable-game embeds: the ⛶ button fullscreens the iframe. Where the
+// Fullscreen API is unavailable (iOS Safari on iframes), open the game
+// standalone in a new tab instead — same effect, zero chrome.
+document.querySelectorAll<HTMLButtonElement>(".proj-game__fs").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const frame = btn.closest(".proj__section")?.querySelector("iframe");
+    if (!frame) return;
+    const fs =
+      frame.requestFullscreen?.bind(frame) ??
+      (frame as HTMLIFrameElement & { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen?.bind(frame);
+    if (fs) {
+      try {
+        fs();
+        return;
+      } catch {
+        /* fall through to the new-tab fallback */
+      }
+    }
+    window.open(frame.src, "_blank", "noopener");
+  });
+});
+
 // Interactive per-project demos: any element with data-demo="<slug>" pulls in
 // its self-contained /work/<slug>/demo.js, loaded only on the page that needs
 // it (each script self-boots on its own container, regardless of timing).
