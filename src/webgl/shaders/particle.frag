@@ -8,6 +8,16 @@ uniform float uGlow;   // per-particle contribution (lower without bloom)
 varying float vSeed;
 varying vec3 vPos;
 
+float h2(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+float n2(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(h2(i), h2(i + vec2(1.0, 0.0)), f.x),
+             mix(h2(i + vec2(0.0, 1.0)), h2(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+
 void main() {
   // Soft round sprite.
   vec2 c = gl_PointCoord - 0.5;
@@ -15,12 +25,19 @@ void main() {
   if (d > 0.5) discard;
   float alpha = smoothstep(0.5, 0.0, d);
 
-  // Two-tone water palette with a wide luminance spread, so the name has
-  // internal contrast against the mid-blue backdrop: bright near-white
-  // foam (blooms) against deep saturated ocean blue (doesn't).
+  // Internal contrast cannot come from per-particle color alone: the
+  // sprites blend additively, and thousands of overlaps sum to white no
+  // matter what each one is tinted. So a drifting spatial noise thins
+  // the field in coherent patches — the water shows through INSIDE the
+  // letters — and tints the thin patches deeper blue. Reads as dappled
+  // light moving across the name.
+  float patch = n2(vPos.xy * 2.6 + vec2(uTime * 0.18, -uTime * 0.12));
+  patch = clamp(patch * 0.75 + 0.35 * n2(vPos.xy * 6.0 - vec2(uTime * 0.1, 0.0)), 0.0, 1.0);
+  alpha *= 0.18 + 0.82 * patch * patch;
+
   vec3 bright = vec3(0.86, 1.0, 0.95);
   vec3 deep = vec3(0.07, 0.34, 0.58);
-  vec3 col = mix(deep, bright, smoothstep(0.12, 0.88, vSeed));
+  vec3 col = mix(deep, bright, 0.15 + 0.85 * patch);
 
   // A touch of white-hot energy where particles are pushed off the z=0 plane
   // (mouse / burst). Kept subtle so dense areas don't blow out to white.
