@@ -58,9 +58,13 @@ void main() {
   // School mode: the backdrop carries the page's full water — caustic
   // webs and rising bubbles — so the landing view reads underwater.
   if (uSchool > 0.5) {
-    float cw = fbm(p * 4.2 + vec2(uTime * 0.22, 0.0)) * fbm(p * 4.2 - vec2(0.0, uTime * 0.16));
-    float caust = pow(clamp(cw * 1.55, 0.0, 1.0), 6.0);
-    col += vec3(0.45, 0.95, 0.88) * caust * 0.45 * (0.3 + 0.5 * smoothstep(-0.5, 0.5, p.y));
+    // Ridged noise makes thin crossing filaments (bright only where each
+    // field crosses its midline) — raw fbm makes glowing continents that
+    // blow out under bloom.
+    float c1 = 1.0 - abs(2.0 * fbm(p * 3.4 + vec2(uTime * 0.20, uTime * 0.08)) - 1.0);
+    float c2 = 1.0 - abs(2.0 * fbm(p * 3.4 + vec2(-uTime * 0.16, uTime * 0.12) + 4.7) - 1.0);
+    float caust = pow(clamp(c1 * c2, 0.0, 1.0), 7.0);
+    col += vec3(0.45, 0.95, 0.88) * caust * 0.5 * (0.3 + 0.5 * smoothstep(-0.5, 0.5, p.y));
     float bub = 0.0;
     for (int i = 0; i < 2; i++) {
       float fi = float(i);
