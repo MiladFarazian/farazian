@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Swell A — the bold & uneven wave-M, on the sunlit ocean tile -->
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2af5ff"/>
-      <stop offset="1" stop-color="#b06bff"/>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a639a"/>
+      <stop offset="1" stop-color="#053e6b"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#04060a"/>
-  <text x="32" y="44" font-family="monospace" font-size="34" font-weight="700"
-        text-anchor="middle" fill="url(#g)">M</text>
+  <rect width="32" height="32" rx="7" fill="url(#g)"/>
+  <path d="M5 21.5 Q10.5 10 16 21 Q21.5 6.5 27 20" fill="none" stroke="#aef0de" stroke-width="3.2" stroke-linecap="round"/>
 </svg>
