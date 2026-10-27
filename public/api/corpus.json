@@ -446,7 +446,7 @@
       "title": "Portfolio MCP Server",
       "heading": "The tools",
       "url": "https://farazian.com/work/mcp/",
-      "text": "list_projects: Every project — title, category, year, summary, tags, URL. The index an agent starts from. get_project: Full detail for one slug: links plus the page's written sections as clean, readable text. get_profile: Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking. get_services: The freelance engagement types and how to hire (Upwork profile + intro call), straight from the /hire page's single source of truth. sign_guestbook: The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form."
+      "text": "list_projects: Every project — title, category, year, summary, tags, URL. The index an agent starts from. get_project: Full detail for one slug: links plus the page's written sections as clean, readable text. get_profile: Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking. get_services: The engagement types and how to hire — through Milad & Co. (miladand.co), with Upwork and a free intro call as alternate routes. sign_guestbook: The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form."
     },
     {
       "id": "p64",
@@ -866,21 +866,21 @@
       "title": "Hire Milad",
       "heading": "Fractional AI / Engineering Advisor",
       "url": "https://farazian.com/hire/",
-      "text": "Freelance engagement type — Fractional AI / Engineering Advisor: Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Working calls, async review, code and AI reviews on your real repo. Rates, scoping, contracts, and payment run through Milad's Upwork profile (https://www.upwork.com/freelancers/miladfarazian). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
+      "text": "Engagement type — Fractional AI / Engineering Advisor: Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Working calls, async review, code and AI reviews on your real repo. Hiring now runs through Milad & Co. (https://miladand.co), Milad's AI consulting practice — the /hire page forwards there; his Upwork profile (https://www.upwork.com/freelancers/miladfarazian) is also available. Note: Milad is currently interviewing for full-time engineering roles; consulting is a small side lane alongside that search."
     },
     {
       "id": "p124",
       "title": "Hire Milad",
       "heading": "Automation & AI Agents",
       "url": "https://farazian.com/hire/",
-      "text": "Freelance engagement type — Automation & AI Agents: Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Runs in your stack, handed off with docs. Rates, scoping, contracts, and payment run through Milad's Upwork profile (https://www.upwork.com/freelancers/miladfarazian). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
+      "text": "Engagement type — Automation & AI Agents: Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Runs in your stack, handed off with docs. Hiring now runs through Milad & Co. (https://miladand.co), Milad's AI consulting practice — the /hire page forwards there; his Upwork profile (https://www.upwork.com/freelancers/miladfarazian) is also available. Note: Milad is currently interviewing for full-time engineering roles; consulting is a small side lane alongside that search."
     },
     {
       "id": "p125",
       "title": "Hire Milad",
       "heading": "AI Features Into Your Product",
       "url": "https://farazian.com/hire/",
-      "text": "Freelance engagement type — AI Features Into Your Product: Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Evals and guardrails included, so it survives real users. Rates, scoping, contracts, and payment run through Milad's Upwork profile (https://www.upwork.com/freelancers/miladfarazian). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search."
+      "text": "Engagement type — AI Features Into Your Product: Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Evals and guardrails included, so it survives real users. Hiring now runs through Milad & Co. (https://miladand.co), Milad's AI consulting practice — the /hire page forwards there; his Upwork profile (https://www.upwork.com/freelancers/miladfarazian) is also available. Note: Milad is currently interviewing for full-time engineering roles; consulting is a small side lane alongside that search."
     },
     {
       "id": "p126",

@@ -1043,7 +1043,7 @@ curl -s https://farazian.com/mcp \\
           { title: "list_projects", desc: "Every project — title, category, year, summary, tags, URL. The index an agent starts from." },
           { title: "get_project", desc: "Full detail for one slug: links plus the page's written sections as clean, readable text." },
           { title: "get_profile", desc: "Headline, location, availability, the grouped stack, and links — including the resume PDF and intro-call booking." },
-          { title: "get_services", desc: "The freelance engagement types and how to hire (Upwork profile + intro call), straight from the /hire page's single source of truth." },
+          { title: "get_services", desc: "The engagement types and how to hire — through Milad & Co. (miladand.co), with Upwork and a free intro call as alternate routes." },
           { title: "sign_guestbook", desc: "The one tool with a side effect: leaves a real, public note on the site. Same rate limit, length caps, and content guard as the human form." },
         ],
       },
@@ -1487,10 +1487,13 @@ const RESUME_HTML = `<!doctype html>
 `;
 
 // ============================================================
-// HIRE PAGE — /hire/  (slim: engagement types, no rates — pricing and
-// scoping happen on Upwork; the page's first job is telling recruiters
-// he's interviewing for full-time roles)
+// HIRE PAGE — /hire/  (portal: a cinematic hand-off to Milad & Co.,
+// Milad's AI consulting practice at miladand.co. The page opens in this
+// site's dark terminal UI, then wipes into Milad & Co.'s warm-paper
+// design language — its exact tokens: ivory #f8f5f0, maroon #7b1e2c,
+// Fraunces, the octagonal star mark, film grain — and forwards.)
 // ============================================================
+const MILADANDCO = "https://miladand.co";
 const UPWORK = "https://www.upwork.com/freelancers/miladfarazian";
 // Single source for engagement types — rendered on /hire and exposed
 // (agent-readable) through /api/site.json + the MCP server. Deliberately
@@ -1520,78 +1523,144 @@ const HIRE_HTML = `<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#04060a" />
     <title>Hire Me — Milad Farazian</title>
-    <meta name="description" content="Work with Milad Farazian via Upwork — AI/engineering advisory, automation & AI agents, and production LLM features. A small side practice while he interviews for full-time engineering roles. Los Angeles, remote-friendly." />
+    <meta name="description" content="Hiring Milad runs through Milad & Co. — his AI consulting practice. This page hands you over to miladand.co." />
     <link rel="canonical" href="https://farazian.com/hire/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Milad Farazian" />
-    <meta property="og:title" content="Hire Milad Farazian — AI & Full-Stack Engineering" />
-    <meta property="og:description" content="Fractional AI/engineering advisor · automation & AI agents · production LLM features. The engineer who shipped a live App Store product solo." />
+    <meta property="og:title" content="Hire Milad Farazian — Milad &amp; Co." />
+    <meta property="og:description" content="AI consulting for small businesses — audits, custom AI on your own knowledge, and team training. farazian.com/hire forwards to miladand.co." />
     <meta property="og:url" content="https://farazian.com/hire/" />
     <meta property="og:image" content="https://farazian.com/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icon-180.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="${MILADANDCO}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet" />
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <noscript><meta http-equiv="refresh" content="0; url=${MILADANDCO}/" /></noscript>
+    <style>
+      /* Phase 1 is this site's dark terminal; phase 2 is Milad & Co.'s
+         exact design tokens (miladand.co/css/styles.css), light and dark. */
+      :root { --bg: #f8f5f0; --text: #22191a; --muted: #6e6460; --rose: #7b1e2c; --grain: 0.07; }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #141012; --text: #efe8e3; --muted: #a59a96; --rose: #e8919d; --grain: 0.09; }
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body { background: #04060a; overflow: hidden; cursor: pointer; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif; }
+      @font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+
+      .term { position: fixed; inset: 0; display: grid; place-items: center; background: #04060a;
+        background-image: linear-gradient(rgba(95, 251, 241, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(95, 251, 241, 0.035) 1px, transparent 1px);
+        background-size: 56px 56px; }
+      .term__brand { position: fixed; top: 26px; left: 30px; font: 700 13px "JetBrains Mono", monospace; letter-spacing: 0.08em; color: #5ffbf1; border: 1px solid rgba(95, 251, 241, 0.35); padding: 6px 9px; border-radius: 4px; }
+      .cmd { font: 500 clamp(14px, 2.4vw, 19px)/1.4 "JetBrains Mono", monospace; color: #dfe9ec; white-space: nowrap; }
+      .typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; width: 0ch; animation: type 0.85s steps(26, end) 0.35s forwards; }
+      .caret { display: inline-block; width: 0.6em; height: 1.1em; margin-left: 3px; vertical-align: text-bottom; background: #5ffbf1; animation: blink 1s steps(1, end) infinite; }
+      @keyframes type { to { width: 26ch; } }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      /* The hand-off: Milad & Co.'s paper wipes over the terminal from the
+         center, then its hero assembles — mark draws, wordmark rises. */
+      .paper { position: fixed; inset: 0; display: grid; place-items: center; background: var(--bg); color: var(--text);
+        clip-path: circle(0% at 50% 56%); transition: clip-path 1.05s cubic-bezier(0.65, 0, 0.35, 1); }
+      .go .paper { clip-path: circle(141.5% at 50% 56%); }
+      .grain { position: absolute; inset: -100%; pointer-events: none; opacity: var(--grain);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        animation: grain 1.2s steps(5) infinite; }
+      @keyframes grain { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-5%, 3%); } 40% { transform: translate(4%, -6%); } 60% { transform: translate(-3%, 7%); } 80% { transform: translate(6%, 2%); } }
+      .bar { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--rose); transform: scaleX(0); transform-origin: 0 50%; }
+      .go .bar { animation: load 1.85s linear 0.35s forwards; }
+      @keyframes load { to { transform: scaleX(1); } }
+      .fa { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -58%); font-family: "Noto Nastaliq Urdu", serif; font-size: clamp(170px, 38vw, 430px); line-height: 1; color: var(--rose); opacity: 0; pointer-events: none; user-select: none; -webkit-user-select: none; }
+      .go .fa { animation: ghost 1.4s ease 0.8s forwards; }
+      @keyframes ghost { to { opacity: 0.06; } }
+
+      .card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 0 16px; }
+      .card > * { opacity: 0; transform: translateY(14px); }
+      .go .card > * { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+      .go .mark { animation-delay: 0.35s; }
+      .go .eyebrow { animation-delay: 0.55s; }
+      .go h1 { animation-delay: 0.7s; }
+      .go .swash { animation-delay: 0.95s; }
+      .go .sub { animation-delay: 1.1s; }
+      @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+      .mark { width: clamp(44px, 7vw, 58px); height: auto; }
+      .mark polygon, .mark circle { fill: var(--rose); fill-opacity: 0; stroke: var(--rose); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+      .go .mark polygon { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s forwards, draw 0.8s cubic-bezier(0.6, 0, 0.3, 1) 0.45s forwards, fillin 0.45s ease 1.2s forwards; }
+      .go .mark circle { animation: draw 0.6s ease 0.7s forwards, fillin 0.45s ease 1.25s forwards; }
+      @keyframes draw { to { stroke-dashoffset: 0; } }
+      @keyframes fillin { to { fill-opacity: 1; } }
+      .eyebrow { font-size: clamp(10px, 1.4vw, 12px); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rose); }
+      h1 { font-family: "Fraunces", Georgia, serif; font-weight: 500; font-size: clamp(46px, 9vw, 92px); letter-spacing: -0.02em; line-height: 1.05; }
+      h1 em { font-style: italic; font-weight: 400; color: var(--rose); }
+      .swash { width: clamp(180px, 30vw, 290px); height: auto; margin-top: -8px; }
+      .swash path { fill: none; stroke: var(--rose); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+      .go .swash path { animation: draw 0.7s ease 1.05s forwards; }
+      .sub { max-width: 34em; font-size: clamp(15px, 2vw, 18px); line-height: 1.55; color: var(--muted); }
+      .hint { position: absolute; left: 0; right: 0; bottom: max(24px, env(safe-area-inset-bottom)); text-align: center; font: 400 12px/1.7 "JetBrains Mono", monospace; letter-spacing: 0.02em; color: var(--muted); padding: 0 16px; opacity: 0; }
+      .go .hint { animation: rise 0.7s ease 1.25s forwards; }
+      .hint b { color: var(--text); font-weight: 600; }
+      .hint a { color: var(--rose); }
+
+      /* Reduced motion (JS adds .instant): no choreography — a readable
+         card, then the forward. */
+      .instant .paper { clip-path: circle(141.5% at 50% 56%); transition: none; }
+      .instant .grain { animation: none; }
+      .instant .card > *, .instant .hint { opacity: 1; transform: none; animation: none; }
+      .instant .mark polygon, .instant .mark circle { stroke-dashoffset: 0; fill-opacity: 1; animation: none; }
+      .instant .swash path { stroke-dashoffset: 0; animation: none; }
+      .instant .fa { opacity: 0.06; animation: none; }
+      .instant .bar { animation: none; }
+    </style>
   </head>
   <body>
-    <a class="skip-link" href="#content">Skip to content</a>
-    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
-    <div class="fx-overlay" aria-hidden="true"></div>
-    <header class="nav">
-      <a class="nav__brand" href="/" data-magnetic><span class="nav__brand-mark">MF</span></a>
-      <a class="nav__back" href="/#work" data-magnetic data-scramble><span class="arrow">←</span> all work</a>
-    </header>
-    <main class="proj" id="content" tabindex="-1">
-      <section class="proj__hero">
-        <p class="proj__eyebrow" data-reveal>work with me</p>
-        <p class="hire-status" data-reveal><strong>Currently interviewing for full-time engineering roles.</strong> Recruiters and hiring managers: start with the <a href="/resume/">resume</a> — this page is the small freelance side lane that runs alongside that search.</p>
-        <h1 class="proj__title" data-reveal>Ship AI features that survive real users.</h1>
-        <p class="proj__sub" data-reveal>I'm a full-stack engineer with real AI depth — I built <a href="/work/parkzy/" style="color:var(--cyan)">Parkzy</a>, a live App Store marketplace (4.9★, 2,400+ downloads), end to end as sole engineer, LLM features and all. Now I take on a few focused engagements at a time: <strong>advisory, automation, and production AI</strong>.</p>
-        <div class="proj__links" data-reveal>
-          <a class="btn btn--primary" href="${UPWORK}" target="_blank" rel="noopener" data-magnetic data-scramble>Hire me on Upwork ↗</a>
-          <a class="btn btn--ghost" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call</a>
-          <a class="btn btn--ghost" href="/#work" data-magnetic data-scramble>See the work</a>
-        </div>
-      </section>
-
-      <section class="proj__section">
-        <h2 data-reveal>What I take on</h2>
-        <div class="hire-grid">
-          ${HIRE_SERVICES.map(
-            ({ tag, name, desc }) =>
-              `<div class="hire-svc" data-reveal><div class="hire-svc__top"><span class="hire-svc__tag">${tag}</span></div><h3>${name}</h3><p>${desc}</p></div>`
-          ).join("\n          ")}
-        </div>
-        <p class="proj-note" data-reveal>Rates, scoping, contracts, and payment all run through <a href="${UPWORK}" target="_blank" rel="noopener" style="color:var(--cyan)">my Upwork profile</a> — one place, no surprises.</p>
-      </section>
-
-      <section class="proj__section" data-reveal>
-        <h2>Why me</h2>
-        <div class="hire-proof">
-          <div><b>Shipped, not theoretical</b><span>A live App Store product (4.9★), built solo — 490 migrations, production LLM features. I've done this for real.</span></div>
-          <div><b>Fast</b><span>A native macOS DAW in ~10 days; new products from zero on a regular cadence. You'll see progress in days, not months.</span></div>
-          <div><b>Verified</b><span>Playwright/Vitest in CI, Sentry, human review of every merge. AI-accelerated, not AI-sloppy.</span></div>
-        </div>
-      </section>
-
-      <section class="proj__section" data-reveal>
-        <h2>How it works</h2>
-        <p>Everything starts on Upwork: send an invite or a message there, we scope it in writing, and the contract and payment run through their escrow — clean for both of us. Prefer a conversation first? The 15-minute intro call is free.</p>
-        <p class="proj-note">A deliberately small side lane — one or two engagements at a time alongside my full-time search, so the ones I take get real focus. Los Angeles · remote-friendly.</p>
-        <div class="proj__links" data-reveal style="margin-top:1.6rem">
-          <a class="btn btn--primary" href="${UPWORK}" target="_blank" rel="noopener" data-magnetic data-scramble>Hire me on Upwork ↗</a>
-          <a class="btn btn--ghost" href="https://cal.com/milad-farazian/15min" target="_blank" rel="noopener" data-magnetic data-scramble>Book a call</a>
-          <a class="btn btn--ghost" href="mailto:miladfarazian@gmail.com?subject=Project%20inquiry" data-magnetic data-scramble>Email me</a>
-        </div>
-      </section>
-      <footer class="footer">
-        <span>© <span id="year">2026</span> Milad Farazian</span>
-        <a href="/#work" data-scramble>← back to work</a>
-      </footer>
+    <div class="term" aria-hidden="true">
+      <span class="term__brand">MF</span>
+      <p class="cmd"><span class="typed">$ open https://miladand.co</span><span class="caret"></span></p>
+    </div>
+    <main class="paper">
+      <div class="grain" aria-hidden="true"></div>
+      <i class="bar" aria-hidden="true"></i>
+      <div class="fa" lang="fa" aria-hidden="true">میلاد</div>
+      <div class="card">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><polygon pathLength="1" points="16,4.69 19.31,8 24,8 24,12.69 27.31,16 24,19.31 24,24 19.31,24 16,27.31 12.69,24 8,24 8,19.31 4.69,16 8,12.69 8,8 12.69,8" /><circle pathLength="1" cx="16" cy="16" r="3.4" /></svg>
+        <p class="eyebrow">AI consulting for small businesses</p>
+        <h1>Milad <em>&amp;</em> Co.</h1>
+        <svg class="swash" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 22 C 70 6, 150 4, 296 14" /></svg>
+        <p class="sub">Hiring me now runs through my consulting practice — taking you there.</p>
+      </div>
+      <p class="hint">Forwarding to <b>miladand.co</b> — click anywhere to jump now · <a href="/" data-stay>stay on farazian.com</a></p>
     </main>
-    <script type="module" src="/src/project/main.ts"></script>
+    <script>
+      // The hand-off choreography: type the command in this site's terminal,
+      // wipe to Milad & Co.'s paper, assemble its hero, then forward.
+      // Click/Enter skips ahead; Esc or the "stay" link cancels.
+      (function () {
+        var DEST = "${MILADANDCO}/";
+        var root = document.documentElement;
+        var done = false;
+        var go = function () { if (done) return; done = true; location.replace(DEST); };
+        var t1, t2;
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          root.classList.add("go", "instant");
+          t2 = setTimeout(go, 900);
+        } else {
+          t1 = setTimeout(function () { root.classList.add("go"); }, 1400);
+          t2 = setTimeout(go, 3650);
+        }
+        var cancel = function () { done = true; clearTimeout(t1); clearTimeout(t2); };
+        document.querySelector("[data-stay]").addEventListener("click", function (e) { e.stopPropagation(); cancel(); });
+        addEventListener("click", go);
+        addEventListener("keydown", function (e) {
+          if (e.key === "Escape") { cancel(); location.href = "/"; }
+          else if (e.key === "Enter" || e.key === " ") go();
+        });
+      })();
+    </script>
   </body>
 </html>
 `;
@@ -1973,6 +2042,7 @@ const SITE_JSON = {
     app_store: "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230",
     resume: `${BASE}/Milad_Farazian_Resume.pdf`,
     hire: `${BASE}/hire/`,
+    milad_and_co: MILADANDCO,
     book_intro_call: "https://cal.com/milad-farazian/15min",
     upwork: UPWORK,
     parkzy: "https://useparkzy.com",
@@ -1981,7 +2051,7 @@ const SITE_JSON = {
     status: `${BASE}/status/`,
   },
   stack: STACK.map((g) => ({ group: g.label, items: g.items })),
-  services: HIRE_SERVICES.map(({ name, desc }) => ({ name, desc, hire_via: UPWORK })),
+  services: HIRE_SERVICES.map(({ name, desc }) => ({ name, desc, hire_via: MILADANDCO, upwork: UPWORK })),
   projects: PAGES.map((p) => ({
     slug: p.slug,
     title: p.title,
@@ -2032,7 +2102,7 @@ addPassage("Milad Farazian", "Profile", `${BASE}/`,
 for (const g of STACK)
   addPassage("Stack", g.label, `${BASE}/#stack`, `Milad's ${g.label} stack and skills: ${g.items.join(", ")}.`);
 for (const s of HIRE_SERVICES)
-  addPassage("Hire Milad", s.name, `${BASE}/hire/`, `Freelance engagement type — ${s.name}: ${s.desc} Rates, scoping, contracts, and payment run through Milad's Upwork profile (${UPWORK}). Note: Milad is currently interviewing for full-time engineering roles; freelance is a small side lane alongside that search.`);
+  addPassage("Hire Milad", s.name, `${BASE}/hire/`, `Engagement type — ${s.name}: ${s.desc} Hiring now runs through Milad & Co. (${MILADANDCO}), Milad's AI consulting practice — the /hire page forwards there; his Upwork profile (${UPWORK}) is also available. Note: Milad is currently interviewing for full-time engineering roles; consulting is a small side lane alongside that search.`);
 for (const j of RESUME_JOBS)
   addPassage("Resume", `${j.role} @ ${j.org}`, `${BASE}/resume/`, `${j.role} at ${j.org} (${j.where}, ${j.when}): ${j.bullets.join(" ")}`);
 for (const j of RESUME_EDU)

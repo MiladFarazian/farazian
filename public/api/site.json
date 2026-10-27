@@ -11,6 +11,7 @@
     "app_store": "https://apps.apple.com/us/app/parkzy-find-parking-nearby/id6758564230",
     "resume": "https://farazian.com/Milad_Farazian_Resume.pdf",
     "hire": "https://farazian.com/hire/",
+    "milad_and_co": "https://miladand.co",
     "book_intro_call": "https://cal.com/milad-farazian/15min",
     "upwork": "https://www.upwork.com/freelancers/miladfarazian",
     "parkzy": "https://useparkzy.com",
@@ -92,17 +93,20 @@
     {
       "name": "Fractional AI / Engineering Advisor",
       "desc": "Your on-call senior engineer for AI and architecture decisions — for startups without a senior eng in the building. Working calls, async review, code and AI reviews on your real repo.",
-      "hire_via": "https://www.upwork.com/freelancers/miladfarazian"
+      "hire_via": "https://miladand.co",
+      "upwork": "https://www.upwork.com/freelancers/miladfarazian"
     },
     {
       "name": "Automation & AI Agents",
       "desc": "Fixed-scope builds that hand a repetitive process to an agent or script — internal tooling, data pipelines, Claude Code / agentic workflows. Runs in your stack, handed off with docs.",
-      "hire_via": "https://www.upwork.com/freelancers/miladfarazian"
+      "hire_via": "https://miladand.co",
+      "upwork": "https://www.upwork.com/freelancers/miladfarazian"
     },
     {
       "name": "AI Features Into Your Product",
       "desc": "Drop a production LLM/RAG/chatbot or semantic-search feature into your existing app — the same work I shipped inside Parkzy. Evals and guardrails included, so it survives real users.",
-      "hire_via": "https://www.upwork.com/freelancers/miladfarazian"
+      "hire_via": "https://miladand.co",
+      "upwork": "https://www.upwork.com/freelancers/miladfarazian"
     }
   ],
   "projects": [
@@ -803,7 +807,7 @@
             },
             {
               "title": "get_services",
-              "desc": "The freelance engagement types and how to hire (Upwork profile + intro call), straight from the /hire page's single source of truth."
+              "desc": "The engagement types and how to hire — through Milad & Co. (miladand.co), with Upwork and a free intro call as alternate routes."
             },
             {
               "title": "sign_guestbook",
