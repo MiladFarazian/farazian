@@ -63,6 +63,18 @@ export class ParticleHero {
   private scene = new THREE.Scene();
   private bgMaterial!: THREE.ShaderMaterial;
   private bgMesh!: THREE.Mesh;
+  // The water shader is ~25 noise evaluations per pixel but has no fine
+  // detail, so it renders into a small target and the backdrop plane
+  // samples it, upscaled bilinearly — the same look at a fraction of the
+  // fill cost.
+  private bgTarget!: THREE.WebGLRenderTarget;
+  private bgScene = new THREE.Scene();
+  private bgCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  // Adaptive quality: if frames stay slow, step the render resolution down,
+  // then drop bloom. Only ever steps down, so it can't oscillate.
+  private renderScale = 1;
+  private perf = { last: 0, sum: 0, n: 0, warmUntil: 0, steps: 0 };
 
   private composer?: EffectComposer;
   private bloomPass?: UnrealBloomPass;
@@ -135,6 +147,20 @@ export class ParticleHero {
     return this.failed;
   }
 
+  /** Effective pixel ratio: the device cap, scaled down by the governor. */
+  private get pr() {
+    return this.profile.dpr * this.renderScale;
+  }
+
+  private bgTargetSize(): [number, number] {
+    // School-mode caustics are thin filaments and need more texels.
+    const s = this.schoolMode ? 0.6 : 0.4;
+    return [
+      Math.max(2, Math.round(window.innerWidth * s)),
+      Math.max(2, Math.round(window.innerHeight * s)),
+    ];
+  }
+
   private initRenderer() {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -143,7 +169,7 @@ export class ParticleHero {
       powerPreference: "high-performance",
     });
     this.renderer.setClearColor(0x0a639a, 1);
-    this.renderer.setPixelRatio(this.profile.dpr);
+    this.renderer.setPixelRatio(this.pr);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     this.camera = new THREE.PerspectiveCamera(
@@ -178,7 +204,27 @@ export class ParticleHero {
         uSchool: { value: this.schoolMode ? 1 : 0 },
       },
     });
-    this.bgMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.bgMaterial);
+    const [tw, th] = this.bgTargetSize();
+    this.bgTarget = new THREE.WebGLRenderTarget(tw, th, {
+      depthBuffer: false,
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+    });
+    const bgQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.bgMaterial);
+    bgQuad.position.z = -0.5;
+    this.bgScene.add(bgQuad);
+
+    // A plain pass-through sampler (not MeshBasicMaterial) so the colors
+    // reach the frame exactly as the water shader wrote them.
+    const show = new THREE.ShaderMaterial({
+      vertexShader: bgVert,
+      fragmentShader:
+        "varying vec2 vUv; uniform sampler2D uTex; void main() { gl_FragColor = texture2D(uTex, vUv); }",
+      uniforms: { uTex: { value: this.bgTarget.texture } },
+      depthWrite: false,
+      depthTest: false,
+    });
+    this.bgMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), show);
     this.bgMesh.position.z = -6;
     this.bgMesh.renderOrder = -1;
     this.scene.add(this.bgMesh);
@@ -199,7 +245,7 @@ export class ParticleHero {
     const w = window.innerWidth;
     const h = window.innerHeight;
     this.composer = new EffectComposer(this.renderer);
-    this.composer.setPixelRatio(this.profile.dpr);
+    this.composer.setPixelRatio(this.pr);
     this.composer.setSize(w, h);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
 
@@ -219,7 +265,7 @@ export class ParticleHero {
     this.composer.addPass(this.bloomPass);
 
     this.finalPass = new ShaderPass(FINAL_SHADER);
-    this.finalPass.uniforms.uResolution.value.set(w * this.profile.dpr, h * this.profile.dpr);
+    this.finalPass.uniforms.uResolution.value.set(w * this.pr, h * this.pr);
     // Lighter grain on mobile — high-DPR small screens make it read as noise.
     this.finalPass.uniforms.uGrain.value = mobile ? 0.018 : 0.04;
     this.composer.addPass(this.finalPass);
@@ -349,7 +395,7 @@ export class ParticleHero {
       uniforms: {
         uPosition: { value: null },
         uSize: { value: baseSize },
-        uPixelRatio: { value: this.profile.dpr },
+        uPixelRatio: { value: this.pr },
         uTime: { value: 0 },
         uFade: { value: 1 },
         uReveal: { value: this.debugFormed ? 1 : 0 },
@@ -551,8 +597,17 @@ export class ParticleHero {
   }
 
   setRunning(v: boolean) {
+    const was = this.running;
     this.running = v && !this.failed;
-    if (this.running) this.clock.getDelta();
+    if (this.running) {
+      this.clock.getDelta();
+      if (!was) {
+        // Don't judge performance on the frames right after (re)starting:
+        // shader compiles, font load, and the intro all land here.
+        this.perf.last = 0;
+        this.perf.warmUntil = performance.now() + 2500;
+      }
+    }
   }
 
   resize() {
@@ -565,14 +620,62 @@ export class ParticleHero {
     this.updateBackdrop();
     this.renderer.setSize(w, h);
     this.bgMaterial.uniforms.uResolution.value.set(w, h);
+    this.bgTarget.setSize(...this.bgTargetSize());
     this.composer?.setSize(w, h);
     this.bloomPass?.setSize(w, h);
-    this.finalPass?.uniforms.uResolution.value.set(w * this.profile.dpr, h * this.profile.dpr);
+    this.finalPass?.uniforms.uResolution.value.set(w * this.pr, h * this.pr);
     // The name formation is intentionally NOT rebuilt here (see main.ts resize).
+  }
+
+  private applyRenderScale() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const pr = this.pr;
+    this.renderer.setPixelRatio(pr);
+    this.renderer.setSize(w, h);
+    if (this.composer) {
+      this.composer.setPixelRatio(pr);
+      this.composer.setSize(w, h);
+      this.bloomPass?.setSize(w, h);
+    }
+    this.finalPass?.uniforms.uResolution.value.set(w * pr, h * pr);
+    this.particleMat.uniforms.uPixelRatio.value = pr;
+  }
+
+  /** Average frame time over ~1.5s windows; if it stays above budget, give
+   *  up resolution first (barely visible on soft particles), then bloom. */
+  private trackPerf() {
+    const p = this.perf;
+    const now = performance.now();
+    if (p.last) {
+      const dt = now - p.last;
+      // Gaps over 250ms are tab switches or scroll stalls, not render cost.
+      if (dt < 250 && now > p.warmUntil) {
+        p.sum += dt;
+        p.n++;
+      }
+    }
+    p.last = now;
+    if (p.n < 90) return;
+    const avg = p.sum / p.n;
+    p.sum = 0;
+    p.n = 0;
+    if (avg <= 19 || p.steps >= 3) return;
+    p.steps++;
+    if (p.steps <= 2) {
+      this.renderScale = p.steps === 1 ? 0.8 : 0.65;
+      this.applyRenderScale();
+    } else if (this.usePost) {
+      this.usePost = false;
+      this.updateGlow();
+    }
+    p.warmUntil = now + 1500;
+    console.info(`[perf] avg frame ${avg.toFixed(1)}ms — quality step ${p.steps}`);
   }
 
   update() {
     if (!this.running || this.failed) return;
+    this.trackPerf();
     const dt = Math.min(this.clock.getDelta(), 0.05);
     const elapsed = this.clock.elapsedTime;
 
@@ -611,7 +714,11 @@ export class ParticleHero {
     this.points.rotation.y = this.parallax.x * 0.5;
     this.points.rotation.x = this.parallax.y * 0.4;
 
-    if (this.composer) {
+    this.renderer.setRenderTarget(this.bgTarget);
+    this.renderer.render(this.bgScene, this.bgCam);
+    this.renderer.setRenderTarget(null);
+
+    if (this.composer && this.usePost) {
       if (this.finalPass) this.finalPass.uniforms.uTime.value = elapsed;
       this.composer.render();
     } else {
@@ -621,6 +728,7 @@ export class ParticleHero {
 
   dispose() {
     this.running = false;
+    this.bgTarget?.dispose();
     this.composer?.dispose();
     this.renderer?.dispose();
   }

@@ -136,7 +136,13 @@ html::before {
   animation: caustics 8s ease-in-out infinite alternate;
 }
 @keyframes caustics {
-  to { transform: translate(170px, -120px) scale(1.06); opacity: 0.72; }
+  to { transform: translate(170px, -120px); opacity: 0.72; }
+}
+/* On the homepage the opaque WebGL canvas paints above this layer (same
+   z-index, later in tree order), so these caustics would animate unseen
+   every frame. The hero's own shader draws the water there. */
+html.webgl-active::before {
+  content: none;
 }
 /* bubbles drifting up — three repeating layers, loop = one tile height */
 html::after {
@@ -1124,7 +1130,6 @@ main {
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   background: radial-gradient(circle, rgba(42, 245, 255, 0.1), rgba(176, 107, 255, 0.06) 40%, transparent 64%);
-  filter: blur(12px);
   pointer-events: none;
   z-index: 0;
 }
@@ -1619,9 +1624,9 @@ main {
   padding: 0.5em 1em;
   border: 1px solid rgba(159, 232, 212, 0.3);
   border-radius: 999px;
-  background: rgba(4, 24, 38, 0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* Solid, not backdrop-filter: the pill is fixed over the animating hero,
+     so a blur would be recomputed every frame. */
+  background: rgba(4, 24, 38, 0.9);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.03em;

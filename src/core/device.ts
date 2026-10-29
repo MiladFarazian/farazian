@@ -51,9 +51,11 @@ export function detectDevice(): DeviceProfile {
 
   const supportsWebGL = detectWebGL();
 
-  // Cap DPR aggressively on mobile to keep the GPU cool.
+  // Cap DPR: the hero is soft glowing points under bloom and grain, so
+  // 1.5x is indistinguishable from 2x at 44% fewer pixels. The canvas
+  // only — DOM text still renders at the full device ratio.
   const rawDpr = window.devicePixelRatio || 1;
-  const dprCap = tier === "high" ? 2 : tier === "mid" ? 1.75 : 1.25;
+  const dprCap = tier === "high" ? 1.5 : tier === "mid" ? 1.5 : 1;
   const dpr = Math.min(rawDpr, dprCap);
 
   // Particle budget by tier (NxN). 256^2 = 65k, 160^2 = 25k, 96^2 = 9k.
